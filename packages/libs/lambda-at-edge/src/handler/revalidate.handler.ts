@@ -30,12 +30,12 @@ export class RevalidateHandler {
       this.renderService.getPage(resource.getPagePath(), resource.getJsonUri())
     ]);
 
-    if (this.shouldSkipRevalidate(htmlHeader.header.LastModified)) {
-      debug(
-        `The last ISR was triggered ${REVALIDATE_TRIGGER_GAP_SECONDS} seconds ago, so skip this one.`
-      );
-      return;
-    }
+    // if (this.shouldSkipRevalidate(htmlHeader.header.LastModified)) {
+    //   debug(
+    //     `The last ISR was triggered ${REVALIDATE_TRIGGER_GAP_SECONDS} seconds ago, so skip this one.`
+    //   );
+    //   return;
+    // }
 
     debug(`[handler] Revalidate resource: ${JSON.stringify(resource)}`);
 
