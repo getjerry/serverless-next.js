@@ -524,6 +524,11 @@ class Builder {
     const isHtmlPage = (path: string): boolean => path.endsWith(".html");
     const isApiPage = (path: string): boolean => path.startsWith("pages/api");
 
+    ssrPages.dynamic["/index"] = {
+      file: "index.js",
+      regex: pathToRegexStr("/index")
+    };
+
     Object.entries(pagesManifest).forEach(([route, pageFile]) => {
       // Check for optional catch all dynamic routes vs. other types of dynamic routes
       // We also add another route without dynamic parameter for optional catch all dynamic routes

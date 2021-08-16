@@ -37,6 +37,8 @@ export class RenderService {
     // eslint-disable-next-line
     const page = require(`./${pagePath}`);
 
+    debug(`[render] Page: ${JSON.stringify(pagePath)}`);
+
     if (!page?.getStaticProps) {
       return;
     }
@@ -45,6 +47,8 @@ export class RenderService {
       enableHTTPCompression: false,
       rewrittenUri
     });
+
+    debug(`[render]  req, res: ${JSON.stringify(req)} ${JSON.stringify(res)}`);
 
     const { renderOpts, html } = await page.renderReqToHTML(
       req,
