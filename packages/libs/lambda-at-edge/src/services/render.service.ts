@@ -42,12 +42,18 @@ export class RenderService {
     if (!page?.getStaticProps) {
       return;
     }
-
+    debug(`[render] Page2: ${JSON.stringify(page)}`);
+    debug(
+      `[render] lambdaAtEdgeCompat: ${JSON.stringify(
+        this.event.Records[0].cf
+      )} ${rewrittenUri}`
+    );
+    debug("start");
     const { req, res } = lambdaAtEdgeCompat(this.event.Records[0].cf, {
       enableHTTPCompression: false,
       rewrittenUri
     });
-
+    debug("end");
     debug(`[render]  req, res: ${JSON.stringify(req)} ${JSON.stringify(res)}`);
 
     const { renderOpts, html } = await page.renderReqToHTML(
