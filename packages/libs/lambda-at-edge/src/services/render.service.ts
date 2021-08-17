@@ -38,6 +38,7 @@ export class RenderService {
     const page = require(`./${pagePath}`);
 
     debug(`[render] Page: ${JSON.stringify(pagePath)}`);
+    debug(`[render] Page2: ${JSON.stringify(page)}`);
 
     if (!page?.getStaticProps) {
       return;
