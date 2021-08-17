@@ -324,6 +324,8 @@ class Builder {
         join(this.outputDir, DEFAULT_LAMBDA_CODE_DIR, "pages"),
         {
           filter: (file: string) => {
+            console.log(pathToPosix(file));
+
             const isNotPrerenderedHTMLPage = path.extname(file) !== ".html";
             const isNotStaticPropsJSONFile = path.extname(file) !== ".json";
             const isNotApiPage = pathToPosix(file).indexOf("pages/api") === -1;
@@ -893,9 +895,9 @@ class Builder {
       JSON.stringify(imageBuildManifest)
     );
 
-    return;
-
     await this.buildDefaultLambda(defaultBuildManifest);
+
+    return;
 
     const hasAPIPages =
       Object.keys(apiBuildManifest.apis.nonDynamic).length > 0 ||
