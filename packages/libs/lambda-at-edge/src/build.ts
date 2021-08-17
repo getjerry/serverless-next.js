@@ -324,7 +324,12 @@ class Builder {
         join(this.outputDir, DEFAULT_LAMBDA_CODE_DIR, "pages"),
         {
           filter: (file: string) => {
-            console.log(pathToPosix(file));
+            //
+            const isIndexJS = pathToPosix(file).endsWith("index.js");
+
+            if (isIndexJS) {
+              return true;
+            }
 
             const isNotPrerenderedHTMLPage = path.extname(file) !== ".html";
             const isNotStaticPropsJSONFile = path.extname(file) !== ".json";
