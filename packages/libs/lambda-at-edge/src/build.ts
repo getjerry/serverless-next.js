@@ -886,6 +886,15 @@ class Builder {
       imageBuildManifest
     } = await this.prepareBuildManifests();
 
+    console.log(
+      "prepareBuildManifests",
+      JSON.stringify(defaultBuildManifest),
+      JSON.stringify(apiBuildManifest),
+      JSON.stringify(imageBuildManifest)
+    );
+
+    return;
+
     await this.buildDefaultLambda(defaultBuildManifest);
 
     const hasAPIPages =

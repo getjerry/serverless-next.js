@@ -59,7 +59,11 @@ class NextjsComponent extends Component {
       await this.postBuild(params);
     }
 
-    return this.deploy(params);
+    return {
+      appUrl: SKIPPED_DEPLOY,
+      bucketName: SKIPPED_DEPLOY,
+      distributionId: SKIPPED_DEPLOY
+    };
   }
 
   readDefaultBuildManifest(
