@@ -37,9 +37,7 @@ export class Resource {
   }
 
   public getHtmlKey(): string {
-    return `${(this.basePath || "").replace(/^\//, "")}${
-      !this.basePath ? "" : "/"
-    }static-pages/${this.buildId}${this.getCanonicalUri()}.html`;
+    return this.generateHtmlKey(this.getCanonicalUri());
   }
 
   public getHtmlUri(): string {
@@ -47,9 +45,7 @@ export class Resource {
   }
 
   public getJsonKey(): string {
-    return `${(this.basePath || "").replace(/^\//, "")}${
-      !this.basePath ? "" : "/"
-    }_next/data/${this.buildId}${this.getCanonicalUri()}.json`;
+    return this.generateJsonKey(this.getCanonicalUri());
   }
 
   public getJsonUri(): string {
@@ -79,5 +75,46 @@ export class Resource {
       .replace(`_next/data/${this.buildId}/`, "")
       .replace(".json", "")
       .replace(".html", "");
+  }
+
+  // for all */index page
+  public isLandingPage(): boolean {
+    return this.uri.endsWith("/index.html");
+  }
+
+  public getLandingCanonicalUri(): string {
+    return "/index";
+  }
+
+  public getLandingPagePath(): string | undefined {
+    return "pages/index.js";
+  }
+
+  public getLandingHtmlKey(): string {
+    return this.generateHtmlKey(this.getLandingCanonicalUri());
+  }
+
+  public getLandingJsonKey(): string {
+    return this.generateJsonKey(this.getLandingCanonicalUri());
+  }
+
+  public getLandingJsonUri(): string {
+    return `/${this.generateJsonKey(this.getLandingCanonicalUri())}`;
+  }
+
+  private generateHtmlKey(uri: string): string {
+    return `${(this.basePath || "").replace(/^\//, "")}${
+      !this.basePath ? "" : "/"
+    }static-pages/${this.buildId}${uri}.html`;
+  }
+
+  private generateJsonKey(uri: string): string {
+    return `${(this.basePath || "").replace(/^\//, "")}${
+      !this.basePath ? "" : "/"
+    }_next/data/${this.buildId}${uri}.json`;
+  }
+
+  public getLandingHtmlUri(): string {
+    return this.basePath || "";
   }
 }

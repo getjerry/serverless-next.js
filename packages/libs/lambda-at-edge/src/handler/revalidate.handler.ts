@@ -8,7 +8,7 @@ import { S3Service } from "../services/s3.service";
 import { debug, isDevMode } from "../lib/console";
 
 // ISR needs to maintain a time gap of at least tens of seconds.
-const REVALIDATE_TRIGGER_GAP_SECONDS = 300;
+const REVALIDATE_TRIGGER_GAP_SECONDS = isDevMode() ? 1 : 300;
 
 export class RevalidateHandler {
   constructor(
@@ -24,19 +24,29 @@ export class RevalidateHandler {
     debug(JSON.stringify(event));
     debug(JSON.stringify(context));
 
-    const [htmlHeader, jsonHeader, candidatePage] = await Promise.all([
-      this.s3Service.getHeader(resource.getHtmlKey()),
-      this.s3Service.getHeader(resource.getJsonKey()),
-      this.renderService.getPage(resource.getPagePath(), resource.getJsonUri())
-    ]);
+    const [htmlHeader, jsonHeader, candidatePage] = resource.isLandingPage()
+      ? await Promise.all([
+          this.s3Service.getHeader(resource.getLandingHtmlKey()),
+          this.s3Service.getHeader(resource.getLandingJsonKey()),
+          this.renderService.getPage(
+            resource.getLandingPagePath(),
+            resource.getLandingJsonUri()
+          )
+        ])
+      : await Promise.all([
+          this.s3Service.getHeader(resource.getHtmlKey()),
+          this.s3Service.getHeader(resource.getJsonKey()),
+          this.renderService.getPage(
+            resource.getPagePath(),
+            resource.getJsonUri()
+          )
+        ]);
 
     if (this.shouldSkipRevalidate(htmlHeader.header.LastModified)) {
       debug(
         `The last ISR was triggered ${REVALIDATE_TRIGGER_GAP_SECONDS} seconds ago, so skip this one.`
       );
-      if (!isDevMode()) {
-        return;
-      }
+      return;
     }
 
     debug(`[handler] Revalidate resource: ${JSON.stringify(resource)}`);
@@ -48,12 +58,23 @@ export class RevalidateHandler {
     debug(`JSON CANDIDATE ETAG: ${candidatePage.getJsonEtag()}`);
     debug(`HTML CANDIDATE ETAG: ${candidatePage.getHtmlEtag()}`);
     debug(`CANDIDATE PAGE: ${JSON.stringify(candidatePage)}`);
+    debug(
+      `HTML ETAG: ${htmlHeader.getETag()}, JSON ETAG: ${jsonHeader.getETag()}`
+    );
+
+    debug(`[htmlhandler] html: ${JSON.stringify(htmlHeader)}`);
+    debug(`[jsonHeader] html: ${JSON.stringify(jsonHeader)}`);
 
     if (
       htmlHeader.getETag() !== candidatePage.getHtmlEtag() ||
       jsonHeader.getETag() !== candidatePage.getJsonEtag()
     ) {
-      debug(`[handler] Resource changed, update S3 cache and invalidate`);
+      debug(
+        `[handler] Resource changed, update S3 cache and invalidate. html: ${resource.getHtmlKey()}, json:${resource.getJsonKey()}`
+      );
+      debug(
+        `[handler] Resource changed, update S3 cache and invalidate. html: ${resource.getLandingHtmlKey()}, json:${resource.getLandingJsonKey()}`
+      );
 
       await Promise.all([
         this.s3Service.putObject(
@@ -69,7 +90,9 @@ export class RevalidateHandler {
       ]);
 
       await this.cloudfrontService.createInvalidation([
-        resource.getHtmlUri(),
+        resource.isLandingPage()
+          ? resource.getLandingHtmlUri()
+          : resource.getHtmlUri(),
         resource.getJsonUri()
       ]);
     }
