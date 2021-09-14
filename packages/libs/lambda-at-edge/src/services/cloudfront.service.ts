@@ -16,6 +16,11 @@ export class CloudFrontService {
     if (!this.options.distributionId) {
       throw new Error("Distribution id is not provided");
     }
+
+    paths.map((path) => {
+      console.log(`[cloudfront ISR] invalidate paths: ${path}`);
+    });
+
     debug(`[cloudfront] Invalidate paths: ${JSON.stringify(paths)}`);
 
     const res = await this.client.send(
