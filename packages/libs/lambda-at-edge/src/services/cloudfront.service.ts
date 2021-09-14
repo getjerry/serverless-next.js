@@ -18,7 +18,7 @@ export class CloudFrontService {
     }
 
     paths.map((path) => {
-      console.log(`[cloudfront ISR] invalidate paths: ${path}`);
+      console.log(`[cloudfront ISR] invalidate path: ${path}`);
     });
 
     debug(`[cloudfront] Invalidate paths: ${JSON.stringify(paths)}`);
