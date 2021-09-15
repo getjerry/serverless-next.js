@@ -1,4 +1,4 @@
-# Serverless Nextjs Component
+# Jerry Serverless Nextjs Component
 
 ![logo](./logo.gif)
 
