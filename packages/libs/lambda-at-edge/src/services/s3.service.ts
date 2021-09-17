@@ -4,6 +4,7 @@ import {
   HeadObjectCommand,
   HeadObjectCommandOutput
 } from "@aws-sdk/client-s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3/commands/GetObjectCommand";
 
 interface S3ServiceOptions {
   bucketName?: string;
@@ -70,5 +71,19 @@ export class S3Service {
         CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
       })
     );
+  }
+
+  public async getObject(key: string): Promise<any> {
+    if (!this.options.bucketName) {
+      throw new Error("Bucket name not configured");
+    }
+    const data = await this.client.send(
+      new GetObjectCommand({
+        Key: key,
+        Bucket: this.options.bucketName
+      })
+    );
+
+    return data;
   }
 }

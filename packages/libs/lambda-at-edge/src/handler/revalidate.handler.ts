@@ -65,23 +65,27 @@ export class RevalidateHandler {
         `[==>] resource.getJsonKey :${resource.getJsonKey()}. candidatePage.getJsonBody: ${candidatePage.getJsonBody()}`
       );
 
-      // await Promise.all([
-      //   this.s3Service.putObject(
-      //     resource.getHtmlKey(),
-      //     candidatePage.getHtmlBody(),
-      //     "text/html"
-      //   ),
-      //   this.s3Service.putObject(
-      //     resource.getJsonKey(),
-      //     candidatePage.getJsonBody(),
-      //     "application/json"
-      //   )
-      // ]);
-      //
-      // await this.cloudfrontService.createInvalidation([
-      //   resource.getHtmlUri(),
-      //   resource.getJsonUri()
-      // ]);
+      const a = this.s3Service.getObject(resource.getJsonKey());
+
+      console.log("--", a, typeof a, JSON.stringify(a));
+
+      await Promise.all([
+        this.s3Service.putObject(
+          resource.getHtmlKey(),
+          candidatePage.getHtmlBody(),
+          "text/html"
+        ),
+        this.s3Service.putObject(
+          resource.getJsonKey(),
+          candidatePage.getJsonBody(),
+          "application/json"
+        )
+      ]);
+
+      await this.cloudfrontService.createInvalidation([
+        resource.getHtmlUri(),
+        resource.getJsonUri()
+      ]);
     }
 
     return;
