@@ -61,23 +61,27 @@ export class RevalidateHandler {
         `[handler] Resource changed, update S3 cache and invalidate. html: ${resource.getHtmlKey()}, json:${resource.getJsonKey()}`
       );
 
-      await Promise.all([
-        this.s3Service.putObject(
-          resource.getHtmlKey(),
-          candidatePage.getHtmlBody(),
-          "text/html"
-        ),
-        this.s3Service.putObject(
-          resource.getJsonKey(),
-          candidatePage.getJsonBody(),
-          "application/json"
-        )
-      ]);
+      debug(
+        `[==>] resource.getJsonKey :${resource.getJsonKey()}. candidatePage.getJsonBody: ${candidatePage.getJsonBody()}`
+      );
 
-      await this.cloudfrontService.createInvalidation([
-        resource.getHtmlUri(),
-        resource.getJsonUri()
-      ]);
+      // await Promise.all([
+      //   this.s3Service.putObject(
+      //     resource.getHtmlKey(),
+      //     candidatePage.getHtmlBody(),
+      //     "text/html"
+      //   ),
+      //   this.s3Service.putObject(
+      //     resource.getJsonKey(),
+      //     candidatePage.getJsonBody(),
+      //     "application/json"
+      //   )
+      // ]);
+      //
+      // await this.cloudfrontService.createInvalidation([
+      //   resource.getHtmlUri(),
+      //   resource.getJsonUri()
+      // ]);
     }
 
     return;
