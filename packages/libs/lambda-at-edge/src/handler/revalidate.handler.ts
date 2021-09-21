@@ -65,7 +65,7 @@ export class RevalidateHandler {
         `[==>] resource.getJsonKey :${resource.getJsonKey()}. candidatePage.getJsonBody: ${candidatePage.getJsonBody()}`
       );
 
-      const a = this.s3Service.getObject(resource.getJsonKey());
+      const a = await this.s3Service.getObject(resource.getJsonKey());
 
       console.log("--", a, typeof a, JSON.stringify(a));
 
