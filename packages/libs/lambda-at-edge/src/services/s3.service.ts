@@ -83,7 +83,7 @@ export class S3Service {
         Bucket: this.options.bucketName
       })
     );
-
+    console.log("getObject", data);
     return data;
   }
 }
