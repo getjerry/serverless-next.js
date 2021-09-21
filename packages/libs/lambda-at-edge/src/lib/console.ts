@@ -8,5 +8,5 @@ export function debug(message: string): void {
 
 export function isDevMode(): boolean {
   console.log("isDevMode", process.env.DEBUGMODE);
-  return process.env.DEBUGMODE === "true";
+  return true;
 }
