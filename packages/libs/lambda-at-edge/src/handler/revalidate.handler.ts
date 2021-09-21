@@ -87,23 +87,23 @@ export class RevalidateHandler {
         oldJsonFile.pageProps?.initialApolloState
       );
 
-      await Promise.all([
-        this.s3Service.putObject(
-          resource.getHtmlKey(),
-          candidatePage.getHtmlBody(),
-          "text/html"
-        ),
-        this.s3Service.putObject(
-          resource.getJsonKey(),
-          candidatePage.getJsonBody(),
-          "application/json"
-        )
-      ]);
-
-      await this.cloudfrontService.createInvalidation([
-        resource.getHtmlUri(),
-        resource.getJsonUri()
-      ]);
+      // await Promise.all([
+      //   this.s3Service.putObject(
+      //     resource.getHtmlKey(),
+      //     candidatePage.getHtmlBody(),
+      //     "text/html"
+      //   ),
+      //   this.s3Service.putObject(
+      //     resource.getJsonKey(),
+      //     candidatePage.getJsonBody(),
+      //     "application/json"
+      //   )
+      // ]);
+      //
+      // await this.cloudfrontService.createInvalidation([
+      //   resource.getHtmlUri(),
+      //   resource.getJsonUri()
+      // ]);
     }
 
     return;
