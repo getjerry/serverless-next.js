@@ -84,7 +84,7 @@ export class RevalidateHandler {
       console.log("-- contentfulCache", oldJsonFile.pageProps?.contentfulCache);
       console.log(
         "-- initialApolloState",
-        oldJsonFile.pageProps?.initialApolloState
+        JSON.stringify(oldJsonFile.pageProps?.initialApolloState)
       );
 
       // await Promise.all([
