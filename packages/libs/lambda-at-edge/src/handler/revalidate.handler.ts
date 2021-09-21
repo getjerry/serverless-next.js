@@ -10,6 +10,16 @@ import { debug, isDevMode } from "../lib/console";
 // ISR needs to maintain a time gap of at least tens of seconds.
 const REVALIDATE_TRIGGER_GAP_SECONDS = isDevMode() ? 1 : 300;
 
+interface S3JsonFile {
+  pageProps?: {
+    contentfulCache?: [];
+    initialApolloState?: any;
+    preview?: boolean;
+    generatedAt?: string;
+  };
+  __N_SSG?: string;
+}
+
 export class RevalidateHandler {
   constructor(
     private resourceService: ResourceService,
@@ -65,9 +75,17 @@ export class RevalidateHandler {
         `[==>] resource.getJsonKey :${resource.getJsonKey()}. candidatePage.getJsonBody: ${candidatePage.getJsonBody()}`
       );
 
-      const a = await this.s3Service.getObject(resource.getJsonKey());
+      const jsonRawString = await this.s3Service.getObject(
+        resource.getJsonKey()
+      );
+      const oldJsonFile: S3JsonFile = JSON.parse(jsonRawString);
 
-      console.log("--", a, typeof a, JSON.stringify(a));
+      console.log("--", oldJsonFile, typeof oldJsonFile);
+      console.log("-- contentfulCache", oldJsonFile.pageProps?.contentfulCache);
+      console.log(
+        "-- initialApolloState",
+        oldJsonFile.pageProps?.initialApolloState
+      );
 
       await Promise.all([
         this.s3Service.putObject(
