@@ -60,14 +60,14 @@
     "jest-when": "^2.7.2",
     "lerna": "^3.22.1",
     "lint-staged": "^10.2.11",
+    "lodash": "^4.17.21",
     "next": "^9.4.4",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "serverless": "^1.74.1",
     "serverless-offline": "^6.4.0",
-    "typescript": "^3.9.6",
-    "lodash": "4.17.20"
+    "typescript": "^3.9.6"
   },
   "jest": {
     "clearMocks": true,
@@ -112,6 +112,7 @@
     ]
   },
   "dependencies": {
+    "@types/lodash": "^4.14.173",
     "opencollective-postinstall": "^2.0.3"
   },
   "collective": {

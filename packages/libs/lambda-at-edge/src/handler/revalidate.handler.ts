@@ -6,6 +6,7 @@ import { RenderService } from "../services/render.service";
 import { ResourceService } from "../services/resource.service";
 import { S3Service } from "../services/s3.service";
 import { debug, isDevMode } from "../lib/console";
+import * as _ from "lodash";
 
 // ISR needs to maintain a time gap of at least tens of seconds.
 const REVALIDATE_TRIGGER_GAP_SECONDS = isDevMode() ? 1 : 300;
@@ -32,7 +33,9 @@ export class RevalidateHandler {
 
     if (this.shouldSkipRevalidate(htmlHeader.header.LastModified)) {
       debug(
-        `The last ISR was triggered ${REVALIDATE_TRIGGER_GAP_SECONDS} seconds ago, so skip this one.`
+        `The last ISR was triggered ${REVALIDATE_TRIGGER_GAP_SECONDS} seconds ago, ch ${_.isEmpty(
+          REVALIDATE_TRIGGER_GAP_SECONDS
+        )} so skip this one.`
       );
       return;
     }
