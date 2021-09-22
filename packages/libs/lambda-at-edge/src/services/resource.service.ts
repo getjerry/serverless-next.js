@@ -11,6 +11,9 @@ import {
   ResourceForIndexPage
 } from "./resource";
 import { debug } from "../lib/console";
+import { isEmpty, isEqual } from "lodash";
+
+const a = isEmpty("f");
 
 export class ResourceService {
   constructor(
