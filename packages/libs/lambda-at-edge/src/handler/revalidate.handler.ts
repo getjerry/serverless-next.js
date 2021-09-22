@@ -43,8 +43,13 @@ export class RevalidateHandler {
       throw new Error(`Page for ${resource.getPagePath()} not found`);
     }
 
+    const isEqual = require("lodash.isequal");
+
     debug(
-      `Current HTML ETAG: ${htmlHeader.getETag()}, Candidate Page HTML ETAG: ${candidatePage.getHtmlEtag()}`
+      `Current HTML ETAG: ${htmlHeader.getETag()}, isEqual ${isEqual(
+        "a",
+        "b"
+      )}Candidate Page HTML ETAG: ${candidatePage.getHtmlEtag()}`
     );
 
     debug(
