@@ -160,7 +160,7 @@ describe("Builder Tests (no API routes)", () => {
       );
 
       expect(files).toEqual([
-        "index.js",
+        "indexrr.js",
         "manifest.json",
         "pages",
         "prerender-manifest.json",
