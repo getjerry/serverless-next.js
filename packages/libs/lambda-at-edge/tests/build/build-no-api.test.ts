@@ -160,7 +160,7 @@ describe("Builder Tests (no API routes)", () => {
       );
 
       expect(files).toEqual([
-        "indexrr.js",
+        "index.js",
         "manifest.json",
         "pages",
         "prerender-manifest.json",
@@ -181,7 +181,7 @@ describe("Builder Tests (no API routes)", () => {
       ]);
 
       // JS files used only for prerendering at build time (contact.js, index.js) are not included since there are no API routes
-      expect(pages).not.toContain(["contact.js", "indexrr.js"]);
+      expect(pages).not.toContain(["contact.js", "index.js"]);
 
       // add index js to render landing page
       expect(pages).toEqual(["_error.js", "blog.js", "customers", "index.js"]);
