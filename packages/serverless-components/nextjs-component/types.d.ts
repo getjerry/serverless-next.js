@@ -81,6 +81,7 @@ export type LambdaInput = {
   code: string;
   role: Record<string, unknown>;
   memory: number;
+  bucket?: string;
   timeout: number;
   runtime: string;
   name?: string;

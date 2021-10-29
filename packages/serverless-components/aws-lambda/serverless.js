@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const path = require("path");
 const AwsSdkLambda = aws.Lambda;
 const { mergeDeepRight, pick } = require("ramda");
 const { Component, utils } = require("@serverless/core");
@@ -80,7 +81,7 @@ class AwsLambda extends Component {
       this.context.debug(
         `Creating lambda ${config.name} in the ${config.region} region.`
       );
-
+      await this.uploadCode(config);
       const createResult = await createLambda({ lambda, ...config });
       config.arn = createResult.arn;
       config.hash = createResult.hash;
@@ -91,6 +92,7 @@ class AwsLambda extends Component {
         if (prevLambda.hash !== config.hash) {
           this.context.status(`Uploading code`);
           this.context.debug(`Uploading ${config.name} lambda code.`);
+          await this.uploadCode(config);
           await updateLambdaCode({ lambda, ...config });
         }
 
@@ -169,6 +171,16 @@ class AwsLambda extends Component {
     await this.save();
 
     return outputs;
+  }
+
+  async uploadCode({ bucket, zipPath } = {}) {
+    if (!bucket || !zipPath) {
+      return;
+    }
+    this.context.status("Uploading code");
+    this.context.debug(`Uploading lambda code to ${bucket}/${zipPath}`);
+    const codeBucket = await this.load("@serverless/aws-s3");
+    await codeBucket.upload({ key: path.basename(zipPath), file: zipPath });
   }
 }
 
