@@ -118,6 +118,7 @@ class AwsLambda extends Component {
 
     this.state = outputs;
     await this.save();
+    await this.removeCode(config);
 
     return outputs;
   }
@@ -178,9 +179,28 @@ class AwsLambda extends Component {
       return;
     }
     this.context.status("Uploading code");
-    this.context.debug(`Uploading lambda code to ${bucket}/${zipPath}`);
+    this.context.debug(`Uploading lambda code to ${bucket}${zipPath}`);
     const codeBucket = await this.load("@serverless/aws-s3");
+    await codeBucket({
+      accelerated: true,
+      name: bucket
+    });
     await codeBucket.upload({ key: path.basename(zipPath), file: zipPath });
+  }
+
+  async removeCode({ bucket, zipPath, region } = {}) {
+    if (!bucket || !zipPath) {
+      return;
+    }
+    this.context.status("Removing code");
+    this.context.debug(`Removing lambda code from ${bucket}${zipPath}`);
+    const s3 = new aws.S3({
+      region: region,
+      credentials: this.context.credentials.aws
+    });
+    await s3
+      .deleteObject({ Key: path.basename(zipPath), Bucket: bucket })
+      .promise();
   }
 }
 
