@@ -515,7 +515,7 @@ class NextjsComponent extends Component {
         container: inputs.container
           ? {
               ...inputs.container,
-              cmd: ["api-lambda.index.handler"]
+              cmd: ["api-lambda/index.handler"]
             }
           : undefined,
         role: inputs.roleArn
@@ -576,7 +576,7 @@ class NextjsComponent extends Component {
         container: inputs.container
           ? {
               ...inputs.container,
-              cmd: ["image-lambda.index.handler"]
+              cmd: ["image-lambda/index.handler"]
             }
           : undefined,
         role: {
@@ -639,7 +639,7 @@ class NextjsComponent extends Component {
       container: inputs.container
         ? {
             ...inputs.container,
-            cmd: ["default-lambda.index.handler"]
+            cmd: ["default-lambda/index.handler"]
           }
         : undefined,
       role: inputs.roleArn

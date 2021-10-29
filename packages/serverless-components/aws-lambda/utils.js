@@ -88,7 +88,8 @@ const createLambda = async ({
   zipPath,
   bucket,
   role,
-  layer
+  layer,
+  container
 }) => {
   const params = {
     FunctionName: name,
@@ -109,7 +110,15 @@ const createLambda = async ({
     params.Layers = [layer.arn];
   }
 
-  if (bucket) {
+  if (container) {
+    params.Code.ImageUri = container.uri;
+    params.PackageType = "Image";
+    params.ImageConfig = {
+      Command: container.cmd
+    };
+    params.Runtime = undefined;
+    params.Handler = undefined;
+  } else if (bucket) {
     params.Code.S3Bucket = bucket;
     params.Code.S3Key = path.basename(zipPath);
   } else {
@@ -151,10 +160,12 @@ const updateLambdaConfig = async ({
     functionConfigParams.Layers = [layer.arn];
   }
 
-  if (container && container.cmd) {
+  if (container) {
     functionConfigParams.ImageConfig = {
       Command: container.cmd
     };
+    functionConfigParams.Runtime = undefined;
+    functionConfigParams.Handler = undefined;
   }
 
   const res = await lambda
