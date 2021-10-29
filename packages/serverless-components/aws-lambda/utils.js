@@ -131,7 +131,8 @@ const updateLambdaConfig = async ({
   env,
   description,
   role,
-  layer
+  layer,
+  container
 }) => {
   const functionConfigParams = {
     FunctionName: name,
@@ -150,6 +151,12 @@ const updateLambdaConfig = async ({
     functionConfigParams.Layers = [layer.arn];
   }
 
+  if (container && container.cmd) {
+    functionConfigParams.ImageConfig = {
+      Command: container.cmd
+    };
+  }
+
   const res = await lambda
     .updateFunctionConfiguration(functionConfigParams)
     .promise();
@@ -157,13 +164,20 @@ const updateLambdaConfig = async ({
   return { arn: res.FunctionArn, hash: res.CodeSha256 };
 };
 
-const updateLambdaCode = async ({ lambda, name, zipPath, bucket }) => {
+const updateLambdaCode = async ({
+  lambda,
+  name,
+  zipPath,
+  bucket,
+  container
+}) => {
   const functionCodeParams = {
     FunctionName: name,
     Publish: true
   };
-
-  if (bucket) {
+  if (container && container.uri) {
+    functionCodeParams.ImageUri = container.uri;
+  } else if (bucket) {
     functionCodeParams.S3Bucket = bucket;
     functionCodeParams.S3Key = path.basename(zipPath);
   } else {

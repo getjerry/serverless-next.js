@@ -12,6 +12,11 @@ export interface LambdaOptions {
   runtime?: string | LambdaNames<string>;
 }
 
+export interface ContainerOptions {
+  uri: string;
+  cmd?: string[];
+}
+
 export type ServerlessComponentInputs = {
   stage?: string;
   canonicalHostname?: string;
@@ -26,6 +31,7 @@ export type ServerlessComponentInputs = {
   lambda?: LambdaOptions;
   name?: string | LambdaNames<string>;
   memory?: number | LambdaNames<number>;
+  container?: ContainerOptions;
   timeout?: number | LambdaNames<number>;
   runtime?: string | LambdaNames<string>;
   handler?: string;
@@ -84,6 +90,7 @@ export type LambdaInput = {
   timeout: number;
   runtime: string;
   name?: string;
+  container?: ContainerOptions;
 };
 
 type UrlRewriteOptions = { originUrl: string; rewriteUrl: string }[];

@@ -512,6 +512,12 @@ class NextjsComponent extends Component {
           : "API Lambda@Edge for Next CloudFront distribution",
         handler: inputs.handler || "index.handler",
         code: join(nextConfigPath, API_LAMBDA_CODE_DIR),
+        container: inputs.container
+          ? {
+              ...inputs.container,
+              cmd: ["api-lambda.index.handler"]
+            }
+          : undefined,
         role: inputs.roleArn
           ? {
               arn: inputs.roleArn
@@ -567,6 +573,12 @@ class NextjsComponent extends Component {
           : "Image Lambda@Edge for Next CloudFront distribution",
         handler: inputs.handler || "index.handler",
         code: join(nextConfigPath, IMAGE_LAMBDA_CODE_DIR),
+        container: inputs.container
+          ? {
+              ...inputs.container,
+              cmd: ["image-lambda.index.handler"]
+            }
+          : undefined,
         role: {
           service: ["lambda.amazonaws.com", "edgelambda.amazonaws.com"],
           policy
@@ -624,6 +636,12 @@ class NextjsComponent extends Component {
         "Default Lambda@Edge for Next CloudFront distribution",
       handler: inputs.handler || "index.handler",
       code: join(nextConfigPath, DEFAULT_LAMBDA_CODE_DIR),
+      container: inputs.container
+        ? {
+            ...inputs.container,
+            cmd: ["default-lambda.index.handler"]
+          }
+        : undefined,
       role: inputs.roleArn
         ? {
             arn: inputs.roleArn
