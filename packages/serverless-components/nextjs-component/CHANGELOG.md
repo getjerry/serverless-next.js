@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0-alpha.1](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.20.45...@getjerry/serverless-next@1.21.0-alpha.1) (2021-10-29)
+
+### Features
+
+- support lambda image deployment ([6cefc61](https://github.com/getjerry/serverless-next.js/commit/6cefc61fc2214dca499f84f12eb3c51adade5253))
+
 # [1.21.0-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.20.45...@getjerry/serverless-next@1.21.0-alpha.0) (2021-10-29)
 
 ### Features
