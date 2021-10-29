@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-lambda@1.1.2...@getjerry/aws-lambda@1.2.0-alpha.0) (2021-10-29)
+
+### Features
+
+- support lambda image deployment ([6cefc61](https://github.com/getjerry/serverless-next.js/commit/6cefc61fc2214dca499f84f12eb3c51adade5253))
+
 ## [1.1.2](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-lambda@1.1.0...@getjerry/aws-lambda@1.1.2) (2021-04-13)
 
 **Note:** Version bump only for package @getjerry/aws-lambda
