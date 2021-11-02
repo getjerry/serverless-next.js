@@ -929,6 +929,7 @@ class Builder {
     const hasDynamicDataAssets = !isEmpty(
       defaultBuildManifest.invalidationUrlGroups
     );
+    console.log("hasDynamicDataAssets", hasDynamicDataAssets);
 
     if (hasDynamicDataAssets) {
       await this.buildDynamicDataAssets(defaultBuildManifest, routesManifest);
