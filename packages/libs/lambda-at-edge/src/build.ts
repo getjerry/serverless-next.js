@@ -1008,11 +1008,17 @@ class Builder {
     console.log("nextStaticDir", nextStaticDir);
     console.log("nextConfigDir", nextConfigDir);
 
-    map(defaultBuildManifest.invalidationUrlGroups || [], (group, index) => {
-      console.log("group", index, group);
+    map(
+      defaultBuildManifest.invalidationUrlGroups || [],
+      async (group, index) => {
+        console.log("group", index, group);
 
-      fse.writeFile(join(directoryPath, `${index}`), JSON.stringify(group));
-    });
+        await fse.writeFile(
+          join(directoryPath, `${index}`),
+          JSON.stringify(group)
+        );
+      }
+    );
 
     return Promise.all([]);
   }
