@@ -929,6 +929,11 @@ class Builder {
     const hasDynamicDataAssets = !isEmpty(
       defaultBuildManifest.invalidationUrlGroups
     );
+    console.log(
+      "invalidationUrlGroups",
+      defaultBuildManifest.invalidationUrlGroups
+    );
+
     console.log("hasDynamicDataAssets", hasDynamicDataAssets);
 
     if (hasDynamicDataAssets) {
@@ -1006,7 +1011,7 @@ class Builder {
     map(defaultBuildManifest.invalidationUrlGroups || [], (group, index) => {
       console.log("group", index, group);
 
-      fse.writeJson(join(directoryPath, `${index}`), group);
+      fse.writeFile(join(directoryPath, `${index}`), JSON.stringify(group));
     });
 
     return Promise.all([]);
