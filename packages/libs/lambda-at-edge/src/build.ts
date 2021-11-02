@@ -30,6 +30,7 @@ import { Item } from "klaw";
 import { Job } from "@vercel/nft/out/node-file-trace";
 import isEmpty from "lodash/isEmpty";
 import { map } from "lodash";
+import fs from "fs";
 
 export const DEFAULT_LAMBDA_CODE_DIR = "default-lambda";
 export const API_LAMBDA_CODE_DIR = "api-lambda";
@@ -989,13 +990,16 @@ class Builder {
     defaultBuildManifest: OriginRequestDefaultHandlerManifest,
     routesManifest: RoutesManifest
   ) {
-    // add here
-
     const buildId = defaultBuildManifest.buildId;
     const basePath = routesManifest.basePath;
     const nextConfigDir = this.nextConfigDir;
     const nextStaticDir = this.nextStaticDir;
+    // add here
     const directoryPath = path.join(nextStaticDir, "dynamic-data");
+
+    if (!fs.existsSync(directoryPath)) {
+      fs.mkdirSync(directoryPath, { recursive: true });
+    }
 
     const dotNextDirectory = path.join(this.nextConfigDir, ".next");
 
