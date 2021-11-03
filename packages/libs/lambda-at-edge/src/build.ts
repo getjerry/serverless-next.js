@@ -1006,8 +1006,7 @@ class Builder {
       normalizedBasePath,
       "_next",
       "data",
-      buildId,
-      "dynamic-data"
+      buildId
     );
 
     if (!fs.existsSync(directoryPath)) {
