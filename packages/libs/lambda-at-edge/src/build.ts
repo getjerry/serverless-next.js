@@ -1003,7 +1003,9 @@ class Builder {
     const directoryPath = path.join(
       this.outputDir,
       ASSETS_DIR,
-      withBasePath("dynamic-data")
+      normalizedBasePath,
+      "_next",
+      "dynamic-data"
     );
 
     if (!fs.existsSync(directoryPath)) {
