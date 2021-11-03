@@ -1005,6 +1005,8 @@ class Builder {
       ASSETS_DIR,
       normalizedBasePath,
       "_next",
+      "data",
+      buildId,
       "dynamic-data"
     );
 

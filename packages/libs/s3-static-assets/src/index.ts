@@ -90,15 +90,10 @@ const uploadStaticAssetsFromBuild = async (
   );
 
   const nextData2Files = await readDirectoryFiles(
-    path.join(
-      assetsOutputDirectory,
-      normalizedBasePath,
-      "_next",
-      "dynamic-data"
-    )
+    path.join(assetsOutputDirectory, normalizedBasePath, "_next", "data")
   );
 
-  const nextDataFilesUploads = [...nextDataFiles, ...nextData2Files]
+  const nextDataFilesUploads = [...nextDataFiles]
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
