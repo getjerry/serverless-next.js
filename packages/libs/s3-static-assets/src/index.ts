@@ -133,7 +133,7 @@ const uploadStaticAssetsFromBuild = async (
       }
     });
 
-  // Upload user static and public files
+  // Upload user static, public and dynamic data files
 
   const publicFiles = await readDirectoryFiles(
     path.join(assetsOutputDirectory, normalizedBasePath, "public")
@@ -143,7 +143,15 @@ const uploadStaticAssetsFromBuild = async (
     path.join(assetsOutputDirectory, normalizedBasePath, "static")
   );
 
-  const publicAndStaticUploads = [...publicFiles, ...staticFiles]
+  const dynamicDataFiles = await readDirectoryFiles(
+    path.join(assetsOutputDirectory, normalizedBasePath, "dynamic-data")
+  );
+
+  const staticAssetAndDynamicDataUploads = [
+    ...publicFiles,
+    ...staticFiles,
+    ...dynamicDataFiles
+  ]
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
@@ -164,7 +172,7 @@ const uploadStaticAssetsFromBuild = async (
     ...nextStaticFilesUploads,
     ...nextDataFilesUploads,
     ...htmlPagesUploads,
-    ...publicAndStaticUploads,
+    ...staticAssetAndDynamicDataUploads,
     buildIdUpload
   ]);
 };
