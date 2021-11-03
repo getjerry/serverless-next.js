@@ -990,12 +990,21 @@ class Builder {
     defaultBuildManifest: OriginRequestDefaultHandlerManifest,
     routesManifest: RoutesManifest
   ) {
-    const buildId = defaultBuildManifest.buildId;
     const basePath = routesManifest.basePath;
+
+    const normalizedBasePath = basePath ? basePath.slice(1) : "";
+
+    const withBasePath = (key: string): string =>
+      path.join(normalizedBasePath, key);
+    const buildId = defaultBuildManifest.buildId;
     const nextConfigDir = this.nextConfigDir;
     const nextStaticDir = this.nextStaticDir;
     // add here
-    const directoryPath = path.join(nextStaticDir, "dynamic-data");
+    const directoryPath = path.join(
+      this.outputDir,
+      ASSETS_DIR,
+      withBasePath("dynamic-data")
+    );
 
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
@@ -1004,10 +1013,6 @@ class Builder {
     const dotNextDirectory = path.join(this.nextConfigDir, ".next");
 
     const assetOutputDirectory = path.join(this.outputDir, ASSETS_DIR);
-
-    const normalizedBasePath = basePath ? basePath.slice(1) : "";
-    const withBasePath = (key: string): string =>
-      path.join(normalizedBasePath, key);
 
     console.log("nextStaticDir", nextStaticDir);
     console.log("nextConfigDir", nextConfigDir);
