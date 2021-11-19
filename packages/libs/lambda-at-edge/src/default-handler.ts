@@ -498,6 +498,13 @@ const handleOriginRequest = async ({
   routesManifest: RoutesManifest;
   context?: Context;
 }) => {
+  console.log("before", process.env.NODE_ENV);
+  if (process.env.NODE_ENV !== "development") {
+    // eslint-disable-next-line no-eval
+    eval('process.env.NODE_ENV="production"');
+  }
+  console.log("after", process.env.NODE_ENV);
+
   const request = event.Records[0].cf.request;
   // Handle basic auth
   const authorization = request.headers.authorization;
