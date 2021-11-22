@@ -196,9 +196,6 @@ const confirmLastUpdateSuccess = async (
   for (let second in range(timeout)) {
     const { status } = await getLambda({ lambda, name });
     lastUpdateStatus = status;
-    this.context.debug(
-      `Last update status of ${name} is ${status} at ${second}s.`
-    );
     if (status === "Successful") {
       return;
     }
