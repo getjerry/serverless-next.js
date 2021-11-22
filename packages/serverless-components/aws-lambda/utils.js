@@ -311,6 +311,7 @@ module.exports = {
   createLambda,
   updateLambdaCode,
   updateLambdaConfig,
+  confirmLastUpdateSuccess,
   getLambda,
   deleteLambda,
   getPolicy,
