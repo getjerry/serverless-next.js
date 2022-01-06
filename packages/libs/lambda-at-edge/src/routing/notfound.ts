@@ -74,5 +74,5 @@ export function isNotFoundPage(
   if (_.isEmpty(manifest.notFoundPageMark)) {
     return false;
   }
-  return _.include(html, manifest.notFoundPageMark);
+  return _.includes(html, manifest.notFoundPageMark);
 }
