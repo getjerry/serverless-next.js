@@ -823,6 +823,35 @@ const handleOriginResponse = async ({
   prerenderManifest: PrerenderManifestType;
   context: Context;
 }) => {
+  const response = event.Records[0].cf.response;
+  const request = event.Records[0].cf.request;
+
+  debug(`[origin-request]: ${JSON.stringify(request)}`);
+
+  const { status } = response;
+  const uri = normaliseUri(request.uri, true);
+  const hasFallback = hasFallbackForUri(uri, prerenderManifest, manifest);
+  const isHTMLPage = prerenderManifest.routes[decodeURI(uri)];
+  const isPublicFile = manifest.publicFiles[decodeURI(uri)];
+  const isEnforceRevalidationRequest = request.querystring === "enforceISR";
+
+  // if isEnforceRevalidationRequest is true, revalidation will start anyway.
+
+  // For PUT or DELETE just return the response as these should be unsupported S3 methods
+  if (request.method === "PUT" || request.method === "DELETE") {
+    return response;
+  }
+
+  const { domainName, region } = request.origin!.s3!;
+  const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+  const pagePath = router(manifest)(uri);
+
+  const s3 = new S3Client({
+    region,
+    maxAttempts: 3,
+    retryStrategy: await buildS3RetryStrategy()
+  });
+
   // Permanent Static Pages
   if (manifest.permanentStaticPages) {
     debug(
@@ -850,70 +879,6 @@ const handleOriginResponse = async ({
     }
     debug(`[permanentStaticPages]: ${uri} not match`);
   }
-
-  const response = event.Records[0].cf.response;
-  const request = event.Records[0].cf.request;
-
-  debug(`[origin-request]: ${JSON.stringify(request)}`);
-
-  const { status } = response;
-  const uri = normaliseUri(request.uri, true);
-  const hasFallback = hasFallbackForUri(uri, prerenderManifest, manifest);
-  const isHTMLPage = prerenderManifest.routes[decodeURI(uri)];
-  const isPublicFile = manifest.publicFiles[decodeURI(uri)];
-  const isEnforceRevalidationRequest = request.querystring === "enforceISR";
-
-  // if isEnforceRevalidationRequest is true, revalidation will start anyway.
-
-  // For PUT or DELETE just return the response as these should be unsupported S3 methods
-  if (request.method === "PUT" || request.method === "DELETE") {
-    return response;
-  }
-
-  if (status !== "403") {
-    debug(`[origin-response] bypass: ${request.uri}`);
-
-    // Set 404 status code for 404.html page. We do not need normalised URI as it will always be "/404.html"
-    if (request.uri === "/404.html") {
-      response.status = "404";
-      response.statusDescription = "Not Found";
-    } else {
-      const revalidationKey = decodeURI(uri)
-        .replace(`_next/data/`, "")
-        .replace(`${manifest.buildId}/`, "")
-        .replace(".json", "")
-        .replace(".html", "");
-
-      debug(`[origin-response] revalidationKey: ${revalidationKey}`);
-      debug(`[origin-response] isData: ${isDataRequest(uri)}`);
-      debug(`[origin-response] isHtml: ${isHTMLPage}`);
-      debug(`[origin-response] isFallback: ${hasFallback}`);
-
-      if (
-        isEnforceRevalidationRequest ||
-        // if REVALIDATION_CONFIG is undefined revalidation is off
-        (REVALIDATION_CONFIG &&
-          (isHTMLPage || hasFallback || isDataRequest(uri)) &&
-          !isPublicFile &&
-          isStale(revalidationKey))
-      ) {
-        await runRevalidation({ ...event, revalidate: true }, context);
-        setStaleIn(revalidationKey, REVALIDATE_IN);
-      }
-    }
-
-    return response;
-  }
-
-  const { domainName, region } = request.origin!.s3!;
-  const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
-  const pagePath = router(manifest)(uri);
-
-  const s3 = new S3Client({
-    region,
-    maxAttempts: 3,
-    retryStrategy: await buildS3RetryStrategy()
-  });
 
   /**
    *  Blocking fallback flow
