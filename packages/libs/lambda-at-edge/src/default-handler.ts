@@ -407,19 +407,28 @@ export const handler = async (
 
   // Permanent Static Pages
   if (manifest.permanentStaticPages) {
-    debug(`[permanentStaticPages] manifest: ${manifest.permanentStaticPages}`);
     const requestUri = event.Records[0].cf.request.uri;
     const uri = requestUri === "/" ? "/index.html" : `${requestUri}.html`;
     if (manifest.permanentStaticPages.includes(`${uri}`)) {
-      debug(`[permanentStaticPages] uri: ${uri}`);
+      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
+      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+      const s3 = new S3Client({
+        region,
+        maxAttempts: 3,
+        retryStrategy: await buildS3RetryStrategy()
+      });
+
       return await generatePermanentPageResponse(
         uri,
-        event,
         manifest,
-        routesManifest
+        domainName,
+        region,
+        bucketName,
+        routesManifest.basePath,
+        s3
       );
     } else {
-      debug(`[permanentStaticPages]: ${uri} not match`);
+      debug(`[permanentStaticPages]: ${requestUri} not match`);
     }
   }
 
@@ -1261,19 +1270,17 @@ const setCacheControlToNoCache = (response: CloudFrontResultResponse): void => {
 
 export const generatePermanentPageResponse = async (
   uri: string,
-  event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
   manifest: OriginRequestDefaultHandlerManifest,
-  routesManifest: RoutesManifest
+  domainName: string,
+  region: string,
+  bucketName: string,
+  basePath: string,
+  s3: S3Client
 ) => {
-  const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
-  const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
-  const basePath = routesManifest.basePath;
-
-  const s3 = new S3Client({
-    region,
-    maxAttempts: 3,
-    retryStrategy: await buildS3RetryStrategy()
-  });
+  debug(
+    `[generatePermanentPageResponse] manifest: ${manifest.permanentStaticPages}`
+  );
+  debug(`[generatePermanentPageResponse] uri: ${uri}`);
 
   //get page from S3
   const s3Key = `${(basePath || "").replace(/^\//, "")}${
