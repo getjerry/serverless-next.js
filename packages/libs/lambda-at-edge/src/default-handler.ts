@@ -1250,7 +1250,10 @@ export const generatePermanentPageResponse = async (
   //get page from S3
   const s3Key = `${(basePath || "").replace(/^\//, "")}${
     basePath === "" ? "" : "/"
-  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
+  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri.replace(
+    "/",
+    ""
+  )}`;
 
   const getStream = await import("get-stream");
 
