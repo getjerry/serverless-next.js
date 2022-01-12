@@ -405,35 +405,6 @@ export const handler = async (
     );
   }
 
-  // Permanent Static Pages
-  if (manifest.permanentStaticPages) {
-    const requestUri = event.Records[0].cf.request.uri;
-    const uri = requestUri === "/" ? "/index.html" : `${requestUri}.html`;
-    if (manifest.permanentStaticPages.includes(`${uri}`)) {
-      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
-      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
-      const s3 = new S3Client({
-        region,
-        maxAttempts: 3,
-        retryStrategy: await buildS3RetryStrategy()
-      });
-
-      return await generatePermanentPageResponse(
-        uri,
-        manifest,
-        domainName,
-        region,
-        bucketName,
-        routesManifest.basePath,
-        s3
-      );
-    } else {
-      debug(`[permanentStaticPages]: ${requestUri} not match`);
-    }
-  }
-
-  debug(`[permanentStaticPages]: Not Set permanentStaticPages`);
-
   if (event.revalidate) {
     const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
     const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
@@ -852,6 +823,34 @@ const handleOriginResponse = async ({
   prerenderManifest: PrerenderManifestType;
   context: Context;
 }) => {
+  // Permanent Static Pages
+  if (manifest.permanentStaticPages) {
+    debug(
+      `[permanentStaticPages] permanentStaticPages: ${manifest.permanentStaticPages}`
+    );
+    const uri = event.Records[0].cf.request.uri;
+
+    if (manifest.permanentStaticPages.includes(`${uri}`)) {
+      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
+      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+      const s3 = new S3Client({
+        region,
+        maxAttempts: 3,
+        retryStrategy: await buildS3RetryStrategy()
+      });
+      return await generatePermanentPageResponse(
+        uri,
+        manifest,
+        domainName,
+        region,
+        bucketName,
+        basePath,
+        s3
+      );
+    }
+    debug(`[permanentStaticPages]: ${uri} not match`);
+  }
+
   const response = event.Records[0].cf.response;
   const request = event.Records[0].cf.request;
 
@@ -863,6 +862,7 @@ const handleOriginResponse = async ({
   const isHTMLPage = prerenderManifest.routes[decodeURI(uri)];
   const isPublicFile = manifest.publicFiles[decodeURI(uri)];
   const isEnforceRevalidationRequest = request.querystring === "enforceISR";
+
   // if isEnforceRevalidationRequest is true, revalidation will start anyway.
 
   // For PUT or DELETE just return the response as these should be unsupported S3 methods
