@@ -409,8 +409,8 @@ export const handler = async (
   if (manifest.permanentStaticPages) {
     debug(`[permanentStaticPages] manifest: ${manifest.permanentStaticPages}`);
     const requestUri = event.Records[0].cf.request.uri;
-    const uri = requestUri === "/" ? "/index" : requestUri;
-    if (manifest.permanentStaticPages.includes(uri)) {
+    const uri = requestUri === "/" ? "/index.html" : `${requestUri}.html`;
+    if (manifest.permanentStaticPages.includes(`${uri}`)) {
       debug(`[permanentStaticPages] uri: ${uri}`);
       return await generatePermanentPageResponse(
         uri,
