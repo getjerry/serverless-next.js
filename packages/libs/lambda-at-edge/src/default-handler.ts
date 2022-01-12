@@ -62,7 +62,7 @@ import { S3Service } from "./services/s3.service";
 import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
-import { generatePermanentPageResponse } from "./lib/permanentStaticPages";
+import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -1256,4 +1256,58 @@ const setCacheControlToNoCache = (response: CloudFrontResultResponse): void => {
       }
     ]
   };
+};
+
+export const generatePermanentPageResponse = async (
+  uri: string,
+  event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
+  manifest: OriginRequestDefaultHandlerManifest,
+  routesManifest: RoutesManifest
+) => {
+  const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
+  const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+  const basePath = routesManifest.basePath;
+
+  const s3 = new S3Client({
+    region,
+    maxAttempts: 3,
+    retryStrategy: await buildS3RetryStrategy()
+  });
+
+  //get page from S3
+  const s3Key = `${(basePath || "").replace(/^\//, "")}${
+    basePath === "" ? "" : "/"
+  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
+
+  const getStream = await import("get-stream");
+
+  const s3Params = {
+    Bucket: bucketName,
+    Key: s3Key
+  };
+
+  const { Body } = await s3.send(new GetObjectCommand(s3Params));
+  const bodyString = await getStream.default(Body as Readable);
+
+  const out = {
+    status: "200",
+    statusDescription: "OK",
+    headers: {
+      "content-type": [
+        {
+          key: "Content-Type",
+          value: "text/html"
+        }
+      ],
+      "cache-control": [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        }
+      ]
+    },
+    body: bodyString
+  };
+  debug(`[generatePermanentPageResponse]: ${JSON.stringify(out)}`);
+  return out;
 };
