@@ -62,6 +62,7 @@ import { S3Service } from "./services/s3.service";
 import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
+import { generatePermanentPageResponse } from "./lib/permanentStaticPages";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -398,11 +399,30 @@ export const handler = async (
   if (!process.env.__NEXT_IMAGE_OPTS) {
     // eslint-disable-next-line no-eval
     eval(
-      `process.env.__NEXT_IMAGE_OPTS=${JSON.stringify({
+      `process.env.__NEXT_IMAGE_OPTS = ${JSON.stringify({
         path: ImagesManifest.path
       })}`
     );
   }
+
+  // Permanent Static Pages
+  if (manifest.permanentStaticPages) {
+    debug(`[permanentStaticPages]: ${manifest.permanentStaticPages}`);
+    const uri = event.Records[0].cf.request.uri;
+    if (manifest.permanentStaticPages.includes(uri)) {
+      debug(`[permanentStaticPages]: ${uri}`);
+      return await generatePermanentPageResponse(
+        uri,
+        event,
+        manifest,
+        routesManifest
+      );
+    } else {
+      debug(`[permanentStaticPages]: ${uri} not match`);
+    }
+  }
+
+  debug(`[permanentStaticPages]: Not Set permanentStaticPages`);
 
   if (event.revalidate) {
     const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
