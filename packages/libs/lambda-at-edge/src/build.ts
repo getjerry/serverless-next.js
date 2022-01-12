@@ -1098,7 +1098,7 @@ class Builder {
 
     map(defaultBuildManifest.permanentStaticPages, (page) => {
       const source = path.join(sourcePath, page);
-      const destination = path.join(directoryPath, page);
+      const destination = path.join(directoryPath, `${page}.html`);
       return copyIfExists(source, destination);
     });
   }

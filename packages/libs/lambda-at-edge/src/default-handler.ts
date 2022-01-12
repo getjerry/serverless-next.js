@@ -407,10 +407,11 @@ export const handler = async (
 
   // Permanent Static Pages
   if (manifest.permanentStaticPages) {
-    debug(`[permanentStaticPages]: ${manifest.permanentStaticPages}`);
-    const uri = event.Records[0].cf.request.uri;
+    debug(`[permanentStaticPages] manifest: ${manifest.permanentStaticPages}`);
+    const requestUri = event.Records[0].cf.request.uri;
+    const uri = requestUri === "/" ? "/index" : requestUri;
     if (manifest.permanentStaticPages.includes(uri)) {
-      debug(`[permanentStaticPages]: ${uri}`);
+      debug(`[permanentStaticPages] uri: ${uri}`);
       return await generatePermanentPageResponse(
         uri,
         event,
