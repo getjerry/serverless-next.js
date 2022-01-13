@@ -873,6 +873,41 @@ const handleOriginResponse = async ({
     return response;
   }
 
+  if (status !== "403") {
+    debug(`[origin-response] bypass: ${request.uri}`);
+
+    // Set 404 status code for 404.html page. We do not need normalised URI as it will always be "/404.html"
+    if (request.uri === "/404.html") {
+      response.status = "404";
+      response.statusDescription = "Not Found";
+    } else {
+      const revalidationKey = decodeURI(uri)
+        .replace(`_next/data/`, "")
+        .replace(`${manifest.buildId}/`, "")
+        .replace(".json", "")
+        .replace(".html", "");
+
+      debug(`[origin-response] revalidationKey: ${revalidationKey}`);
+      debug(`[origin-response] isData: ${isDataRequest(uri)}`);
+      debug(`[origin-response] isHtml: ${isHTMLPage}`);
+      debug(`[origin-response] isFallback: ${hasFallback}`);
+
+      if (
+        isEnforceRevalidationRequest ||
+        // if REVALIDATION_CONFIG is undefined revalidation is off
+        (REVALIDATION_CONFIG &&
+          (isHTMLPage || hasFallback || isDataRequest(uri)) &&
+          !isPublicFile &&
+          isStale(revalidationKey))
+      ) {
+        await runRevalidation({ ...event, revalidate: true }, context);
+        setStaleIn(revalidationKey, REVALIDATE_IN);
+      }
+    }
+
+    return response;
+  }
+
   const { domainName, region } = request.origin!.s3!;
   const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
   const pagePath = router(manifest)(uri);
