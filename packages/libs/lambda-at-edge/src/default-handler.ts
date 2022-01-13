@@ -405,6 +405,35 @@ export const handler = async (
     );
   }
 
+  // Permanent Static Pages
+  if (manifest.permanentStaticPages) {
+    const requestUri = event.Records[0].cf.request.uri;
+    const uri = requestUri === "/" ? "/index" : requestUri;
+    if (manifest.permanentStaticPages.includes(`${uri}.html`)) {
+      debug(
+        `[permanentStaticPages] permanentStaticPages: ${manifest.permanentStaticPages}`
+      );
+      debug(`[permanentStaticPages]: ${uri} is match`);
+      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
+      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+      const s3 = new S3Client({
+        region,
+        maxAttempts: 3,
+        retryStrategy: await buildS3RetryStrategy()
+      });
+      return await generatePermanentPageResponse(
+        uri,
+        manifest,
+        domainName,
+        region,
+        bucketName,
+        basePath,
+        s3,
+        routesManifest
+      );
+    }
+  }
+
   if (event.revalidate) {
     const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
     const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
@@ -852,34 +881,6 @@ const handleOriginResponse = async ({
     retryStrategy: await buildS3RetryStrategy()
   });
 
-  // Permanent Static Pages
-  if (manifest.permanentStaticPages) {
-    debug(
-      `[permanentStaticPages] permanentStaticPages: ${manifest.permanentStaticPages}`
-    );
-    const uri = event.Records[0].cf.request.uri;
-
-    if (manifest.permanentStaticPages.includes(`${uri}`)) {
-      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
-      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
-      const s3 = new S3Client({
-        region,
-        maxAttempts: 3,
-        retryStrategy: await buildS3RetryStrategy()
-      });
-      return await generatePermanentPageResponse(
-        uri,
-        manifest,
-        domainName,
-        region,
-        bucketName,
-        basePath,
-        s3
-      );
-    }
-    debug(`[permanentStaticPages]: ${uri} not match`);
-  }
-
   /**
    *  Blocking fallback flow
    */
@@ -1240,7 +1241,8 @@ export const generatePermanentPageResponse = async (
   region: string,
   bucketName: string,
   basePath: string,
-  s3: S3Client
+  s3: S3Client,
+  routesManifest: RoutesManifest
 ) => {
   debug(
     `[generatePermanentPageResponse] manifest: ${manifest.permanentStaticPages}`
@@ -1250,10 +1252,7 @@ export const generatePermanentPageResponse = async (
   //get page from S3
   const s3Key = `${(basePath || "").replace(/^\//, "")}${
     basePath === "" ? "" : "/"
-  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri.replace(
-    "/",
-    ""
-  )}`;
+  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
 
   const getStream = await import("get-stream");
 
@@ -1284,6 +1283,9 @@ export const generatePermanentPageResponse = async (
     },
     body: bodyString
   };
+
+  addHeadersToResponse(uri, out as CloudFrontResultResponse, routesManifest);
+
   debug(`[generatePermanentPageResponse]: ${JSON.stringify(out)}`);
   return out;
 };
