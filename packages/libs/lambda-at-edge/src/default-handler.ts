@@ -1320,7 +1320,7 @@ export const generatePermanentPageResponse = async (
   };
 
   // Add s3 headers to response
-  for (const [key, value] of Object.entries($metadata)) {
+  for (const [key, value] of Object.entries($metadata.httpHeaders!)) {
     if (key && value) {
       const headerLowerCase = key.toLowerCase();
       out.headers[headerLowerCase] = [
