@@ -1321,11 +1321,11 @@ export const generatePermanentPageResponse = async (
 
   // Add s3 headers to response
   for (const [key, value] of Object.entries($metadata.httpHeaders!)) {
+    console.log(key, value);
     if (key && value) {
-      const headerLowerCase = key.toLowerCase();
-      out.headers[headerLowerCase] = [
+      out.headers[key] = [
         {
-          key: headerLowerCase,
+          key: key.toUpperCase(),
           value: value
         }
       ];
