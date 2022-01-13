@@ -1059,7 +1059,6 @@ class Builder {
     defaultBuildManifest: OriginRequestDefaultHandlerManifest,
     routesManifest: RoutesManifest
   ) {
-    console.log("in buildPermanentStaticPages");
     if (isEmpty(defaultBuildManifest.permanentStaticPages)) {
       return;
     }
@@ -1072,7 +1071,6 @@ class Builder {
       source: string,
       destination: string
     ): Promise<void> => {
-      console.log(`copyIfExists. ${source} ${destination}`);
       if (await fse.pathExists(source)) {
         await fse.copy(source, destination);
       }
@@ -1088,9 +1086,6 @@ class Builder {
 
     //create Permanent Static Pages dir.
     const directoryPath = path.join(sourcePath, PERMANENT_STATIC_PAGES_DIR);
-    console.log(`sourcePath: ${sourcePath}`);
-
-    console.log(`directoryPath: ${directoryPath}`);
 
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });

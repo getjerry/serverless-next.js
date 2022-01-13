@@ -416,21 +416,10 @@ export const handler = async (
       debug(
         `[permanentStaticPages] requestUri = ${requestUri}, uri = ${uri}, is match`
       );
-      const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
-      const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
-      const s3 = new S3Client({
-        region,
-        maxAttempts: 3,
-        retryStrategy: await buildS3RetryStrategy()
-      });
       return await generatePermanentPageResponse(
         uri,
         manifest,
-        domainName,
-        region,
-        bucketName,
-        basePath,
-        s3,
+        event,
         routesManifest
       );
     }
@@ -1274,13 +1263,16 @@ const setCacheControlToNoCache = (response: CloudFrontResultResponse): void => {
 export const generatePermanentPageResponse = async (
   uri: string,
   manifest: OriginRequestDefaultHandlerManifest,
-  domainName: string,
-  region: string,
-  bucketName: string,
-  basePath: string,
-  s3: S3Client,
+  event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
   routesManifest: RoutesManifest
 ) => {
+  const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
+  const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
+  const s3 = new S3Client({
+    region,
+    maxAttempts: 3,
+    retryStrategy: await buildS3RetryStrategy()
+  });
   debug(
     `[generatePermanentPageResponse] manifest: ${manifest.permanentStaticPages}`
   );
