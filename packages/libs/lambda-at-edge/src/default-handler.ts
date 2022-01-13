@@ -63,6 +63,7 @@ import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
+import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -1314,11 +1315,24 @@ export const generatePermanentPageResponse = async (
           value: "public, max-age=0, s-maxage=2678400, must-revalidate"
         }
       ]
-    },
+    } as CloudFrontHeaders,
     body: bodyString
   };
 
-  addS3Headers(out, $metadata.httpHeaders);
+  // Add s3 headers to response
+  for (const [key, value] of Object.entries($metadata)) {
+    if (key && value) {
+      const headerLowerCase = key.toLowerCase();
+      out.headers[headerLowerCase] = [
+        {
+          key: headerLowerCase,
+          value: value
+        }
+      ];
+    }
+  }
+
+  //addS3Headers(out , $metadata.httpHeaders);
   addHeadersToResponse(uri, out as CloudFrontResultResponse, routesManifest);
 
   debug(`[generatePermanentPageResponse]: ${JSON.stringify(out.headers)}`);
