@@ -48,10 +48,7 @@ import {
   getRewritePath,
   isExternalRewrite
 } from "./routing/rewriter";
-import {
-  addHeadersToResponse,
-  addS3HeadersToResponse
-} from "./headers/addHeaders";
+import { addHeadersToResponse, addS3Headers } from "./headers/addHeaders";
 import {
   isValidPreviewRequest,
   setJerryAuth
@@ -1321,13 +1318,10 @@ export const generatePermanentPageResponse = async (
     body: bodyString
   };
 
+  addS3Headers(out, $metadata.httpHeaders);
   addHeadersToResponse(uri, out as CloudFrontResultResponse, routesManifest);
-  addS3HeadersToResponse(
-    uri,
-    out as CloudFrontResultResponse,
-    $metadata.httpHeaders
-  );
 
-  debug(`[generatePermanentPageResponse]: ${JSON.stringify(out)}`);
+  debug(`[generatePermanentPageResponse]: ${JSON.stringify(out.headers)}`);
+  debug(`[generatePermanentPageResponse]: ${JSON.stringify(out.body)}`);
   return out;
 };
