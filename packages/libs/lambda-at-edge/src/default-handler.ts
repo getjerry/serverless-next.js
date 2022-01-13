@@ -1292,9 +1292,12 @@ export const generatePermanentPageResponse = async (
     `[generatePermanentPageResponse] s3Params: ${JSON.stringify(s3Params)}`
   );
 
-  const { Body } = await s3.send(new GetObjectCommand(s3Params));
+  const { Body, $metadata } = await s3.send(new GetObjectCommand(s3Params));
   const bodyString = await getStream.default(Body as Readable);
 
+  debug(
+    `[generatePermanentPageResponse] $metadata: ${JSON.stringify($metadata)}`
+  );
   const out = {
     status: "200",
     statusDescription: "OK",
