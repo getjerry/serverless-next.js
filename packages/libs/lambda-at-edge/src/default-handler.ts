@@ -408,12 +408,14 @@ export const handler = async (
   // Permanent Static Pages
   if (manifest.permanentStaticPages) {
     const requestUri = event.Records[0].cf.request.uri;
-    const uri = requestUri === "/" ? "/index" : requestUri;
-    if (manifest.permanentStaticPages.includes(`${uri}.html`)) {
+    const uri = requestUri === "/" ? "/index.html" : `${requestUri}.html`;
+    if (manifest.permanentStaticPages.includes(uri)) {
       debug(
         `[permanentStaticPages] permanentStaticPages: ${manifest.permanentStaticPages}`
       );
-      debug(`[permanentStaticPages]: ${uri} is match`);
+      debug(
+        `[permanentStaticPages] requestUri = ${requestUri}, uri = ${uri}, is match`
+      );
       const { domainName, region } = event.Records[0].cf.request.origin!.s3!;
       const bucketName = domainName.replace(`.s3.${region}.amazonaws.com`, "");
       const s3 = new S3Client({
@@ -1260,6 +1262,9 @@ export const generatePermanentPageResponse = async (
     Bucket: bucketName,
     Key: s3Key
   };
+  debug(
+    `[generatePermanentPageResponse] s3Params: ${JSON.stringify(s3Params)}`
+  );
 
   const { Body } = await s3.send(new GetObjectCommand(s3Params));
   const bodyString = await getStream.default(Body as Readable);
