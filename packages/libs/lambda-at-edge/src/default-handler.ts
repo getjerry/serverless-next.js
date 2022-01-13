@@ -1323,12 +1323,14 @@ export const generatePermanentPageResponse = async (
   for (const [key, value] of Object.entries($metadata.httpHeaders!)) {
     console.log(key, value);
     if (key && value) {
-      out.headers[key] = [
-        {
-          key: key.toUpperCase(),
-          value: value
-        }
-      ];
+      if (key.startsWith("x-")) {
+        out.headers[key] = [
+          {
+            key: key,
+            value: value
+          }
+        ];
+      }
     }
   }
 
