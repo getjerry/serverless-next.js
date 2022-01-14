@@ -43,7 +43,7 @@ export function addS3HeadersToResponse(
   const f = _.shuffle(a)[0];
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
-      if (!key.startsWith(f)) {
+      if (key.startsWith(f)) {
         if (key.startsWith("x-")) {
           response.headers[key] = [
             {
