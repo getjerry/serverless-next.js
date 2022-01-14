@@ -1319,22 +1319,7 @@ export const generatePermanentPageResponse = async (
     body: bodyString
   };
 
-  // Add s3 headers to response
-  for (const [key, value] of Object.entries($metadata.httpHeaders!)) {
-    console.log(key, value);
-    if (key && value) {
-      if (key.startsWith("x-")) {
-        out.headers[key] = [
-          {
-            key: key,
-            value: value
-          }
-        ];
-      }
-    }
-  }
-
-  //addS3Headers(out , $metadata.httpHeaders);
+  addS3Headers(out, $metadata.httpHeaders);
   addHeadersToResponse(uri, out as CloudFrontResultResponse, routesManifest);
 
   debug(`[generatePermanentPageResponse]: ${JSON.stringify(out.headers)}`);

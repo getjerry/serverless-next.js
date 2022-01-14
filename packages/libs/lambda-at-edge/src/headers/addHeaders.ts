@@ -3,6 +3,9 @@ import { RoutesManifest } from "../../types";
 import { matchPath } from "../routing/matcher";
 import { HeaderBag } from "@aws-sdk/types";
 
+// @ts-ignore
+import * as _ from "../lib/lodash";
+
 export function addHeadersToResponse(
   path: string,
   response: CloudFrontResultResponse,
@@ -36,13 +39,28 @@ export function addS3Headers(response: any, s3Headers: HeaderBag | undefined) {
   // Add s3 headers to response
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
-      const headerLowerCase = key.toLowerCase();
-      response.headers[headerLowerCase] = [
-        {
-          key: headerLowerCase,
-          value: value
-        }
-      ];
+      if (key.startsWith("x-")) {
+        response.headers[key] = [
+          {
+            key: key,
+            value: value
+          }
+        ];
+      } else if (key === "etag") {
+        response.headers[key] = [
+          {
+            key: "ETag",
+            value: value
+          }
+        ];
+      } else {
+        response.headers[key] = [
+          {
+            key: _.startCase(key).replace(" ", "-"),
+            value: value
+          }
+        ];
+      }
     }
   }
 }
