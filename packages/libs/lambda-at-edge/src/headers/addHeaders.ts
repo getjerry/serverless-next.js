@@ -38,7 +38,7 @@ export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
   const headers: Record<string, [{ key: string; value: string }]> = {};
 
   for (const [key, value] of Object.entries(s3Headers)) {
-    if (key && value) {
+    if (key !== "accept-encoding" && key !== "content-length") {
       console.log(key, getHeaderKey(key));
       headers[key] = [
         {
