@@ -1263,6 +1263,7 @@ const setCacheControlToNoCache = (response: CloudFrontResultResponse): void => {
   };
 };
 
+// generate Permanent Page Response and add headers
 export const generatePermanentPageResponse = async (
   uri: string,
   manifest: OriginRequestDefaultHandlerManifest,

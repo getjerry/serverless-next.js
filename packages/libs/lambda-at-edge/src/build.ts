@@ -32,7 +32,7 @@ import {
   INVALIDATION_DATA_DIR
 } from "./lib/invalidation/invalidationUrlGroup";
 import fs from "fs";
-import { isEmpty, map } from "lodash";
+import { isEmpty, map, forEach } from "lodash";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 
 export const DEFAULT_LAMBDA_CODE_DIR = "default-lambda";
@@ -1091,7 +1091,7 @@ class Builder {
       fs.mkdirSync(directoryPath, { recursive: true });
     }
 
-    map(defaultBuildManifest.permanentStaticPages, (page) => {
+    forEach(defaultBuildManifest.permanentStaticPages, (page) => {
       const source = path.join(sourcePath, page);
       const destination = path.join(directoryPath, page);
       return copyIfExists(source, destination);
