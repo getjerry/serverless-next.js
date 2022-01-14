@@ -1302,10 +1302,13 @@ export const generatePermanentPageResponse = async (
   debug(
     `[generatePermanentPageResponse] $metadata: ${JSON.stringify($metadata)}`
   );
+  const s3Headers = addS3HeadersToResponse($metadata.httpHeaders);
+
   const out = {
     status: "200",
     statusDescription: "OK",
     headers: {
+      ...s3Headers,
       "content-type": [
         {
           key: "Content-Type",
@@ -1318,11 +1321,10 @@ export const generatePermanentPageResponse = async (
           value: "public, max-age=0, s-maxage=2678400, must-revalidate"
         }
       ]
-    } as CloudFrontHeaders,
+    },
     body: bodyString
   };
 
-  addS3HeadersToResponse(out, $metadata.httpHeaders);
   addHeadersToResponse(uri, out as CloudFrontResultResponse, routesManifest);
 
   debug(`[generatePermanentPageResponse]: ${JSON.stringify(out.headers)}`);

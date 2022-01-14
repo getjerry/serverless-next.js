@@ -33,11 +33,10 @@ export function addHeadersToResponse(
   }
 }
 
-export function addS3HeadersToResponse(
-  response: any,
-  s3Headers: HeaderBag | undefined
-) {
-  if (!s3Headers) return;
+export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
+  if (!s3Headers) return {};
+  const a: Record<string, [{ key: string; value: string }]> = {};
+
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
       if (
@@ -46,21 +45,21 @@ export function addS3HeadersToResponse(
         !key.startsWith("e")
       ) {
         if (key.startsWith("x-")) {
-          response.headers[key] = [
+          a[key] = [
             {
               key: key,
               value: value
             }
           ];
         } else if (key === "etag") {
-          response.headers[key] = [
+          a[key] = [
             {
               key: "ETag",
               value: value
             }
           ];
         } else {
-          response.headers[key] = [
+          a[key] = [
             {
               key: _.startCase(key).replace(" ", "-"),
               value: value
@@ -69,5 +68,6 @@ export function addS3HeadersToResponse(
         }
       }
     }
+    return a;
   }
 }
