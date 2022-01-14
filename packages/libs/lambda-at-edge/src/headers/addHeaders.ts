@@ -47,8 +47,8 @@ export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
         }
       ];
     }
-    return headers;
   }
+  return headers;
 }
 
 function getHeaderKey(key: string): string {
