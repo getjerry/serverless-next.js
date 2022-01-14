@@ -40,7 +40,6 @@ export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
   for (const [key, value] of Object.entries(s3Headers)) {
     //https://stackoverflow.com/questions/61539544/remove-content-length-using-aws-lambdaedge
     if (key !== "accept-encoding" && key !== "content-length") {
-      console.log(key, getHeaderKey(key));
       headers[key] = [
         {
           key: getHeaderKey(key),
