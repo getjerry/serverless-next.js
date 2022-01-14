@@ -40,7 +40,11 @@ export function addS3HeadersToResponse(
   if (!s3Headers) return;
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
-      if (!key.startsWith("d") && !key.startsWith("l")) {
+      if (
+        !key.startsWith("d") &&
+        !key.startsWith("l") &&
+        !key.startsWith("e")
+      ) {
         if (key.startsWith("x-")) {
           response.headers[key] = [
             {
