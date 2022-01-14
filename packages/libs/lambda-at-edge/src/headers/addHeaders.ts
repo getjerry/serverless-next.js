@@ -39,6 +39,7 @@ export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
 
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
+      console.log(key, getHeaderKey(key));
       headers[key] = [
         {
           key: getHeaderKey(key),
