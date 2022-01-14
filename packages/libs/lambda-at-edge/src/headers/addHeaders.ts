@@ -35,33 +35,27 @@ export function addHeadersToResponse(
 
 export function addS3HeadersToResponse(s3Headers: HeaderBag | undefined) {
   if (!s3Headers) return {};
-  const a: Record<string, [{ key: string; value: string }]> = {};
+  const headers: Record<string, [{ key: string; value: string }]> = {};
 
   for (const [key, value] of Object.entries(s3Headers)) {
     if (key && value) {
-      if (key.startsWith("x-")) {
-        a[key] = [
-          {
-            key: key,
-            value: value
-          }
-        ];
-      } else if (key === "etag") {
-        a[key] = [
-          {
-            key: "ETag",
-            value: value
-          }
-        ];
-      } else {
-        a[key] = [
-          {
-            key: _.startCase(key).replace(" ", "-"),
-            value: value
-          }
-        ];
-      }
+      headers[key] = [
+        {
+          key: getHeaderKey(key),
+          value: value
+        }
+      ];
     }
-    return a;
+    return headers;
+  }
+}
+
+function getHeaderKey(key: string): string {
+  if (key.startsWith("x-")) {
+    return key;
+  } else if (key === "etag") {
+    return "ETag";
+  } else {
+    return _.startCase(key).replace(" ", "-");
   }
 }
