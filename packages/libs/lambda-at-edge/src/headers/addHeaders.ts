@@ -33,7 +33,10 @@ export function addHeadersToResponse(
   }
 }
 
-export function addS3Headers(response: any, s3Headers: HeaderBag | undefined) {
+export function addS3HeadersToResponse(
+  response: any,
+  s3Headers: HeaderBag | undefined
+) {
   if (!s3Headers) return;
 
   // Add s3 headers to response
