@@ -47,14 +47,20 @@ const isMatch = (
 };
 
 const urlWithParams = (url: string, params: param[], split = "="): string => {
+  let result = url;
   params.forEach((p) => {
-    url = url.replace(
-      new RegExp(`${p.key}${split}\\[.*]`),
-      `${p.key}${split}${p.value}`
-    );
+    if (p.key === "slug") {
+      result = result.replace(new RegExp(`/\\[.*]`), `/${p.value}`);
+    } else {
+      result = result.replace(
+        new RegExp(`${p.key}${split}\\[.*]`),
+        `${p.key}${split}${p.value}`
+      );
+    }
+    debug(`[urlWithParams]: ${result}`);
   });
-  debug(`[urlWithParams]: ${url}`);
-  return url;
+
+  return result;
 };
 
 /**
