@@ -521,7 +521,9 @@ const checkAndRewriteUrl = (
   manifest: OriginRequestDefaultHandlerManifest,
   request: CloudFrontRequest
 ): void => {
+  debug(`[checkAndRewriteUrl] manifest: ${JSON.stringify(manifest)}`);
   const rewrites = manifest.urlRewrites;
+  debug(`[checkAndRewriteUrl] rewriteList: ${JSON.stringify(rewrites)}`);
   if (!rewrites || rewrites.length === 0) return;
 
   const params = getParamsFormQuery(request.querystring);
