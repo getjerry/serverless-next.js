@@ -66,7 +66,14 @@ import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
-import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
+
+// @ts-ignore
+import * as _ from "./lib/lodash";
+import {
+  getParamsFormQuery,
+  urlWithParams,
+  isOriginUrlMatch
+} from "./lib/pathToRegexStr";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -514,28 +521,24 @@ const checkAndRewriteUrl = (
   manifest: OriginRequestDefaultHandlerManifest,
   request: CloudFrontRequest
 ): void => {
-  debug(`[checkAndRewriteUrl] manifest: ${JSON.stringify(manifest)}`);
   const rewrites = manifest.urlRewrites;
-  debug(`[checkAndRewriteUrl] rewriteList: ${JSON.stringify(rewrites)}`);
-
   if (!rewrites || rewrites.length === 0) return;
 
-  debug(`[checkAndRewriteUrl] Before: ${request.uri}, ${request.querystring}`);
-
-  const requestParamName = request.querystring.split("=")[0];
-  const requestParamValue = request.querystring.split("=")[1];
+  const params = getParamsFormQuery(request.querystring);
   const requestUri = request.uri.split(".")[0];
-  if (!requestParamName || !requestParamValue || !requestUri) return;
+
+  if (!_.isEmpty(params) || !requestUri) return;
 
   debug(
-    `[checkAndRewriteUrl] requestParamName: ${requestParamName}, requestParamValue: ${requestParamValue}，requestUri: ${requestUri}`
+    `[checkAndRewriteUrl] params: ${JSON.stringify(
+      params
+    )}，requestUri: ${requestUri}`
   );
   rewrites.forEach(({ originUrl, rewriteUrl }) => {
-    debug(
-      `[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}, prefix: ${requestUri}?${requestParamName}= ]`
-    );
-    if (originUrl.startsWith(`${requestUri}?${requestParamName}=`)) {
-      request.uri = `${rewriteUrl.split("[")[0]}${requestParamValue}.html`;
+    debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
+
+    if (isOriginUrlMatch(params, originUrl, requestUri)) {
+      request.uri = urlWithParams(rewriteUrl, params);
       request.querystring = "";
     }
   });
