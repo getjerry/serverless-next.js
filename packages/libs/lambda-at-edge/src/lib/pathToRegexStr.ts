@@ -81,7 +81,7 @@ export const checkAndRewriteUrl = (
       params
     )}，requestUri: ${requestUri}`
   );
-  if (!_.isEmpty(params) || !requestUri) return;
+  if (_.isEmpty(params) || !requestUri) return;
 
   rewrites.forEach(({ originUrl, rewriteUrl }) => {
     debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
