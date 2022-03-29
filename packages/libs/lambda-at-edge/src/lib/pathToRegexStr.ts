@@ -48,7 +48,7 @@ const isMatch = (
 
 const urlWithParams = (url: string, params: param[]): string => {
   params.forEach((p) => {
-    url = url.replace(`[${p.key}]`, p.value);
+    url = url.replace(new RegExp(`${p.key}=\\[.*]`), `${p.key}=${p.value}`);
   });
   debug(`[urlWithParams]: ${url}`);
   return url;
