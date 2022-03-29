@@ -31,20 +31,24 @@ export const getParamsFormQuery = (
   return result;
 };
 
-const isOriginUrlMatch = (
+const isMatch = (
   params: param[],
   originUrl: string,
-  requestUrl: string
+  requestUrl: string,
+  querystring: string
 ): boolean => {
   debug(
-    `[isOriginUrlMatch]: ${requestUrl} ${urlWithParams(originUrl, params)}]`
+    `[isOriginUrlMatch]: ${requestUrl}?${querystring} ${urlWithParams(
+      originUrl,
+      params
+    )}`
   );
-  return requestUrl === urlWithParams(originUrl, params);
+  return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
 };
 
 const urlWithParams = (url: string, params: param[]): string => {
   params.forEach((p) => {
-    url.replace(`[${p.key}]`, p.value);
+    url = url.replace(`[${p.key}]`, p.value);
   });
   debug(`[urlWithParams]: ${url}`);
   return url;
@@ -86,7 +90,7 @@ export const checkAndRewriteUrl = (
   rewrites.forEach(({ originUrl, rewriteUrl }) => {
     debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
 
-    if (isOriginUrlMatch(params, originUrl, requestUri)) {
+    if (isMatch(params, originUrl, requestUri, request.querystring)) {
       request.uri = urlWithParams(rewriteUrl, params);
       request.querystring = "";
     }
