@@ -69,11 +69,7 @@ import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 
 // @ts-ignore
 import * as _ from "./lib/lodash";
-import {
-  getParamsFormQuery,
-  urlWithParams,
-  isOriginUrlMatch
-} from "./lib/pathToRegexStr";
+import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -501,51 +497,6 @@ export const handler = async (
   debug(`[origin] final response: ${JSON.stringify(response)}`);
 
   return response;
-};
-
-/**
- * check if this url and query params need to rewrite. And rewrite it if get configuration form serverless.yml
- * Now, we can only support 1 url params, like rewrite /index.html?page=[number] to /page/[number].html
- * We can use querystring lib if we want to support more functions.
- *
- * For example,
- *     urlRewrites:
- *        - name: paginationRewrite
- *          originUrl: /index.html?page=[number]
- *          rewriteUrl: /page/[number].html
- *
- * @param manifest
- * @param request
- */
-const checkAndRewriteUrl = (
-  manifest: OriginRequestDefaultHandlerManifest,
-  request: CloudFrontRequest
-): void => {
-  debug(`[checkAndRewriteUrl] manifest: ${JSON.stringify(manifest)}`);
-  const rewrites = manifest.urlRewrites;
-  debug(`[checkAndRewriteUrl] rewriteList: ${JSON.stringify(rewrites)}`);
-  if (!rewrites || rewrites.length === 0) return;
-
-  const params = getParamsFormQuery(request.querystring);
-  const requestUri = request.uri.split(".")[0];
-
-  if (!_.isEmpty(params) || !requestUri) return;
-
-  debug(
-    `[checkAndRewriteUrl] params: ${JSON.stringify(
-      params
-    )}，requestUri: ${requestUri}`
-  );
-  rewrites.forEach(({ originUrl, rewriteUrl }) => {
-    debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
-
-    if (isOriginUrlMatch(params, originUrl, requestUri)) {
-      request.uri = urlWithParams(rewriteUrl, params);
-      request.querystring = "";
-    }
-  });
-
-  debug(`[checkAndRewriteUrl] After: ${request.uri}, ${request.querystring}`);
 };
 
 const handleOriginRequest = async ({
