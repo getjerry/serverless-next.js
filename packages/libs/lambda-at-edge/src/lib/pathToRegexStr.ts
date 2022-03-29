@@ -50,7 +50,7 @@ const urlWithParams = (url: string, params: param[], split = "="): string => {
   let result = url;
   params.forEach((p) => {
     if (p.key === "slug") {
-      result = result.replace(new RegExp(`/\\[.*]`), `/${p.value}`);
+      result = result.replace("[slug]", `${p.value}`);
     } else {
       result = result.replace(
         new RegExp(`${p.key}${split}\\[.*]`),
