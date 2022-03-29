@@ -46,9 +46,12 @@ const isMatch = (
   return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
 };
 
-const urlWithParams = (url: string, params: param[]): string => {
+const urlWithParams = (url: string, params: param[], split = "="): string => {
   params.forEach((p) => {
-    url = url.replace(new RegExp(`${p.key}=\\[.*]`), `${p.key}=${p.value}`);
+    url = url.replace(
+      new RegExp(`${p.key}${split}\\[.*]`),
+      `${p.key}${split}${p.value}`
+    );
   });
   debug(`[urlWithParams]: ${url}`);
   return url;
@@ -91,7 +94,7 @@ export const checkAndRewriteUrl = (
     debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
 
     if (isMatch(params, originUrl, requestUri, request.querystring)) {
-      request.uri = urlWithParams(rewriteUrl, params);
+      request.uri = urlWithParams(rewriteUrl, params, "/");
       request.querystring = "";
     }
   });
