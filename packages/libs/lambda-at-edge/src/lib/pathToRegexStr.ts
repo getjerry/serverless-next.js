@@ -6,6 +6,8 @@ import { CloudFrontRequest } from "aws-lambda";
 // @ts-ignore
 import * as _ from "./lodash";
 
+const SLUG_PARAM_KEY = "slug";
+
 export default (path: string): string =>
   pathToRegexp(path)
     .toString()
@@ -30,9 +32,22 @@ export const getParamsFormQuery = (
 
   const slug = _.last(uri.split("/"));
   if (!_.isEmpty(slug)) {
-    result.push({ key: "slug", value: slug });
+    result.push({ key: SLUG_PARAM_KEY, value: slug });
   }
   return result;
+};
+
+const isQueryContainsAllParams = (
+  querystring: string,
+  params: param[]
+): boolean => {
+  if (_.isEmpty(querystring)) {
+    return false;
+  }
+  return params
+    .filter((p) => p.key !== SLUG_PARAM_KEY)
+    .map((p) => _.strContains(querystring, `${p.key}=`))
+    .reduce((a, b) => a && b);
 };
 
 const isMatch = (
@@ -41,13 +56,14 @@ const isMatch = (
   requestUrl: string,
   querystring: string
 ): boolean => {
-  if (_.isEmpty(querystring)) {
+  if (isQueryContainsAllParams(querystring, params)) {
     return false;
   }
+
   return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
 };
 
-const urlWithParams = (url: string, params: param[], split = "="): string => {
+const urlWithParams = (url: string, params: param[]): string => {
   let result = url;
   params.forEach((p) => {
     result = result.replace(`[${p.key}]`, `${p.value}`);
@@ -92,7 +108,7 @@ export const checkAndRewriteUrl = (
     debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
 
     if (isMatch(params, originUrl, requestUri, request.querystring)) {
-      request.uri = `${urlWithParams(rewriteUrl, params, "/")}.html`;
+      request.uri = `${urlWithParams(rewriteUrl, params)}.html`;
       request.querystring = "";
     }
   });
