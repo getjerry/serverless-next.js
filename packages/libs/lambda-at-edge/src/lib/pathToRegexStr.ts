@@ -44,13 +44,6 @@ const isMatch = (
   if (_.isEmpty(querystring)) {
     return false;
   }
-
-  debug(
-    `[isOriginUrlMatch]: ${requestUrl}?${querystring} ${urlWithParams(
-      originUrl,
-      params
-    )}`
-  );
   return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
 };
 
@@ -59,8 +52,6 @@ const urlWithParams = (url: string, params: param[], split = "="): string => {
   params.forEach((p) => {
     result = result.replace(`[${p.key}]`, `${p.value}`);
   });
-  debug(`[urlWithParams]: ${result}`);
-
   return result;
 };
 
