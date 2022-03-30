@@ -20,6 +20,10 @@ export const getParamsFormQuery = (
   querystring: string,
   uri: string
 ): param[] => {
+  if (_.isEmpty(querystring)) {
+    return [];
+  }
+
   const result = querystring.split("&").map((s) => {
     return { key: s.split("=")[0], value: s.split("=")[1] };
   });
@@ -37,6 +41,10 @@ const isMatch = (
   requestUrl: string,
   querystring: string
 ): boolean => {
+  if (_.isEmpty(querystring)) {
+    return false;
+  }
+
   debug(
     `[isOriginUrlMatch]: ${requestUrl}?${querystring} ${urlWithParams(
       originUrl,
@@ -93,7 +101,7 @@ export const checkAndRewriteUrl = (
     debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
 
     if (isMatch(params, originUrl, requestUri, request.querystring)) {
-      request.uri = urlWithParams(rewriteUrl, params, "/");
+      request.uri = `${urlWithParams(rewriteUrl, params, "/")}.html`;
       request.querystring = "";
     }
   });
