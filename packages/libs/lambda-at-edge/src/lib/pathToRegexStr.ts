@@ -44,10 +44,12 @@ const isQueryContainsAllParams = (
   if (_.isEmpty(querystring)) {
     return false;
   }
-  return params
-    .filter((p) => p.key !== SLUG_PARAM_KEY)
-    .map((p) => _.strContains(querystring, `${p.key}=`))
-    .reduce((a, b) => a && b);
+
+  return _.every(
+    params
+      .filter((p) => p.key !== SLUG_PARAM_KEY)
+      .map((p) => _.includes(querystring, `${p.key}=`))
+  );
 };
 
 const isMatch = (
