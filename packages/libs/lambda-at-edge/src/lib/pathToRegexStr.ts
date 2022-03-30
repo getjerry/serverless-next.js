@@ -90,7 +90,7 @@ export const checkAndRewriteUrl = (
   if (_.isEmpty(params) || !requestUri) return;
 
   rewrites.forEach(({ originUrl, rewriteUrl }) => {
-    debug(`[originUrl: ${originUrl}, rewriteUrl: ${rewriteUrl}]`);
+    debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
 
     if (isMatch(params, originUrl, requestUri, request.querystring)) {
       request.uri = urlWithParams(rewriteUrl, params, "/");
