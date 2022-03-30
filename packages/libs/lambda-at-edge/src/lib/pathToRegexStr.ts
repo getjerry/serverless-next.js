@@ -39,16 +39,24 @@ export const getParamsFormQuery = (
 
 const isQueryContainsAllParams = (
   querystring: string,
-  params: param[]
+  originUrl: string
 ): boolean => {
   if (_.isEmpty(querystring)) {
     return false;
   }
 
+  const params = originUrl.match(new RegExp("\\[[A-Za-z0-9]*]", "g"));
+
+  if (_.isEmpty(params)) {
+    return false;
+  }
+
+  // @ts-ignore
   return _.every(
     params
-      .filter((p) => p.key !== SLUG_PARAM_KEY)
-      .map((p) => _.includes(querystring, `${p.key}=`))
+      .map((p) => p.replace("[", "").replace("]", ""))
+      .filter((p) => p !== SLUG_PARAM_KEY)
+      .map((p) => _.includes(querystring, `${p}=`))
   );
 };
 
@@ -58,7 +66,7 @@ const isMatch = (
   requestUrl: string,
   querystring: string
 ): boolean => {
-  if (isQueryContainsAllParams(querystring, params)) {
+  if (isQueryContainsAllParams(querystring, originUrl)) {
     return false;
   }
 
