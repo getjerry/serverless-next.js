@@ -49,16 +49,9 @@ const isMatch = (
 const urlWithParams = (url: string, params: param[], split = "="): string => {
   let result = url;
   params.forEach((p) => {
-    if (p.key === "slug") {
-      result = result.replace("[slug]", `${p.value}`);
-    } else {
-      result = result.replace(
-        new RegExp(`${p.key}${split}\\[.*]`),
-        `${p.key}${split}${p.value}`
-      );
-    }
-    debug(`[urlWithParams]: ${result}`);
+    result = result.replace(`[${p.key}]`, `${p.value}`);
   });
+  debug(`[urlWithParams]: ${result}`);
 
   return result;
 };
