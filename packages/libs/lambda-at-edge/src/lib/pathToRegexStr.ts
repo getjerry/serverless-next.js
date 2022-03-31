@@ -8,6 +8,7 @@ import * as _ from "./lodash";
 
 const SLUG_PARAM_KEY = "slug";
 
+// regex for [make], [model] in origin url
 const INJECT_PARAM_REGEX = RegExp("\\[[A-Za-z0-9]*]", "g");
 
 export default (path: string): string =>
@@ -15,15 +16,14 @@ export default (path: string): string =>
     .toString()
     .replace(/\/(.*)\/\i/, "$1");
 
-type param = {
-  key: string;
-  value: string;
-};
-
+// get params form url query and get the slug
 const getParamsFormQuery = (
   requestUrl: string,
   querystring: string
-): param[] => {
+): {
+  key: string;
+  value: string;
+}[] => {
   if (_.isEmpty(querystring)) {
     return [];
   }
@@ -39,24 +39,21 @@ const getParamsFormQuery = (
   return result;
 };
 
+// convert the serverless url to a standard regex, we can use the regex to match the url
 const isMatch = (
   originUrl: string,
   requestUrl: string,
   querystring: string
 ): boolean => {
-  const regex = convertOriginUrlToRegex(originUrl);
-  return regex.test(`${requestUrl}?${querystring}`);
-};
-
-const convertOriginUrlToRegex = (originUrl: string): RegExp => {
   return new RegExp(
     `^${originUrl
       .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
       .replace(/\//gi, "\\/")
       .replace(/\?/gi, "\\?")}$`
-  );
+  ).test(`${requestUrl}?${querystring}`);
 };
 
+// inject the params to rewrite url.
 const rewriteUrlWithParams = (
   rewriteUrl: string,
   requestUrl: string,
@@ -78,8 +75,22 @@ const rewriteUrlWithParams = (
  * For example,
  *     urlRewrites:
  *        - name: paginationRewrite
- *          originUrl: /index.html?page=[number]
- *          rewriteUrl: /page/[number].html
+ *          originUrl: /index.html?page=[page]
+ *          rewriteUrl: /page/[page].html
+ *
+ *
+ * updates:
+ * now this function will support more url params and slug, such as:
+ *       - originUrl: /car-repair/services/[slug]?make=[make]&model=[model]
+ *         rewriteUrl: /car-repair/services/[slug]/make/[make]/model/[model]
+ *
+ * And if we want to use the url params, the name should be same to the key name, such as,
+ *      /index.html?page=[number]    wrong.
+ *      /index.html?page=[page]  correct.
+ *
+ * This is because when we get the url params, the query string is like "?make=123&model=123".
+ * We can only get the pairs as { make: 123, model: 123 }. It will be more easy to insert params to
+ * '?make=[make]&model=[model]' instead of '?make=[other-name]&model=[other-name]'
  *
  * @param manifest
  * @param request

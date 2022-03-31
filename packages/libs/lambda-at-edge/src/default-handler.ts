@@ -67,8 +67,6 @@ import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 
-// @ts-ignore
-import * as _ from "./lib/lodash";
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 
 process.env.PRERENDER = "true";
