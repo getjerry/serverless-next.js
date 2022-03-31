@@ -66,7 +66,6 @@ import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
-
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 
 process.env.PRERENDER = "true";
