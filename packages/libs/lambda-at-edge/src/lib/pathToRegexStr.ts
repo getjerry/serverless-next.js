@@ -37,48 +37,20 @@ export const getParamsFormQuery = (
   return result;
 };
 
-const isQueryContainsAllParams = (
-  querystring: string,
-  originUrl: string
-): boolean => {
-  if (_.isEmpty(querystring)) {
-    return false;
-  }
-
-  const params = originUrl.match(new RegExp("\\[[A-Za-z0-9]*]", "g")) || [];
-
-  console.log(querystring, originUrl, params);
-
-  if (_.isEmpty(params)) {
-    return false;
-  }
-
-  console.log(
-    params
-      .map((p) => p.replace("[", "").replace("]", ""))
-      .filter((p) => p !== SLUG_PARAM_KEY)
-      .map((p) => _.includes(querystring, `${p}=`))
-  );
-  return _.every(
-    params
-      .map((p) => p.replace("[", "").replace("]", ""))
-      .filter((p) => p !== SLUG_PARAM_KEY)
-      .map((p) => _.includes(querystring, `${p}=`))
-  );
-};
-
 const isMatch = (
   params: param[],
   originUrl: string,
   requestUrl: string,
   querystring: string
 ): boolean => {
-  if (isQueryContainsAllParams(querystring, originUrl)) {
-    return false;
-  }
-  console.log(`${requestUrl}?${querystring}`, urlWithParams(originUrl, params));
+  console.log(
+    "isMatch",
+    `${requestUrl}?${querystring}`,
+    urlWithParams(originUrl, params)
+  );
 
   console.log(
+    "isMatch",
     `${requestUrl}?${querystring}` === urlWithParams(originUrl, params)
   );
 
@@ -88,7 +60,14 @@ const isMatch = (
 const urlWithParams = (url: string, params: param[]): string => {
   let result = url;
   params.forEach((p) => {
-    result = result.replace(`[${p.key}]`, `${p.value}`);
+    const searchKey = `[${p.key}]`;
+    if (url.indexOf(searchKey) > 0) {
+      console.log("urlWithParams s ", searchKey);
+      result = result.replace(searchKey, `${p.value}`);
+    } else {
+      console.log("urlWithParams f", url);
+      return url;
+    }
   });
   return result;
 };
