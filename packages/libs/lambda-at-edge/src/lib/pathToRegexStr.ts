@@ -51,7 +51,7 @@ const isMatch = (
 
 const convertOriginUrlToRegex = (originUrl: string): RegExp => {
   return new RegExp(
-    `${originUrl
+    `^${originUrl
       .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
       .replace(/\//gi, "\\/")
       .replace(/\?/gi, "\\?")}$`
