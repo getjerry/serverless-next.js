@@ -8,6 +8,8 @@ import * as _ from "./lodash";
 
 const SLUG_PARAM_KEY = "slug";
 
+const INJECT_PARAM_REGEX = RegExp("\\[[A-Za-z0-9]*]", "g");
+
 export default (path: string): string =>
   pathToRegexp(path)
     .toString()
@@ -18,10 +20,7 @@ type param = {
   value: string;
 };
 
-export const getParamsFormQuery = (
-  querystring: string,
-  uri: string
-): param[] => {
+const getParamsFormQuery = (querystring: string, uri: string): param[] => {
   if (_.isEmpty(querystring)) {
     return [];
   }
@@ -38,38 +37,36 @@ export const getParamsFormQuery = (
 };
 
 const isMatch = (
-  params: param[],
   originUrl: string,
   requestUrl: string,
   querystring: string
 ): boolean => {
-  console.log(
-    "isMatch",
-    `${requestUrl}?${querystring}`,
-    urlWithParams(originUrl, params)
-  );
-
-  console.log(
-    "isMatch",
-    `${requestUrl}?${querystring}` === urlWithParams(originUrl, params)
-  );
-
-  return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
+  console.log(originUrl, requestUrl, querystring);
+  const regex = convertOriginUrlToRegex(originUrl);
+  return regex.test(`${requestUrl}?${querystring}`);
 };
 
-const urlWithParams = (url: string, params: param[]): string => {
-  let result = url;
+const convertOriginUrlToRegex = (originUrl: string): RegExp => {
+  return new RegExp(
+    `${originUrl
+      .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
+      .replace(/\//gi, "\\/")
+      .replace(/\?/gi, "\\?")}$`
+  );
+};
+
+const rewriteUrlWithParams = (
+  rewriteUrl: string,
+  requestUrl: string,
+  querystring: string
+): string => {
+  const params = getParamsFormQuery(requestUrl, querystring);
+  let result = rewriteUrl;
   params.forEach((p) => {
-    const searchKey = `[${p.key}]`;
-    if (url.indexOf(searchKey) > 0) {
-      console.log("urlWithParams s ", searchKey);
-      result = result.replace(searchKey, `${p.value}`);
-    } else {
-      console.log("urlWithParams f", url);
-      return url;
-    }
+    result = result.replace(`[${p.key}]`, `${p.value}`);
+    console.log(result);
   });
-  return result;
+  return `${result}.html`;
 };
 
 /**
@@ -90,26 +87,26 @@ export const checkAndRewriteUrl = (
   manifest: OriginRequestDefaultHandlerManifest,
   request: CloudFrontRequest
 ): void => {
+  if (_.isEmpty(request.querystring)) {
+    return;
+  }
+
   debug(`[checkAndRewriteUrl] manifest: ${JSON.stringify(manifest)}`);
   const rewrites = manifest.urlRewrites;
   debug(`[checkAndRewriteUrl] rewriteList: ${JSON.stringify(rewrites)}`);
   if (!rewrites || rewrites.length === 0) return;
 
   const requestUri = request.uri.split(".")[0];
-  const params = getParamsFormQuery(request.querystring, requestUri);
-
-  debug(
-    `[checkAndRewriteUrl] params: ${JSON.stringify(
-      params
-    )}，requestUri: ${requestUri}`
-  );
-  if (_.isEmpty(params) || !requestUri) return;
 
   rewrites.forEach(({ originUrl, rewriteUrl }) => {
     debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
 
-    if (isMatch(params, originUrl, requestUri, request.querystring)) {
-      request.uri = `${urlWithParams(rewriteUrl, params)}.html`;
+    if (isMatch(originUrl, requestUri, request.querystring)) {
+      request.uri = rewriteUrlWithParams(
+        rewriteUrl,
+        requestUri,
+        request.querystring
+      );
       request.querystring = "";
     }
   });
