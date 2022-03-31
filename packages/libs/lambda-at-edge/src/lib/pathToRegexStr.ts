@@ -47,10 +47,18 @@ const isQueryContainsAllParams = (
 
   const params = originUrl.match(new RegExp("\\[[A-Za-z0-9]*]", "g")) || [];
 
+  console.log(querystring, originUrl, params);
+
   if (_.isEmpty(params)) {
     return false;
   }
 
+  console.log(
+    params
+      .map((p) => p.replace("[", "").replace("]", ""))
+      .filter((p) => p !== SLUG_PARAM_KEY)
+      .map((p) => _.includes(querystring, `${p}=`))
+  );
   return _.every(
     params
       .map((p) => p.replace("[", "").replace("]", ""))
@@ -68,6 +76,11 @@ const isMatch = (
   if (isQueryContainsAllParams(querystring, originUrl)) {
     return false;
   }
+  console.log(`${requestUrl}?${querystring}`, urlWithParams(originUrl, params));
+
+  console.log(
+    `${requestUrl}?${querystring}` === urlWithParams(originUrl, params)
+  );
 
   return `${requestUrl}?${querystring}` === urlWithParams(originUrl, params);
 };
