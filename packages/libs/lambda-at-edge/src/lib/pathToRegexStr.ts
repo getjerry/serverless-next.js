@@ -44,7 +44,6 @@ const isMatch = (
   requestUrl: string,
   querystring: string
 ): boolean => {
-  console.log(originUrl, requestUrl, querystring);
   const regex = convertOriginUrlToRegex(originUrl);
   return regex.test(`${requestUrl}?${querystring}`);
 };
@@ -67,7 +66,6 @@ const rewriteUrlWithParams = (
   let result = rewriteUrl;
   params.forEach((p) => {
     result = result.replace(`[${p.key}]`, `${p.value}`);
-    console.log(result);
   });
   return `${result}.html`;
 };
