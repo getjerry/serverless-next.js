@@ -20,7 +20,10 @@ type param = {
   value: string;
 };
 
-const getParamsFormQuery = (querystring: string, uri: string): param[] => {
+const getParamsFormQuery = (
+  requestUrl: string,
+  querystring: string
+): param[] => {
   if (_.isEmpty(querystring)) {
     return [];
   }
@@ -29,7 +32,7 @@ const getParamsFormQuery = (querystring: string, uri: string): param[] => {
     return { key: s.split("=")[0], value: s.split("=")[1] };
   });
 
-  const slug = _.last(uri.split("/"));
+  const slug = _.last(requestUrl.split("/"));
   if (!_.isEmpty(slug)) {
     result.push({ key: SLUG_PARAM_KEY, value: slug });
   }
@@ -98,7 +101,7 @@ export const checkAndRewriteUrl = (
 
   const requestUri = request.uri.split(".")[0];
 
-  rewrites.forEach(({ originUrl, rewriteUrl }) => {
+  for (const { originUrl, rewriteUrl } of rewrites) {
     debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
 
     if (isMatch(originUrl, requestUri, request.querystring)) {
@@ -108,8 +111,9 @@ export const checkAndRewriteUrl = (
         request.querystring
       );
       request.querystring = "";
+      break;
     }
-  });
+  }
 
   debug(`[checkAndRewriteUrl] After: ${request.uri}, ${request.querystring}`);
 };
