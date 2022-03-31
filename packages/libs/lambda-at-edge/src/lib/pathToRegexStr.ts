@@ -45,13 +45,12 @@ const isQueryContainsAllParams = (
     return false;
   }
 
-  const params = originUrl.match(new RegExp("\\[[A-Za-z0-9]*]", "g"));
+  const params = originUrl.match(new RegExp("\\[[A-Za-z0-9]*]", "g")) || [];
 
   if (_.isEmpty(params)) {
     return false;
   }
 
-  // @ts-ignore
   return _.every(
     params
       .map((p) => p.replace("[", "").replace("]", ""))
