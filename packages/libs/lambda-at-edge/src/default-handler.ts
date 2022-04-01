@@ -67,6 +67,7 @@ import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
+import { isEmpty } from "lodash";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -384,6 +385,7 @@ export const handler = async (
   event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
   context: Context
 ): Promise<CloudFrontResultResponse | CloudFrontRequest | void> => {
+  console.log("lodash", isEmpty(context));
   const manifest: OriginRequestDefaultHandlerManifest = Manifest;
   let response: CloudFrontResultResponse | CloudFrontRequest;
   const prerenderManifest: PrerenderManifestType = PrerenderManifest;
