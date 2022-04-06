@@ -3,7 +3,7 @@ import { debug } from "./console";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 import { CloudFrontRequest } from "aws-lambda";
 
-import { isEmpty } from "lodash";
+import { isEmpty, last } from "lodash";
 import queryString from "query-string";
 
 const SLUG_PARAM_KEY = "slug";
@@ -32,7 +32,7 @@ const getParamsFormQuery = (
     return { key: s.split("=")[0], value: s.split("=")[1] };
   });
 
-  const slug = _.last(requestUrl.split("/"));
+  const slug = last(requestUrl.split("/"));
   if (slug) {
     result.push({ key: SLUG_PARAM_KEY, value: slug });
   }
