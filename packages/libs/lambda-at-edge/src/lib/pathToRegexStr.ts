@@ -3,8 +3,8 @@ import { debug } from "./console";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 import { CloudFrontRequest } from "aws-lambda";
 
-// @ts-ignore
-import * as _ from "./lodash";
+import { isEmpty } from "lodash";
+import queryString from "query-string";
 
 const SLUG_PARAM_KEY = "slug";
 
@@ -24,7 +24,7 @@ const getParamsFormQuery = (
   key: string;
   value: string;
 }[] => {
-  if (_.isEmpty(querystring)) {
+  if (isEmpty(querystring)) {
     return [];
   }
 
@@ -33,24 +33,33 @@ const getParamsFormQuery = (
   });
 
   const slug = _.last(requestUrl.split("/"));
-  if (!_.isEmpty(slug)) {
+  if (slug) {
     result.push({ key: SLUG_PARAM_KEY, value: slug });
   }
   return result;
 };
 
 // convert the serverless url to a standard regex, we can use the regex to match the url
-const isMatch = (
-  originUrl: string,
-  requestUrl: string,
-  querystring: string
-): boolean => {
+const isUriMatch = (originUrl: string, requestUrl: string): boolean => {
+  console.log(
+    `^${originUrl
+      .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
+      .replace(/\//gi, "\\/")}$`
+  );
   return new RegExp(
     `^${originUrl
       .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
-      .replace(/\//gi, "\\/")
-      .replace(/\?/gi, "\\?")}$`
-  ).test(`${requestUrl}?${querystring}`);
+      .replace(/\//gi, "\\/")}$`
+  ).test(requestUrl);
+};
+
+const isParamsMatch = (
+  originUrlParams: string | string[],
+  querystring: string
+): boolean => {
+  const inputParams = queryString.parse(querystring);
+  console.log(inputParams);
+  return false;
 };
 
 // inject the params to rewrite url.
@@ -99,7 +108,7 @@ export const checkAndRewriteUrl = (
   manifest: OriginRequestDefaultHandlerManifest,
   request: CloudFrontRequest
 ): void => {
-  if (_.isEmpty(request.querystring)) {
+  if (isEmpty(request.querystring)) {
     return;
   }
 
@@ -110,10 +119,17 @@ export const checkAndRewriteUrl = (
 
   const requestUri = request.uri.split(".")[0];
 
-  for (const { originUrl, rewriteUrl } of rewrites) {
-    debug(`[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}`);
+  for (const { originUrl, rewriteUrl, originUrlParams } of rewrites) {
+    debug(
+      `[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}, originUrlParams:${JSON.stringify(
+        originUrlParams
+      )}`
+    );
 
-    if (isMatch(originUrl, requestUri, request.querystring)) {
+    if (
+      isUriMatch(originUrl, requestUri) &&
+      isParamsMatch(originUrlParams, request.querystring)
+    ) {
       request.uri = rewriteUrlWithParams(
         rewriteUrl,
         requestUri,
