@@ -3,7 +3,7 @@ import { debug } from "./console";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 import { CloudFrontRequest } from "aws-lambda";
 
-import { isEmpty, last } from "lodash";
+import { isEmpty, isEqual, isString, keys, last, forOwn } from "lodash";
 import queryString from "query-string";
 
 const SLUG_PARAM_KEY = "slug";
@@ -16,36 +16,8 @@ export default (path: string): string =>
     .toString()
     .replace(/\/(.*)\/\i/, "$1");
 
-// get params form url query and get the slug
-const getParamsFormQuery = (
-  requestUrl: string,
-  querystring: string
-): {
-  key: string;
-  value: string;
-}[] => {
-  if (isEmpty(querystring)) {
-    return [];
-  }
-
-  const result = querystring.split("&").map((s) => {
-    return { key: s.split("=")[0], value: s.split("=")[1] };
-  });
-
-  const slug = last(requestUrl.split("/"));
-  if (slug) {
-    result.push({ key: SLUG_PARAM_KEY, value: slug });
-  }
-  return result;
-};
-
 // convert the serverless url to a standard regex, we can use the regex to match the url
 const isUriMatch = (originUrl: string, requestUrl: string): boolean => {
-  console.log(
-    `^${originUrl
-      .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
-      .replace(/\//gi, "\\/")}$`
-  );
   return new RegExp(
     `^${originUrl
       .replace(INJECT_PARAM_REGEX, "[0-9a-zA-Z-]*")
@@ -54,12 +26,12 @@ const isUriMatch = (originUrl: string, requestUrl: string): boolean => {
 };
 
 const isParamsMatch = (
-  originUrlParams: string | string[],
+  originUrlParams: string[],
   querystring: string
 ): boolean => {
-  const inputParams = queryString.parse(querystring);
-  console.log(inputParams);
-  return false;
+  const params = keys(queryString.parse(querystring));
+  if (isEmpty(params)) return false;
+  return isEqual(params, originUrlParams);
 };
 
 // inject the params to rewrite url.
@@ -68,11 +40,19 @@ const rewriteUrlWithParams = (
   requestUrl: string,
   querystring: string
 ): string => {
-  const params = getParamsFormQuery(requestUrl, querystring);
   let result = rewriteUrl;
-  params.forEach((p) => {
-    result = result.replace(`[${p.key}]`, `${p.value}`);
+
+  forOwn(queryString.parse(querystring), function (key, value) {
+    result = result.replace(`[${key}]`, `${value}`);
   });
+
+  if (requestUrl.includes(`[${SLUG_PARAM_KEY}]`)) {
+    result = result.replace(
+      `[${SLUG_PARAM_KEY}]`,
+      last(requestUrl.split("/")) || ""
+    );
+  }
+
   return `${result}.html`;
 };
 
@@ -119,7 +99,12 @@ export const checkAndRewriteUrl = (
 
   const requestUri = request.uri.split(".")[0];
 
-  for (const { originUrl, rewriteUrl, originUrlParams } of rewrites) {
+  for (const rewrite of rewrites) {
+    const originUrl = rewrite.originUrl;
+    const rewriteUrl = rewrite.rewriteUrl;
+    const originUrlParams = isString(rewrite.originUrlParams)
+      ? [rewrite.originUrlParams]
+      : rewrite.originUrlParams;
     debug(
       `[originUrl]: ${originUrl}, rewriteUrl: ${rewriteUrl}, originUrlParams:${JSON.stringify(
         originUrlParams
