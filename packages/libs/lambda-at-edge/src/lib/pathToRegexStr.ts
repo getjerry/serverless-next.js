@@ -3,7 +3,7 @@ import { debug } from "./console";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 import { CloudFrontRequest } from "aws-lambda";
 
-import { isEmpty, isEqual, isString, keys, last, forOwn } from "lodash";
+import { forOwn, isEmpty, isEqual, isString, keys, last } from "lodash";
 import queryString from "query-string";
 
 const SLUG_PARAM_KEY = "slug";
@@ -46,12 +46,10 @@ const rewriteUrlWithParams = (
     result = result.replace(`[${key}]`, `${value}`);
   });
 
-  if (result.includes(`[${SLUG_PARAM_KEY}]`)) {
-    result = result.replace(
-      `[${SLUG_PARAM_KEY}]`,
-      last(requestUrl.split("/")) || ""
-    );
-  }
+  result = result.replace(
+    `[${SLUG_PARAM_KEY}]`,
+    last(requestUrl.split("/")) || ""
+  );
 
   return `${result}.html`;
 };
