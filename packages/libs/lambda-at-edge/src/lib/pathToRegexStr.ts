@@ -46,7 +46,7 @@ const rewriteUrlWithParams = (
     result = result.replace(`[${key}]`, `${value}`);
   });
 
-  if (requestUrl.includes(`[${SLUG_PARAM_KEY}]`)) {
+  if (result.includes(`[${SLUG_PARAM_KEY}]`)) {
     result = result.replace(
       `[${SLUG_PARAM_KEY}]`,
       last(requestUrl.split("/")) || ""
