@@ -31,7 +31,10 @@ const isParamsMatch = (
 ): boolean => {
   const params = keys(queryString.parse(querystring));
   if (isEmpty(params)) return false;
-  return isEqual(params, originUrlParams);
+  return isEqual(
+    params,
+    originUrlParams.sort((a, b) => a.localeCompare(b))
+  );
 };
 
 // inject the params to rewrite url.
