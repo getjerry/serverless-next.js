@@ -8,7 +8,7 @@ import queryString from "query-string";
 
 const SLUG_PARAM_KEY = "slug";
 
-// regex for [make], [model] in origin url
+// regex for [make], [model] in origin url.
 const INJECT_PARAM_REGEX = RegExp("\\[[A-Za-z0-9]*]", "g");
 
 export default (path: string): string =>
