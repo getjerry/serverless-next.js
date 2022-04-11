@@ -42,7 +42,7 @@ const rewriteUrlWithParams = (
 ): string => {
   let result = rewriteUrl;
 
-  forOwn(queryString.parse(querystring), function (key, value) {
+  forOwn(queryString.parse(querystring), function (value, key) {
     result = result.replace(`[${key}]`, `${value}`);
   });
 
