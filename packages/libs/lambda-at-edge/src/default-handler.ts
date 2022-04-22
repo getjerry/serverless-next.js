@@ -67,7 +67,10 @@ import { RenderService } from "./services/render.service";
 import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
+import * as Sentry from "@sentry/node";
+import * as SentryTracing from "@sentry/tracing";
 
+import { jerry_sentry_dsn } from "./lib/sentry";
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
 
@@ -408,6 +411,20 @@ export const handler = async (
       })}`
     );
   }
+
+  // if enable sentry
+  console.log(JSON.stringify(manifest));
+  if (manifest.enableSentryTrack) {
+    Sentry.init({
+      dsn: jerry_sentry_dsn,
+
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0
+    });
+  }
+
+  console.log(JSON.stringify(SentryTracing));
 
   // Permanent Static Pages
   if (manifest.permanentStaticPages) {
