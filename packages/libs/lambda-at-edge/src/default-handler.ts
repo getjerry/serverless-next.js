@@ -68,6 +68,7 @@ import { debug, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 import * as Sentry from "@sentry/node";
+import "@sentry/tracing";
 
 import { jerry_sentry_dsn } from "./lib/sentry";
 
