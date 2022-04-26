@@ -475,8 +475,11 @@ export const handler = async (
     try {
       const a = response.hasOwnProperty("status");
     } catch (e) {
-      console.log(JSON.stringify(e));
-      Sentry.captureException(e);
+      console.log("e", JSON.stringify(e));
+      const a = Sentry.captureException(e);
+      console.log("a", JSON.stringify(a));
+      const b = await Sentry.flush(1000);
+      console.log("b", JSON.stringify(b));
     } finally {
       transaction.finish();
     }
