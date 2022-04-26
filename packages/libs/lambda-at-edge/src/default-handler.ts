@@ -473,15 +473,16 @@ export const handler = async (
       name: "My First Test Transaction"
     });
     try {
-      response = await getResponseFromEvent(
-        context,
-        manifest,
-        event,
-        prerenderManifest,
-        routesManifest
-      );
+      // response = await getResponseFromEvent(
+      //   context,
+      //   manifest,
+      //   event,
+      //   prerenderManifest,
+      //   routesManifest
+      // );
       const a = 1 / 0;
       console.log(a);
+      throw "eeeeeeeeeeeeeee";
     } catch (e) {
       Sentry.captureException(e);
     } finally {
