@@ -473,17 +473,9 @@ export const handler = async (
       name: "My First Test Transaction"
     });
     try {
-      // response = await getResponseFromEvent(
-      //   context,
-      //   manifest,
-      //   event,
-      //   prerenderManifest,
-      //   routesManifest
-      // );
-      const a = 1 / 0;
-      console.log(a);
-      throw "eeeeeeeeeeeeeee";
+      const a = response.hasOwnProperty("status");
     } catch (e) {
+      console.log(JSON.stringify(e));
       Sentry.captureException(e);
     } finally {
       transaction.finish();
