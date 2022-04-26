@@ -480,7 +480,8 @@ export const handler = async (
         prerenderManifest,
         routesManifest
       );
-      throw new Error(`error details`);
+      const a = 1 / 0;
+      console.log(a);
     } catch (e) {
       Sentry.captureException(e);
     } finally {
