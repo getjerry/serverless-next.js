@@ -64,7 +64,7 @@ import { CloudFrontService } from "./services/cloudfront.service";
 import { S3Service } from "./services/s3.service";
 import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
-import { debug, isDevMode } from "./lib/console";
+import { debug, getEnvironment, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
 import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 import * as Sentry from "@sentry/node";
@@ -72,7 +72,7 @@ import "@sentry/tracing";
 
 import {
   getSentryContext,
-  getSentryScope,
+  getSentryScopeWithCustomTags,
   jerry_sentry_dsn,
   sentry_flush_timeout
 } from "./lib/sentry";
@@ -471,7 +471,8 @@ export const handler = async (
 
     Sentry.init({
       dsn: jerry_sentry_dsn,
-      tracesSampleRate: 1.0
+      tracesSampleRate: 1.0,
+      environment: getEnvironment(manifest)
     });
     const transaction = Sentry.startTransaction(
       getSentryContext(event, context, manifest)
@@ -485,7 +486,7 @@ export const handler = async (
         )}, need send to sentry website.`
       );
       Sentry.captureException(e, (scope) =>
-        getSentryScope(scope, manifest, routesManifest)
+        getSentryScopeWithCustomTags(scope, routesManifest)
       );
       await Sentry.flush(sentry_flush_timeout);
     } finally {

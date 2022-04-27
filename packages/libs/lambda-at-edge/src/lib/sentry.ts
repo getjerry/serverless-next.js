@@ -30,17 +30,12 @@ export const getSentryContext = (
   };
 };
 
-export const getSentryScope = (
+// add more custom tags here
+export const getSentryScopeWithCustomTags = (
   scope: Scope,
-  manifest: OriginRequestDefaultHandlerManifest,
   routesManifest: RoutesManifest
 ): Scope => {
   scope.clear();
-  scope.setTag(
-    "environment",
-    manifest.canonicalHostname?.startsWith("getjerry") ? "prod" : "stage"
-  );
   scope.setTag("app", routesManifest.basePath);
-  scope.setTag("level", "error");
   return scope;
 };
