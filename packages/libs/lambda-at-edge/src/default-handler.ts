@@ -478,7 +478,13 @@ export const handler = async (
       name: "Serverless-next Transaction"
     });
     try {
-      const a = response.hasOwnProperty("status");
+      response = await getResponseFromEvent(
+        context,
+        manifest,
+        event,
+        prerenderManifest,
+        routesManifest
+      );
     } catch (e) {
       debug(
         `[Sentry] find exception ${JSON.stringify(
