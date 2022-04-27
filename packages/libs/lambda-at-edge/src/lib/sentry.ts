@@ -1,10 +1,11 @@
 // for https://sentry.ing.getjerry.com/organizations/sentry/projects/serverless-next/?project=56
-import { TransactionContext } from "@sentry/types";
+import { Scope, TransactionContext } from "@sentry/types";
 import {
   OriginRequestDefaultHandlerManifest,
   OriginRequestEvent,
   OriginResponseEvent,
-  RevalidationEvent
+  RevalidationEvent,
+  RoutesManifest
 } from "../../types";
 import { Context } from "aws-lambda";
 
@@ -27,4 +28,19 @@ export const getSentryContext = (
       manifest: JSON.stringify(manifest)
     }
   };
+};
+
+export const getSentryScope = (
+  scope: Scope,
+  manifest: OriginRequestDefaultHandlerManifest,
+  routesManifest: RoutesManifest
+): Scope => {
+  scope.clear();
+  scope.setTag(
+    "environment",
+    manifest.canonicalHostname?.startsWith("getjerry") ? "prod" : "stage"
+  );
+  scope.setTag("app", routesManifest.basePath);
+  scope.setTag("level", "error");
+  return scope;
 };

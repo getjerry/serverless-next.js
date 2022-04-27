@@ -72,6 +72,7 @@ import "@sentry/tracing";
 
 import {
   getSentryContext,
+  getSentryScope,
   jerry_sentry_dsn,
   sentry_flush_timeout
 } from "./lib/sentry";
@@ -478,7 +479,14 @@ export const handler = async (
     try {
       const a = response.hasOwnProperty("status");
     } catch (e) {
-      Sentry.captureException(e);
+      debug(
+        `[Sentry] find exception ${JSON.stringify(
+          e
+        )}, need send to sentry website.`
+      );
+      Sentry.captureException(e, (scope) =>
+        getSentryScope(scope, manifest, routesManifest)
+      );
       await Sentry.flush(sentry_flush_timeout);
     } finally {
       transaction.finish();
