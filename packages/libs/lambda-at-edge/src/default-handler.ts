@@ -70,7 +70,11 @@ import { checkAndRewriteUrl } from "./lib/pathToRegexStr";
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 
-import { jerry_sentry_dsn } from "./lib/sentry";
+import {
+  getSentryContext,
+  jerry_sentry_dsn,
+  sentry_flush_timeout
+} from "./lib/sentry";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -468,18 +472,20 @@ export const handler = async (
       dsn: jerry_sentry_dsn,
       tracesSampleRate: 1.0
     });
-    const transaction = Sentry.startTransaction({
-      op: "test",
-      name: "My First Test Transaction"
-    });
+    const transaction = Sentry.startTransaction(
+      getSentryContext(event, context, manifest)
+    );
     try {
-      const a = response.hasOwnProperty("status");
+      response = await getResponseFromEvent(
+        context,
+        manifest,
+        event,
+        prerenderManifest,
+        routesManifest
+      );
     } catch (e) {
-      console.log("e", JSON.stringify(e));
-      const a = Sentry.captureException(e);
-      console.log("a", JSON.stringify(a));
-      const b = await Sentry.flush(1000);
-      console.log("b", JSON.stringify(b));
+      Sentry.captureException(e);
+      await Sentry.flush(sentry_flush_timeout);
     } finally {
       transaction.finish();
     }
