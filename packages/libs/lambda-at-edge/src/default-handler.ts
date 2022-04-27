@@ -476,13 +476,7 @@ export const handler = async (
       getSentryContext(event, context, manifest)
     );
     try {
-      response = await getResponseFromEvent(
-        context,
-        manifest,
-        event,
-        prerenderManifest,
-        routesManifest
-      );
+      const a = response.hasOwnProperty("status");
     } catch (e) {
       Sentry.captureException(e);
       await Sentry.flush(sentry_flush_timeout);
