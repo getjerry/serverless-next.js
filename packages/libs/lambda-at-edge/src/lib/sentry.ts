@@ -14,14 +14,8 @@ export const jerry_sentry_dsn =
 
 export const sentry_flush_timeout = 2000;
 
-export const getSentryContext = (
-  event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
-  context: Context,
-  manifest: OriginRequestDefaultHandlerManifest
-): TransactionContext => {
+export const getSentryContext = (): TransactionContext => {
   return {
-    op: "serverless-next-handler-request",
-    name: "Serverless-next Transaction",
     data: {
       event: JSON.stringify(event),
       context: JSON.stringify(context),
@@ -33,9 +27,15 @@ export const getSentryContext = (
 // add more custom tags here
 export const getSentryScopeWithCustomTags = (
   scope: Scope,
-  routesManifest: RoutesManifest
+  routesManifest: RoutesManifest,
+  event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
+  context: Context,
+  manifest: OriginRequestDefaultHandlerManifest
 ): Scope => {
   scope.clear();
   scope.setTag("app", routesManifest.basePath);
+  scope.setExtra("event", JSON.stringify(event));
+  scope.setExtra("context", JSON.stringify(context));
+  scope.setExtra("manifest", JSON.stringify(manifest));
   return scope;
 };

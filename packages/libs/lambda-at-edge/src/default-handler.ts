@@ -71,7 +71,6 @@ import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 
 import {
-  getSentryContext,
   getSentryScopeWithCustomTags,
   jerry_sentry_dsn,
   sentry_flush_timeout
@@ -474,9 +473,10 @@ export const handler = async (
       tracesSampleRate: 1.0,
       environment: getEnvironment(manifest)
     });
-    const transaction = Sentry.startTransaction(
-      getSentryContext(event, context, manifest)
-    );
+    const transaction = Sentry.startTransaction({
+      op: "serverless-next-handler-request",
+      name: "Serverless-next Transaction"
+    });
     try {
       const a = response.hasOwnProperty("status");
     } catch (e) {
@@ -486,7 +486,13 @@ export const handler = async (
         )}, need send to sentry website.`
       );
       Sentry.captureException(e, (scope) =>
-        getSentryScopeWithCustomTags(scope, routesManifest)
+        getSentryScopeWithCustomTags(
+          scope,
+          routesManifest,
+          event,
+          context,
+          manifest
+        )
       );
       await Sentry.flush(sentry_flush_timeout);
     } finally {
