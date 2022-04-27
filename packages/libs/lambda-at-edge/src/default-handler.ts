@@ -71,7 +71,7 @@ import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 
 import {
-  getSentryScopeWithCustomTags,
+  getSentryScopeWithExtraData,
   jerry_sentry_dsn,
   sentry_flush_timeout
 } from "./lib/sentry";
@@ -486,7 +486,7 @@ export const handler = async (
         )}, need send to sentry website.`
       );
       Sentry.captureException(e, (scope) =>
-        getSentryScopeWithCustomTags(
+        getSentryScopeWithExtraData(
           scope,
           routesManifest,
           event,

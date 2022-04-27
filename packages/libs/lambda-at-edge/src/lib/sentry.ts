@@ -14,18 +14,8 @@ export const jerry_sentry_dsn =
 
 export const sentry_flush_timeout = 2000;
 
-export const getSentryContext = (): TransactionContext => {
-  return {
-    data: {
-      event: JSON.stringify(event),
-      context: JSON.stringify(context),
-      manifest: JSON.stringify(manifest)
-    }
-  };
-};
-
-// add more custom tags here
-export const getSentryScopeWithCustomTags = (
+// add more custom info here
+export const getSentryScopeWithExtraData = (
   scope: Scope,
   routesManifest: RoutesManifest,
   event: OriginRequestEvent | OriginResponseEvent | RevalidationEvent,
