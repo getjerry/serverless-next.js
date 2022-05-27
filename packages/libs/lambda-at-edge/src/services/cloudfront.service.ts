@@ -43,11 +43,7 @@ export class CloudFrontService {
   ): Promise<void> {
     const endpoint = `https://cdn-invalidation.${env}.getjerry.com/api/cdn-invalidation/graphql`;
 
-    const graphQLClient = new GraphQLClient(endpoint, {
-      headers: {
-        authorization: "Bearer MY_TOKEN"
-      }
-    });
+    const graphQLClient = new GraphQLClient(endpoint);
 
     const mutation = gql`
       mutation createRemoteInvalidation($urls: [String!]!) {
