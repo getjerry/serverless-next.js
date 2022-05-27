@@ -1,6 +1,6 @@
 {
   "name": "@getjerry/s3-static-assets",
-  "version": "1.4.12",
+  "version": "1.4.13",
   "description": "Handles upload to S3 of next.js static assets",
   "publishConfig": {
     "access": "public"
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/klaw": "^3.0.1",
     "@types/mime-types": "^2.1.0",
-    "typescript": "^3.9.6"
+    "typescript": "~4.1.0"
   },
   "gitHead": "ff6891ab42e8df4add318d6c67af062c15b067cd"
 }
