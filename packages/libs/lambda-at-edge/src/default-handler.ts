@@ -851,7 +851,7 @@ const handleOriginResponse = async ({
   const hasFallback = hasFallbackForUri(uri, prerenderManifest, manifest);
   const isHTMLPage = prerenderManifest.routes[decodeURI(uri)];
   const isPublicFile = manifest.publicFiles[decodeURI(uri)];
-  const isEnforceRevalidationRequest = request.querystring === "enforceISR";
+  const isEnforceRevalidationRequest = true;
   // if isEnforceRevalidationRequest is true, revalidation will start anyway.
 
   // For PUT or DELETE just return the response as these should be unsupported S3 methods

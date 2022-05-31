@@ -41,17 +41,17 @@ export class RevalidateHandler {
 
     // ISR needs to maintain a time gap of at least tens of seconds.
     const revalidateTriggerGapSecond = isDevMode() ? 1 : 300;
-    if (
-      this.shouldSkipRevalidate(
-        htmlHeader.header.LastModified,
-        revalidateTriggerGapSecond
-      )
-    ) {
-      debug(
-        `The last ISR was triggered ${revalidateTriggerGapSecond} seconds ago, so skip this one.`
-      );
-      return;
-    }
+    // if (
+    //   this.shouldSkipRevalidate(
+    //     htmlHeader.header.LastModified,
+    //     revalidateTriggerGapSecond
+    //   )
+    // ) {
+    //   debug(
+    //     `The last ISR was triggered ${revalidateTriggerGapSecond} seconds ago, so skip this one.`
+    //   );
+    //   return;
+    // }
 
     debug(`[handler] Revalidate resource: ${JSON.stringify(resource)}`);
 
@@ -69,7 +69,7 @@ export class RevalidateHandler {
 
     debug(`CANDIDATE PAGE: ${JSON.stringify(candidatePage)}`);
 
-    if (isDevMode() || (await this.isContentChanged(candidatePage, resource))) {
+    if (true) {
       debug(
         `[handler] isDevMode():${isDevMode()} or resource changed, update S3 cache and invalidate. html: ${resource.getHtmlKey()}, json:${resource.getJsonKey()}`
       );
@@ -174,7 +174,7 @@ export class RevalidateHandler {
       `[createInvalidation]  createInvalidation for ${resource.getHtmlUri()}, ${resource.getJsonUri()}`
     );
 
-    const useRemoteInvalidation = manifest.enableRemoteInvalidation;
+    const useRemoteInvalidation = true;
 
     const env = getEnvironment(manifest);
     if (useRemoteInvalidation) {

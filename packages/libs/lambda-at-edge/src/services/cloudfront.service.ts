@@ -52,7 +52,19 @@ export class CloudFrontService {
     `;
 
     debug(`[createRemoteInvalidation] send to ${endpoint}`);
-    const data = await graphQLClient.request(mutation, {
+    let data = await graphQLClient.request(mutation, {
+      urls: paths
+    });
+    data = await graphQLClient.request(mutation, {
+      urls: paths
+    });
+    data = await graphQLClient.request(mutation, {
+      urls: paths
+    });
+    data = await graphQLClient.request(mutation, {
+      urls: paths
+    });
+    data = await graphQLClient.request(mutation, {
       urls: paths
     });
     debug(`[createRemoteInvalidation] result is ${JSON.stringify(data)}`);
