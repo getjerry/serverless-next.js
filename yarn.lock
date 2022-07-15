@@ -3202,11 +3202,6 @@
     is-plain-object "^4.0.0"
     universal-user-agent "^6.0.0"
 
-"@octokit/openapi-types@^12.7.0":
-  version "12.9.1"
-  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-12.9.1.tgz#ca9834539f75ff607ed55afae7655677be6aa00b"
-  integrity sha512-nmLbJmjKDF4Ryy+P6xP6h0UwodTFNUzCm6IzBeZd1ITJ37fDra32TdtS/0vAzSCOac/KliJIjQI8Fiz2I414WA==
-
 "@octokit/plugin-enterprise-rest@^6.0.1":
   version "6.0.1"
   resolved "https://registry.npmjs.org/@octokit/plugin-enterprise-rest/-/plugin-enterprise-rest-6.0.1.tgz#e07896739618dab8da7d4077c658003775f95437"
@@ -3250,27 +3245,6 @@
     deprecation "^2.0.0"
     once "^1.4.0"
 
-"@octokit/request-error@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@octokit/request-error/-/request-error-2.1.0.tgz#9e150357831bfc788d13a4fd4b1913d60c74d677"
-  integrity sha512-1VIvgXxs9WHSjicsRwq8PlR2LR2x6DwsJAaFgzdi0JfJoGSO8mYI/cHJQ+9FbN21aa+DrgNLnwObmyeSC8Rmpg==
-  dependencies:
-    "@octokit/types" "^6.0.3"
-    deprecation "^2.0.0"
-    once "^1.4.0"
-
-"@octokit/request@^5.0.0":
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/@octokit/request/-/request-5.6.3.tgz#19a022515a5bba965ac06c9d1334514eb50c48b0"
-  integrity sha512-bFJl0I1KVc9jYTe9tdGGpAMPy32dLBXXo1dS/YwSCTL/2nd9XeHsY616RE3HPXDVk+a+dBuzyz5YdlXwcDTr2A==
-  dependencies:
-    "@octokit/endpoint" "^6.0.1"
-    "@octokit/request-error" "^2.1.0"
-    "@octokit/types" "^6.16.1"
-    is-plain-object "^5.0.0"
-    node-fetch "^2.6.7"
-    universal-user-agent "^6.0.0"
-
 "@octokit/request@^5.2.0":
   version "5.4.7"
   resolved "https://registry.npmjs.org/@octokit/request/-/request-5.4.7.tgz#fd703ee092e0463ceba49ff7a3e61cb4cf8a0fde"
@@ -3284,25 +3258,6 @@
     node-fetch "^2.3.0"
     once "^1.4.0"
     universal-user-agent "^6.0.0"
-
-"@octokit/rest@16.28.4":
-  version "16.28.4"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.28.4.tgz#2f8ef08305033bc91256530d6a3c98eada700660"
-  integrity sha512-ZBsfD46t3VNkwealxm5zloVgQta8d8o4KYBR/hMAZ582IgjmSDKZdkjyv5w37IUCM3tcPZWKUT+kml9pEIC2GA==
-  dependencies:
-    "@octokit/request" "^5.0.0"
-    "@octokit/request-error" "^1.0.2"
-    atob-lite "^2.0.0"
-    before-after-hook "^2.0.0"
-    btoa-lite "^1.0.0"
-    deprecation "^2.0.0"
-    lodash.get "^4.4.2"
-    lodash.set "^4.3.2"
-    lodash.uniq "^4.5.0"
-    octokit-pagination-methods "^1.1.0"
-    once "^1.4.0"
-    universal-user-agent "^3.0.0"
-    url-template "^2.0.8"
 
 "@octokit/rest@^16.28.4":
   version "16.43.2"
@@ -3339,13 +3294,6 @@
   integrity sha512-D/uotqF69M50OIlwMqgyIg9PuLT2daOiBAYF0P40I2ekFA2ESwwBY5dxZe/UhXdPvIbNKDzuZmQrO7rMpuFbcg==
   dependencies:
     "@types/node" ">= 8"
-
-"@octokit/types@^6.0.3", "@octokit/types@^6.16.1":
-  version "6.39.0"
-  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.39.0.tgz#46ce28ca59a3d4bac0e487015949008302e78eee"
-  integrity sha512-Mq4N9sOAYCitTsBtDdRVrBE80lIrMBhL9Jbrw0d+j96BAzlq4V+GLHFJbHokEsVvO/9tQupQdoFdgVYhD2C8UQ==
-  dependencies:
-    "@octokit/openapi-types" "^12.7.0"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -9098,11 +9046,6 @@ is-plain-object@^4.0.0:
   resolved "https://registry.npmjs.org/is-plain-object/-/is-plain-object-4.1.1.tgz#1a14d6452cbd50790edc7fdaa0aed5a40a35ebb5"
   integrity sha512-5Aw8LLVsDlZsETVMhoMXzqsXwQqr/0vlnBYzIXJbYo2F4yYlhLHs+Ez7Bod7IIQKWkJbJfxrWD7pA1Dw1TKrwA==
 
-is-plain-object@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-5.0.0.tgz#4427f50ab3429e9025ea7d52e9043a9ef4159344"
-  integrity sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==
-
 is-potential-custom-element-name@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.0.tgz#0c52e54bcca391bb2c494b21e8626d7336c6e397"
@@ -10477,6 +10420,11 @@ luxon@^1.22.0:
   resolved "https://registry.npmjs.org/luxon/-/luxon-1.24.1.tgz#a8383266131ed4eaed4b5f430f96f3695403a52a"
   integrity sha512-CgnIMKAWT0ghcuWFfCWBnWGOddM0zu6c4wZAWmD0NN7MZTnro0+833DF6tJep+xlxRPg4KtsYEHYLfTMBQKwYg==
 
+macos-release@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/macos-release/-/macos-release-3.1.0.tgz#6165bb0736ae567ed6649e36ce6a24d87cbb7aca"
+  integrity sha512-/M/R0gCDgM+Cv1IuBG1XGdfTFnMEG6PZeT+KGWHO/OG+imqmaD9CH5vHBTycEM3+Kc4uG2Il+tFAuUWLqQOeUA==
+
 macos-release@^2.2.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/macos-release/-/macos-release-2.4.1.tgz#64033d0ec6a5e6375155a74b1a1eba8e509820ac"
@@ -11156,7 +11104,7 @@ node-fetch@2.6.0, node-fetch@^2.3.0, node-fetch@^2.5.0, node-fetch@^2.6.0:
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
-node-fetch@2.6.7, node-fetch@^2.6.7:
+node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
@@ -11624,7 +11572,7 @@ os-homedir@^1.0.0:
   resolved "https://registry.npmjs.org/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
   integrity sha1-/7xJiDNuDoM94MFox+8VISGqf7M=
 
-os-name@^3.0.0, os-name@^3.1.0:
+os-name@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/os-name/-/os-name-3.1.0.tgz#dec19d966296e1cd62d701a5a66ee1ddeae70801"
   integrity sha512-h8L+8aNjNcMpo/mAIBPn5PXCM16iyPGjHNWo6U1YO8sJTMHtEtyczI6QJnLoplswm6goopQkqc7OAnjhWcugVg==
@@ -14752,13 +14700,6 @@ unique-string@^2.0.0:
   dependencies:
     crypto-random-string "^2.0.0"
 
-universal-user-agent@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/universal-user-agent/-/universal-user-agent-3.0.0.tgz#4cc88d68097bffd7ac42e3b7c903e7481424b4b9"
-  integrity sha512-T3siHThqoj5X0benA5H0qcDnrKGXzU8TKoX15x/tQHw1hQBvIEBHjxQ2klizYsqBOO/Q+WuxoQUihadeeqDnoA==
-  dependencies:
-    os-name "^3.0.0"
-
 universal-user-agent@^4.0.0:
   version "4.0.1"
   resolved "https://registry.npmjs.org/universal-user-agent/-/universal-user-agent-4.0.1.tgz#fd8d6cb773a679a709e967ef8288a31fcc03e557"
@@ -14864,11 +14805,6 @@ url-parse-lax@^3.0.0:
   integrity sha1-FrXK/Afb42dsGxmZF3gj1lA6yww=
   dependencies:
     prepend-http "^2.0.0"
-
-url-template@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
-  integrity sha512-XdVKMF4SJ0nP/O7XIPB0JwAEuT9lDIYnNsK8yGVe43y0AWoKeJNdv3ZNWh7ksJ6KqQFjOO6ox/VEitLnaVNufw==
 
 url-to-options@^1.0.1:
   version "1.0.1"
