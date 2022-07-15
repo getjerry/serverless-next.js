@@ -61,7 +61,6 @@
     "jest-when": "^2.7.2",
     "lerna": "^3.22.1",
     "lint-staged": "^10.2.11",
-    "macos-release": "3.1.0",
     "next": "^9.4.4",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
