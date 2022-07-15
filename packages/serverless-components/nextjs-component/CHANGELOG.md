@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0-alpha.5](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.24.0-alpha.4...@getjerry/serverless-next@1.24.0-alpha.5) (2022-07-15)
+
+### Features
+
+- retry aws ([6f5be05](https://github.com/getjerry/serverless-next.js/commit/6f5be05ef6e71110952ef6677a9df81f851ab0ea))
+
 # [1.24.0-alpha.4](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.24.0-alpha.3...@getjerry/serverless-next@1.24.0-alpha.4) (2022-07-15)
 
 ### Features
