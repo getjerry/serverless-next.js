@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0-alpha.6](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.24.0-alpha.5...@getjerry/serverless-next@1.24.0-alpha.6) (2022-07-15)
+
+### Features
+
+- retry cloudfront ([d35d0e1](https://github.com/getjerry/serverless-next.js/commit/d35d0e15978502e1e6370550a04abac3cc2185a7))
+
 # [1.24.0-alpha.5](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@1.24.0-alpha.4...@getjerry/serverless-next@1.24.0-alpha.5) (2022-07-15)
 
 ### Features
