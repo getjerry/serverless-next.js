@@ -72,7 +72,7 @@ class NextjsComponent extends Component {
       Error.stackTraceLimit = 100;
     }
 
-    // Configure AWS retry
+    // Configure AWS retry.
     if (AWS?.Config) {
       new AWS.Config({
         maxRetries: parseInt(process.env.SLS_NEXT_MAX_RETRIES ?? "10"),
