@@ -1,6 +1,7 @@
 import { Component } from "@serverless/core";
 import { pathExists, readJSON } from "fs-extra";
 import { join, resolve } from "path";
+import AWS from "aws-sdk";
 import { Builder } from "@getjerry/lambda-at-edge";
 import {
   OriginRequestApiHandlerManifest,
@@ -53,6 +54,8 @@ class NextjsComponent extends Component {
   async default(
     inputs: ServerlessComponentInputs = {}
   ): Promise<DeploymentResult> {
+    this.initialize();
+
     const params = populateNames(inputs);
 
     if (params.build !== false) {
@@ -61,6 +64,21 @@ class NextjsComponent extends Component {
     }
 
     return this.deploy(params);
+  }
+
+  initialize(): void {
+    // Improve stack trace by increasing number of lines shown
+    if (this.context.instance.debugMode) {
+      Error.stackTraceLimit = 100;
+    }
+
+    // Configure AWS retry
+    if (AWS?.Config) {
+      new AWS.Config({
+        maxRetries: parseInt(process.env.SLS_NEXT_MAX_RETRIES ?? "10"),
+        retryDelayOptions: { base: 200 }
+      });
+    }
   }
 
   readDefaultBuildManifest(
