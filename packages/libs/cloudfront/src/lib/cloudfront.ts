@@ -26,7 +26,11 @@ export type Credentials = {
 export default ({
   credentials
 }: CloudFrontClientFactoryOptions): CloudFrontClient => {
-  const cloudFront = new AWS.CloudFront({ credentials });
+  const cloudFront = new AWS.CloudFront({
+    credentials,
+    maxRetries: 20,
+    retryDelayOptions: { base: 200 }
+  });
 
   return {
     createInvalidation: async (
