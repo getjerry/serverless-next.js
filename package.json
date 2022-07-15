@@ -43,6 +43,7 @@
     "@babel/preset-typescript": "^7.10.4",
     "@getjerry/lambda-at-edge": "link:./packages/libs/lambda-at-edge",
     "@getjerry/next-aws-cloudfront": "link:./packages/compat-layers/lambda-at-edge-compat",
+    "@octokit/rest": "16.28.4",
     "@types/fs-extra": "^9.0.1",
     "@types/jest": "^26.0.3",
     "@types/react": "^16.9.41",
