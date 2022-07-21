@@ -771,10 +771,8 @@ class NextjsComponent extends Component {
 
     const cloudFrontOutputs = await promiseRetry(
       { retries: 10, randomize: true, maxRetryTime: 10 * 1000 },
-      async (retry, attempt) => {
-        this.context.debug(`Update CloudFront retrying: attempt ${attempt}`);
-
-        return cloudFront({
+      async (retry, attempt) =>
+        cloudFront({
           distributionId: cloudFrontDistributionId,
           defaults,
           origins: cloudFrontOrigins,
@@ -802,13 +800,15 @@ class NextjsComponent extends Component {
             RETRYABLE_UPDATE_CLOUDFRONT_DISTRIBUTION_ERRORS.includes(code);
 
           if (shouldRetry) {
+            this.context.debug(
+              `Update CloudFront retrying: attempt ${attempt}`
+            );
             this.context.debug(`retrying because error: ${code}`);
             retry(error);
           }
 
           throw error;
-        });
-      }
+        })
     );
 
     let appUrl = cloudFrontOutputs.url;
