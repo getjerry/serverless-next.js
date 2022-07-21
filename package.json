@@ -45,6 +45,7 @@
     "@getjerry/next-aws-cloudfront": "link:./packages/compat-layers/lambda-at-edge-compat",
     "@types/fs-extra": "^9.0.1",
     "@types/jest": "^26.0.3",
+    "@types/prettier": "2.4.2",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "@types/webpack": "^4.41.18",
@@ -129,6 +130,7 @@
   },
   "resolutions": {
     "which": "^2.0.1",
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.19",
+    "os-name": "5.0.1"
   }
 }
