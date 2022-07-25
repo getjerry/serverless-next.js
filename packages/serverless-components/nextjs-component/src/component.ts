@@ -771,7 +771,9 @@ class NextjsComponent extends Component {
 
     const cloudFrontOutputs = await promiseRetry(
       {
+        // max retry count
         retries: 10,
+        // with jitter
         randomize: true,
         // first retry start with 5s delay
         minTimeout: 5 * 1000,
