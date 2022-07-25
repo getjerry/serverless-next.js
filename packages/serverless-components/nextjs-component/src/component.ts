@@ -770,7 +770,14 @@ class NextjsComponent extends Component {
     }
 
     const cloudFrontOutputs = await promiseRetry(
-      { retries: 10, randomize: true, maxRetryTime: 10 * 1000 },
+      {
+        retries: 10,
+        randomize: true,
+        // first retry start with 5s delay
+        minTimeout: 5 * 1000,
+        // max delay between retries is 2min
+        maxTimeout: 120 * 1000
+      },
       async (retry, attempt) =>
         cloudFront({
           distributionId: cloudFrontDistributionId,
