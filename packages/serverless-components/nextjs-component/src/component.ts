@@ -35,7 +35,7 @@ import toNumber from "lodash/toNumber";
 import promiseRetry from "promise-retry";
 import { AWSError } from "aws-sdk";
 
-// Message when deployment is explicitly skipped.
+// Message when deployment is explicitly skipped
 const SKIPPED_DEPLOY = "SKIPPED_DEPLOY";
 
 export type DeploymentResult = {
