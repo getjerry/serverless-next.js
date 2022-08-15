@@ -16,6 +16,8 @@ export class ETag {
   update(chunk: string): ETag {
     const len = chunk.length;
 
+    console.log(JSON.stringify(chunk));
+
     if (this.bytes + len < this.partSizeInBytes) {
       this.sums[this.part].update(chunk);
       this.bytes += len;
