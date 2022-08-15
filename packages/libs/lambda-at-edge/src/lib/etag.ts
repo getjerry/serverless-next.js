@@ -14,21 +14,18 @@ export class ETag {
   }
 
   update(chunk: string): ETag {
-    // found sometimes chunk is not string but an object.
-    const stringifiedChunk = JSON.stringify(chunk);
-
-    const len = stringifiedChunk.length;
+    const len = chunk.length;
 
     if (this.bytes + len < this.partSizeInBytes) {
-      this.sums[this.part].update(stringifiedChunk);
+      this.sums[this.part].update(chunk);
       this.bytes += len;
     } else {
       const bytesNeeded = this.partSizeInBytes - this.bytes;
-      this.sums[this.part].update(stringifiedChunk.slice(0, bytesNeeded));
+      this.sums[this.part].update(chunk.slice(0, bytesNeeded));
       this.part++;
       this.sums.push(createHash("md5"));
       this.bytes = len - bytesNeeded;
-      this.sums[this.part].update(stringifiedChunk.slice(bytesNeeded, len));
+      this.sums[this.part].update(chunk.slice(bytesNeeded, len));
     }
 
     return this;
