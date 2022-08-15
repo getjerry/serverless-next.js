@@ -5,7 +5,7 @@ import { debug } from "../lib/console";
 export class Page {
   constructor(
     private readonly json: Record<string, unknown>,
-    // TODO: support older version
+    // TODO: support older version.
     private readonly html: { _result: string }
   ) {}
 
