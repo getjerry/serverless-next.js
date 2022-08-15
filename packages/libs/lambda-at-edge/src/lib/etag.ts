@@ -14,7 +14,7 @@ export class ETag {
   }
 
   update(chunk: string): ETag {
-    // found sometimes chunk is not string but an object.
+    // found sometimes chunk is not string but an object
     const stringifiedChunk = JSON.stringify(chunk);
 
     const len = stringifiedChunk.length;
