@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-alpha.13](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.12...@getjerry/lambda-at-edge@1.12.0-alpha.13) (2022-08-15)
+
+### Features
+
+- upgrade nft package ([c9fc6e5](https://github.com/getjerry/serverless-next.js/commit/c9fc6e52eaa636a112aa0828879047298a08fda6))
+
 # [1.12.0-alpha.12](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.9...@getjerry/lambda-at-edge@1.12.0-alpha.12) (2022-08-15)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
