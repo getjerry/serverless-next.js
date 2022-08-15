@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.11.6...@getjerry/lambda-at-edge@1.12.0-alpha.0) (2022-08-15)
+
+### Features
+
+- add missing js file for nextjs12 ([#43](https://github.com/getjerry/serverless-next.js/issues/43)) ([73573b1](https://github.com/getjerry/serverless-next.js/commit/73573b104591df924a7839b6adce61e59b272af0))
+
 ## [1.9.14](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.9.13...@getjerry/lambda-at-edge@1.9.14) (2022-01-11)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
