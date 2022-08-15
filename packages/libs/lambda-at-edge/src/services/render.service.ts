@@ -6,7 +6,7 @@ export class Page {
   constructor(
     private readonly json: Record<string, unknown>,
     // TODO: support older version.
-    private readonly html: { _result: string }
+    private readonly html: string | { _result: string }
   ) {}
 
   public getHtmlEtag() {
@@ -18,7 +18,7 @@ export class Page {
   }
 
   public getHtmlBody() {
-    return this.html._result;
+    return typeof this.html === "string" ? this.html : this.html._result;
   }
 
   public getJsonBody() {
