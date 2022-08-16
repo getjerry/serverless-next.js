@@ -7,7 +7,6 @@ import { renderPageToHtml } from "./utils/render.util";
 export class Page {
   constructor(
     private readonly json: Record<string, unknown>,
-    // TODO: support older version.
     private readonly html: string
   ) {}
 
