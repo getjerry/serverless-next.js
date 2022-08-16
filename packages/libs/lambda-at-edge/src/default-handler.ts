@@ -656,9 +656,8 @@ const handleOriginRequest = async ({
       }
 
       rewrittenUri = request.uri;
-      const [customRewriteUriPath, customRewriteUriQuery] = customRewrite.split(
-        "?"
-      );
+      const [customRewriteUriPath, customRewriteUriQuery] =
+        customRewrite.split("?");
       request.uri = customRewriteUriPath;
       if (request.querystring) {
         request.querystring = `${request.querystring}${
@@ -934,7 +933,22 @@ const handleOriginResponse = async ({
 
     debug(`[blocking-fallback] rendered res: ${JSON.stringify(renderedRes)}`);
 
-    const { renderOpts, html } = renderedRes;
+    const { renderOpts, html: htmlResult } = renderedRes;
+
+    let html;
+    try {
+      if (typeof htmlResult === "string") {
+        html = htmlResult; // Next.js < 11.1
+      } else {
+        html = htmlResult?._result || ""; // Next >= 12.1.1
+      }
+    } catch (e) {
+      // Fallback to using renderReqToHtml without renderMode specified,
+      // which will render html based on the page's renderReqToHtml,
+      // which should always work (but adds another *warm* render cost)
+      console.log("Falling back to using page's rendering function for html");
+      html = (await page.renderReqToHTML(req, res)) as unknown as string;
+    }
 
     debug(
       `[blocking-fallback] rendered page, uri: ${uri}, ${
@@ -1045,11 +1059,26 @@ const handleOriginResponse = async ({
     );
 
     const isSSG = !!page.getStaticProps;
-    const { renderOpts, html } = await page.renderReqToHTML(
+    const { renderOpts, html: htmlResult } = await page.renderReqToHTML(
       req,
       res,
       "passthrough"
     );
+
+    let html;
+    try {
+      if (typeof htmlResult === "string") {
+        html = htmlResult; // Next.js < 11.1
+      } else {
+        html = htmlResult?._result || ""; // Next >= 12.1.1
+      }
+    } catch (e) {
+      // Fallback to using renderReqToHtml without renderMode specified,
+      // which will render html based on the page's renderReqToHtml,
+      // which should always work (but adds another *warm* render cost)
+      console.log("Falling back to using page's rendering function for html");
+      html = (await page.renderReqToHTML(req, res)) as unknown as string;
+    }
 
     debug(
       `[origin-response] rendered page, uri: ${uri}, pagePath: ${pagePath}, opts: ${JSON.stringify(
