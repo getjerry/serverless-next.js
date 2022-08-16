@@ -36,7 +36,6 @@ export const renderPageToHtml = async (
   } else {
     if (htmlResult) {
       html = await htmlResult.toUnchunkedString?.(); // Next >= 12
-
       if (!html) {
         try {
           html = await resultsToString([htmlResult]); // Next >= 11.1.1
