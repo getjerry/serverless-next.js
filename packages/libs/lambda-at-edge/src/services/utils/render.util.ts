@@ -1,3 +1,6 @@
+import { IncomingMessage, ServerResponse } from "http";
+import Observable from "zen-observable";
+
 /**
  * Render to HTML helper. Starting in Next.js 11.1 a change was introduced so renderReqToHTML no longer returns a string.
  * See: https://github.com/vercel/next.js/pull/27319
@@ -7,9 +10,6 @@
  * @param res
  * @param renderMode
  */
-import { IncomingMessage, ServerResponse } from "http";
-import Observable from "zen-observable";
-
 export const renderPageToHtml = async (
   page: {
     renderReqToHTML: (
