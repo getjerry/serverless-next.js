@@ -5,7 +5,6 @@ export function debug(message: string): void {
     return;
   }
 
-  console.log("DEPENG VERSION MARK");
   console.log(message);
 }
 
