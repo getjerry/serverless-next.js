@@ -8,7 +8,6 @@
  * @param renderMode
  */
 import { IncomingMessage, ServerResponse } from "http";
-import { BLOCKED_PAGES } from "next/constants";
 import Observable from "zen-observable";
 
 export const renderPageToHtml = async (
@@ -57,10 +56,6 @@ export const renderPageToHtml = async (
 
   return { html, renderOpts };
 };
-
-export function isBlockedPage(pathname: string): boolean {
-  return BLOCKED_PAGES.includes(pathname);
-}
 
 export type RenderResult = Observable<string>;
 
