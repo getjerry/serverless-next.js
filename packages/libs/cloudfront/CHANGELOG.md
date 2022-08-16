@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1-alpha.0](https://github.com/serverless-nextjs/serverless-next.js/compare/@getjerry/cloudfront@2.0.0...@getjerry/cloudfront@2.0.1-alpha.0) (2022-08-16)
+
+### Bug Fixes
+
+- upgrade packages to fix ts errors ([0c8629c](https://github.com/serverless-nextjs/serverless-next.js/commit/0c8629cb0886815dbc04729cba95690cf1dd76e7))
+
 # [1.2.0-alpha.0](https://github.com/serverless-nextjs/serverless-next.js/compare/@getjerry/cloudfront@1.1.11...@getjerry/cloudfront@1.2.0-alpha.0) (2022-07-15)
 
 ### Features
