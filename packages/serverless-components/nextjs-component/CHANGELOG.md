@@ -3,34 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.0.5-alpha.14](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.13...@getjerry/serverless-next@2.0.5-alpha.14) (2022-08-16)
-
-### Bug Fixes
-
-- upgrade packages to fix ts errors ([0c8629c](https://github.com/getjerry/serverless-next.js/commit/0c8629cb0886815dbc04729cba95690cf1dd76e7))
-
-## [2.0.5-alpha.13](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.12...@getjerry/serverless-next@2.0.5-alpha.13) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/serverless-next
-
-## [2.0.5-alpha.12](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.9...@getjerry/serverless-next@2.0.5-alpha.12) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/serverless-next
-
-## [2.0.5-alpha.11](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.9...@getjerry/serverless-next@2.0.5-alpha.11) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/serverless-next
-
-## [2.0.5-alpha.10](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.9...@getjerry/serverless-next@2.0.5-alpha.10) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/serverless-next
-
-## [2.0.5-alpha.9](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.6...@getjerry/serverless-next@2.0.5-alpha.9) (2022-08-15)
-
-### Bug Fixes
-
-- html string ([#45](https://github.com/getjerry/serverless-next.js/issues/45)) ([6920106](https://github.com/getjerry/serverless-next.js/commit/6920106340aeb42d00b97107313b18e42f5da385))
-
 ## [2.0.5-alpha.8](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.7...@getjerry/serverless-next@2.0.5-alpha.8) (2022-08-15)
 
 **Note:** Version bump only for package @getjerry/serverless-next

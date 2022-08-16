@@ -3,40 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.12.0-alpha.14](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.13...@getjerry/lambda-at-edge@1.12.0-alpha.14) (2022-08-16)
-
-### Bug Fixes
-
-- upgrade packages to fix ts errors ([0c8629c](https://github.com/getjerry/serverless-next.js/commit/0c8629cb0886815dbc04729cba95690cf1dd76e7))
-
-# [1.12.0-alpha.13](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.12...@getjerry/lambda-at-edge@1.12.0-alpha.13) (2022-08-15)
-
-### Features
-
-- upgrade nft package ([c9fc6e5](https://github.com/getjerry/serverless-next.js/commit/c9fc6e52eaa636a112aa0828879047298a08fda6))
-
-# [1.12.0-alpha.12](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.9...@getjerry/lambda-at-edge@1.12.0-alpha.12) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/lambda-at-edge
-
-# [1.12.0-alpha.11](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.9...@getjerry/lambda-at-edge@1.12.0-alpha.11) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/lambda-at-edge
-
-# [1.12.0-alpha.10](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.9...@getjerry/lambda-at-edge@1.12.0-alpha.10) (2022-08-15)
-
-**Note:** Version bump only for package @getjerry/lambda-at-edge
-
-# [1.12.0-alpha.9](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.6...@getjerry/lambda-at-edge@1.12.0-alpha.9) (2022-08-15)
-
-### Bug Fixes
-
-- html string ([#45](https://github.com/getjerry/serverless-next.js/issues/45)) ([6920106](https://github.com/getjerry/serverless-next.js/commit/6920106340aeb42d00b97107313b18e42f5da385))
-
-### Features
-
-- support next12 ([0f676cf](https://github.com/getjerry/serverless-next.js/commit/0f676cf75c8d63e4b1f6a70c467fbee3c2af23d2))
-
 # [1.12.0-alpha.8](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.7...@getjerry/lambda-at-edge@1.12.0-alpha.8) (2022-08-15)
 
 ### Bug Fixes

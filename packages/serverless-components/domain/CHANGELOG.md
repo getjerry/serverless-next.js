@@ -3,12 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.12-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/domain@1.1.11...@getjerry/domain@1.1.12-alpha.0) (2022-08-16)
-
-### Bug Fixes
-
-- upgrade packages to fix ts errors ([0c8629c](https://github.com/getjerry/serverless-next.js/commit/0c8629cb0886815dbc04729cba95690cf1dd76e7))
-
 ## [1.1.2](https://github.com/getjerry/serverless-next.js/compare/@getjerry/domain@1.1.2-alpha.0...@getjerry/domain@1.1.2) (2022-01-07)
 
 **Note:** Version bump only for package @getjerry/domain
