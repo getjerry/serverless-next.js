@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.2-alpha.4](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.13.2-alpha.3...@getjerry/lambda-at-edge@1.13.2-alpha.4) (2022-10-19)
+
+### Bug Fixes
+
+- fix showing redirect props ([6b3ea8c](https://github.com/getjerry/serverless-next.js/commit/6b3ea8c6d3945c345a3dc7c805279b670677e62d))
+
 ## [1.13.2-alpha.3](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.13.2-alpha.2...@getjerry/lambda-at-edge@1.13.2-alpha.3) (2022-08-22)
 
 ### Bug Fixes
