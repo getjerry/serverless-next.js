@@ -1,8 +1,7 @@
 import { pathToRegexp } from "path-to-regexp";
-import murmurhash from "murmurhash";
 import { debug } from "./console";
 import {
-  ExperimentGroup,
+  ExperimentGroups,
   OriginRequestDefaultHandlerManifest
 } from "../../types";
 import { CloudFrontRequest } from "aws-lambda";
@@ -153,24 +152,13 @@ export const checkAndRewriteUrl = (
 };
 
 const rewriteUrlWithExperimentGroups = (
-  experimentGroups: ExperimentGroup[],
-  request: CloudFrontRequest
+  experimentGroups: ExperimentGroups[],
+  requestUri: string
 ) => {
-  const clientIp = request.clientIp;
+  // TODO Split algorithm
 
-  // gen hash map: [{url: '/car-insurance/information', ratio: 25}] => [25 zeros]
-  const hashMap = experimentGroups.reduce((acc, cur, index) => {
-    acc = acc.concat(Array.from({ length: cur.ratio }, () => index));
-    return acc;
-  }, [] as number[]);
-
-  const hashIndex = murmurhash.v2(clientIp) % 100;
-
-  const res = experimentGroups[hashMap[hashIndex]].url;
-
-  debug(`[rewriteUrlWithExperimentGroups] ${clientIp}, ${hashIndex}, ${res}}`);
-
-  return res;
+  // just for test
+  return Math.random() > 0.5 ? experimentGroups[0].url : requestUri;
 };
 /**
  *
@@ -196,7 +184,10 @@ export const checkABTestUrl = (
     const experimentGroups = abTest.experimentGroups;
 
     if (isUriMatch(originUrl, requestUri)) {
-      request.uri = rewriteUrlWithExperimentGroups(experimentGroups, request);
+      request.uri = rewriteUrlWithExperimentGroups(
+        experimentGroups,
+        requestUri
+      );
 
       // adjust cache-related headers, let cloudfront not do caching
       if (request.headers && request.headers["cache-control"]) {

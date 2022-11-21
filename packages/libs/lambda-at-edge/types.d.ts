@@ -187,11 +187,11 @@ export type UrlRewriteList = {
   originUrlParams: string | string[];
 }[];
 
-export type ExperimentGroup = {
+export type ExperimentGroups = {
   url: string;
   ratio: number;
 };
 export type ABTest = {
   originUrl: string;
-  experimentGroups: ExperimentGroup[];
+  experimentGroups: ExperimentGroups[];
 };
