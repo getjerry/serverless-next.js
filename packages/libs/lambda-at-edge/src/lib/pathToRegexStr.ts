@@ -173,13 +173,15 @@ const rewriteUrlWithExperimentGroups = (
 
   const hashIndex = murmurhash.v2(clientIp) % 100;
 
-  const res = experimentGroups[hashMap[hashIndex]]
+  const result = experimentGroups[hashMap[hashIndex]]
     ? experimentGroups[hashMap[hashIndex]].url
     : originUrl;
 
-  debug(`[rewriteUrlWithExperimentGroups]: ${clientIp}, ${hashIndex}, ${res}}`);
+  debug(
+    `[rewriteUrlWithExperimentGroups]: ${clientIp}, ${hashIndex}, ${result}}`
+  );
 
-  return res;
+  return `${result}.html`;
 };
 /**
  *
