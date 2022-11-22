@@ -1024,7 +1024,7 @@ const handleOriginResponse = async ({
         "cache-control": [
           {
             key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=2678400, must-revalidate"
+            value: "public, max-age=0, s-maxage=2678401, must-revalidate"
           }
         ]
       },
@@ -1158,13 +1158,17 @@ const handleOriginResponse = async ({
               CacheControl ??
               (hasFallback.fallback // Use cache-control from S3 response if possible, otherwise use defaults
                 ? "public, max-age=0, s-maxage=0, must-revalidate" // fallback should never be cached
-                : "public, max-age=0, s-maxage=2678400, must-revalidate")
+                : "public, max-age=0, s-maxage=2678403, must-revalidate")
           }
         ]
       },
       body: bodyString
     };
-    debug(`[origin-response] fallback response: ${JSON.stringify(out)}`);
+    debug(
+      `[origin-response] fallback response: ${JSON.stringify(
+        out
+      )}, ${JSON.stringify(CacheControl)}`
+    );
     return out;
   }
 };
@@ -1323,7 +1327,7 @@ export const generatePermanentPageResponse = async (
       "cache-control": [
         {
           key: "Cache-Control",
-          value: "public, max-age=0, s-maxage=2678400, must-revalidate"
+          value: "public, max-age=0, s-maxage=2678402, must-revalidate"
         }
       ]
     },
