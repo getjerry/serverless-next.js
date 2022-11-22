@@ -212,14 +212,14 @@ export const checkABTestUrl = (
       );
 
       // adjust cache-related headers, let cloudfront not do caching
-      if (request.headers && request.headers["cache-control"]) {
-        request.headers["cache-control"] = [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=0, must-revalidate"
-          }
-        ];
-      }
+      // if (request.headers && request.headers["cache-control"]) {
+      //   request.headers["cache-control"] = [
+      //     {
+      //       key: "Cache-Control",
+      //       value: "public, max-age=0, s-maxage=0, must-revalidate"
+      //     }
+      //   ];
+      // }
       break;
     }
   }
