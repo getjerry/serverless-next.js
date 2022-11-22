@@ -204,6 +204,13 @@ export const checkABTestUrl = (
     const originUrl = abTest.originUrl;
     const experimentGroups = abTest.experimentGroups;
 
+    debug(
+      `[checkABTestUrl]: ${originUrl}, ${requestUri}, ${isUriMatch(
+        originUrl,
+        requestUri
+      )}`
+    );
+
     if (isUriMatch(originUrl, requestUri)) {
       request.uri = rewriteUrlWithExperimentGroups(
         experimentGroups,
