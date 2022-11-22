@@ -159,12 +159,6 @@ const rewriteUrlWithExperimentGroups = (
 ) => {
   const clientIp = request.clientIp;
 
-  debug(
-    `[rewriteUrlWithExperimentGroups] before: ${JSON.stringify(
-      experimentGroups
-    )}, ${originUrl}`
-  );
-
   // gen hash map: [{url: '/car-insurance/information', ratio: 25}] => [25 zeros]
   const hashMap = experimentGroups.reduce((acc, cur, index) => {
     acc = acc.concat(Array.from({ length: cur.ratio }, () => index));
@@ -177,14 +171,12 @@ const rewriteUrlWithExperimentGroups = (
     ? experimentGroups[hashMap[hashIndex]].url
     : originUrl;
 
-  debug(
-    `[rewriteUrlWithExperimentGroups]: ${clientIp}, ${hashIndex}, ${result}}`
-  );
+  debug(`[rewriteUrlWithExperimentGroups]: ${originUrl} -> ${result}}`);
 
   return `${result}.html`;
 };
 /**
- *
+ * Check and parse the abTests field
  * @param manifest
  * @param request
  */
@@ -220,8 +212,7 @@ export const checkABTestUrl = (
         originUrl
       );
 
-      // adjust cache-related headers, let cloudfront not do caching
-      // if (request.headers && request.headers["cache-control"]) {
+      // adjust cache-related headers, let cloudfront not do caching.
       if (request.headers) {
         request.headers["cache-control"] = [
           {
