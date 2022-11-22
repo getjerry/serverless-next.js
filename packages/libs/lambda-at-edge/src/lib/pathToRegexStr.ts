@@ -221,7 +221,8 @@ export const checkABTestUrl = (
       );
 
       // adjust cache-related headers, let cloudfront not do caching
-      if (request.headers && request.headers["cache-control"]) {
+      // if (request.headers && request.headers["cache-control"]) {
+      if (request.headers) {
         request.headers["cache-control"] = [
           {
             key: "Cache-Control",
