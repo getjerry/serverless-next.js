@@ -154,9 +154,16 @@ export const checkAndRewriteUrl = (
 
 const rewriteUrlWithExperimentGroups = (
   experimentGroups: ExperimentGroup[],
-  request: CloudFrontRequest
+  request: CloudFrontRequest,
+  originUrl: string
 ) => {
   const clientIp = request.clientIp;
+
+  debug(
+    `[rewriteUrlWithExperimentGroups] before: ${JSON.stringify(
+      experimentGroups
+    )}, ${originUrl}`
+  );
 
   // gen hash map: [{url: '/car-insurance/information', ratio: 25}] => [25 zeros]
   const hashMap = experimentGroups.reduce((acc, cur, index) => {
@@ -166,7 +173,9 @@ const rewriteUrlWithExperimentGroups = (
 
   const hashIndex = murmurhash.v2(clientIp) % 100;
 
-  const res = experimentGroups[hashMap[hashIndex]].url;
+  const res = experimentGroups[hashMap[hashIndex]]
+    ? experimentGroups[hashMap[hashIndex]].url
+    : originUrl;
 
   debug(`[rewriteUrlWithExperimentGroups]: ${clientIp}, ${hashIndex}, ${res}}`);
 
@@ -196,7 +205,11 @@ export const checkABTestUrl = (
     const experimentGroups = abTest.experimentGroups;
 
     if (isUriMatch(originUrl, requestUri)) {
-      request.uri = rewriteUrlWithExperimentGroups(experimentGroups, request);
+      request.uri = rewriteUrlWithExperimentGroups(
+        experimentGroups,
+        request,
+        originUrl
+      );
 
       // adjust cache-related headers, let cloudfront not do caching
       if (request.headers && request.headers["cache-control"]) {
