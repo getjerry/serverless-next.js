@@ -862,7 +862,9 @@ const handleOriginResponse = async ({
   }
 
   if (status !== "403") {
-    debug(`[origin-response] bypass: ${request.uri}`);
+    debug(
+      `[origin-response] bypass: ${request.uri}, ${JSON.stringify(response)}`
+    );
 
     // Set 404 status code for 404.html page. We do not need normalised URI as it will always be "/404.html"
     if (request.uri === "/404.html") {
@@ -991,7 +993,7 @@ const handleOriginResponse = async ({
         Key: jsonPath,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678404, must-revalidate"
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1000,7 +1002,7 @@ const handleOriginResponse = async ({
         }static-pages/${manifest.buildId}${decodeURI(uri)}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678405, must-revalidate"
       };
 
       debug(`[blocking-fallback] json to s3: ${JSON.stringify(s3JsonParams)}`);
@@ -1075,7 +1077,7 @@ const handleOriginResponse = async ({
         }${decodeURI(uri.replace(/^\//, ""))}`,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678406, must-revalidate"
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1087,7 +1089,7 @@ const handleOriginResponse = async ({
           .replace(".json", ".html")}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678408, must-revalidate"
       };
 
       debug(region);

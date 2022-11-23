@@ -373,6 +373,13 @@ class NextjsComponent extends Component {
     // This input is intentionally undocumented but it acts a short-term killswitch in case of any issues with uploading from the built assets.
     // TODO: remove once proven stable.
     if (inputs.uploadStaticAssetsFromBuild ?? true) {
+      this.context.debug(
+        `uploadStaticAssetsFromBuild: ${JSON.stringify(
+          inputs
+        )}?? ${JSON.stringify(defaultBuildManifest)}?? ${JSON.stringify(
+          routesManifest
+        )}`
+      );
       await uploadStaticAssetsFromBuild({
         bucketName: bucketOutputs.name,
         basePath: routesManifest.basePath,
