@@ -594,6 +594,8 @@ const handleOriginRequest = async ({
     );
   }
 
+  debug(`[origin-request] 1`);
+
   // Handle any trailing slash redirects
   let newUri = request.uri;
   if (isDataReq || isPublicFile) {
@@ -618,12 +620,14 @@ const handleOriginRequest = async ({
   }
 
   if (newUri !== request.uri) {
+    debug(`[origin-request] 2, ${newUri};; ${request.uri}`);
     return createRedirectResponse(newUri, request.querystring, 308);
   }
 
   // Handle other custom redirects on the original URI
   const customRedirect = getRedirectPath(request.uri, routesManifest);
   if (customRedirect) {
+    debug(`[origin-request] 3 ${customRedirect}`);
     return createRedirectResponse(
       customRedirect.redirectPath,
       request.querystring,
@@ -653,6 +657,7 @@ const handleOriginRequest = async ({
           }
         );
         await createExternalRewriteResponse(customRewrite, req, res);
+        debug(`[origin-request] 4;; ${responsePromise}`);
         return await responsePromise;
       }
 
@@ -737,7 +742,7 @@ const handleOriginRequest = async ({
     }
 
     addS3HostHeader(request, normalisedS3DomainName);
-
+    debug(`[origin-request] 5, ${request.uri}, ${JSON.stringify(request)}`);
     return request;
   }
 
@@ -752,7 +757,11 @@ const handleOriginRequest = async ({
     request.uri = pagePath.replace("pages", "");
     addS3HostHeader(request, normalisedS3DomainName);
 
-    debug(`[origin-request] [ssr] html response: ${JSON.stringify(request)}`);
+    debug(
+      `[origin-request] [ssr] html response: ${request.uri} ${JSON.stringify(
+        request
+      )}`
+    );
 
     return request;
   }
@@ -825,9 +834,11 @@ const handleOriginRequest = async ({
   setCloudFrontResponseStatus(response, res);
 
   // We want data to be real time when previewing.
-  if (isPreviewRequest) {
-    setCacheControlToNoCache(response);
-  }
+  // if (isPreviewRequest) {
+  //   setCacheControlToNoCache(response);
+  // }
+
+  setCacheControlToNoCache(response);
 
   return response;
 };
