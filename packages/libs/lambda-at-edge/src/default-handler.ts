@@ -229,12 +229,13 @@ const router = (
   };
 };
 
+/**
+ * Whether the uri belongs to the url in the abTests field in the manifest
+ */
 const isAbTestPath = (
   manifest: OriginRequestDefaultHandlerManifest,
   uri: string
 ) => {
-  debug(`[isAbTestPath]: ${JSON.stringify(manifest)};; ${uri}`);
-
   const abTestPaths = manifest.abTests?.reduce((acc, cur) => {
     acc.push(cur.originUrl, ...cur.experimentGroups.map((_) => _.url));
     return acc;
@@ -610,8 +611,6 @@ const handleOriginRequest = async ({
     );
   }
 
-  debug(`[origin-request] 1`);
-
   // Handle any trailing slash redirects
   let newUri = request.uri;
   if (isDataReq || isPublicFile) {
@@ -636,14 +635,12 @@ const handleOriginRequest = async ({
   }
 
   if (newUri !== request.uri) {
-    debug(`[origin-request] 2, ${newUri};; ${request.uri}`);
     return createRedirectResponse(newUri, request.querystring, 308);
   }
 
   // Handle other custom redirects on the original URI
   const customRedirect = getRedirectPath(request.uri, routesManifest);
   if (customRedirect) {
-    debug(`[origin-request] 3 ${customRedirect}`);
     return createRedirectResponse(
       customRedirect.redirectPath,
       request.querystring,
@@ -673,7 +670,6 @@ const handleOriginRequest = async ({
           }
         );
         await createExternalRewriteResponse(customRewrite, req, res);
-        debug(`[origin-request] 4;; ${responsePromise}`);
         return await responsePromise;
       }
 
@@ -758,7 +754,7 @@ const handleOriginRequest = async ({
     }
 
     addS3HostHeader(request, normalisedS3DomainName);
-    debug(`[origin-request] 5, ${request.uri}, ${JSON.stringify(request)}`);
+
     return request;
   }
 
@@ -773,11 +769,7 @@ const handleOriginRequest = async ({
     request.uri = pagePath.replace("pages", "");
     addS3HostHeader(request, normalisedS3DomainName);
 
-    debug(
-      `[origin-request] [ssr] html response: ${request.uri} ${JSON.stringify(
-        request
-      )}`
-    );
+    debug(`[origin-request] [ssr] html response: ${JSON.stringify(request)}`);
 
     return request;
   }
@@ -850,11 +842,9 @@ const handleOriginRequest = async ({
   setCloudFrontResponseStatus(response, res);
 
   // We want data to be real time when previewing.
-  // if (isPreviewRequest) {
-  //   setCacheControlToNoCache(response);
-  // }
-
-  setCacheControlToNoCache(response);
+  if (isPreviewRequest) {
+    setCacheControlToNoCache(response);
+  }
 
   return response;
 };
@@ -889,9 +879,7 @@ const handleOriginResponse = async ({
   }
 
   if (status !== "403") {
-    debug(
-      `[origin-response] bypass: ${request.uri}, ${JSON.stringify(response)}`
-    );
+    debug(`[origin-response] bypass: ${request.uri}`);
 
     // Set 404 status code for 404.html page. We do not need normalised URI as it will always be "/404.html"
     if (request.uri === "/404.html") {
@@ -1013,14 +1001,14 @@ const handleOriginResponse = async ({
         headers: response.headers
       };
     }
-    debug(`[isAbTestPath]: ${uri};; ${isSSG}`);
+
     if (isSSG) {
       const s3JsonParams = {
         Bucket: bucketName,
         Key: jsonPath,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678404, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1109,7 +1097,7 @@ const handleOriginResponse = async ({
         }${decodeURI(uri.replace(/^\//, ""))}`,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678406, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1121,7 +1109,7 @@ const handleOriginResponse = async ({
           .replace(".json", ".html")}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678408, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
       };
 
       debug(region);
@@ -1192,17 +1180,13 @@ const handleOriginResponse = async ({
               CacheControl ??
               (hasFallback.fallback // Use cache-control from S3 response if possible, otherwise use defaults
                 ? "public, max-age=0, s-maxage=0, must-revalidate" // fallback should never be cached
-                : "public, max-age=0, s-maxage=2678403, must-revalidate")
+                : "public, max-age=0, s-maxage=2678400, must-revalidate")
           }
         ]
       },
       body: bodyString
     };
-    debug(
-      `[origin-response] fallback response: ${JSON.stringify(
-        out
-      )}, ${JSON.stringify(CacheControl)}`
-    );
+    debug(`[origin-response] fallback response: ${JSON.stringify(out)}`);
     return out;
   }
 };
@@ -1361,7 +1345,7 @@ export const generatePermanentPageResponse = async (
       "cache-control": [
         {
           key: "Cache-Control",
-          value: "public, max-age=0, s-maxage=2678402, must-revalidate"
+          value: "public, max-age=0, s-maxage=2678400, must-revalidate"
         }
       ]
     },

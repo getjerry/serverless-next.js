@@ -152,6 +152,12 @@ export const checkAndRewriteUrl = (
   debug(`[checkAndRewriteUrl] After: ${request.uri}, ${request.querystring}`);
 };
 
+/**
+ * Calculate the appropriate A/B Test experiment url according to the experimentGroups field in the configuration
+ * @param experimentGroups
+ * @param request
+ * @param originUrl
+ */
 const rewriteUrlWithExperimentGroups = (
   experimentGroups: ExperimentGroup[],
   request: CloudFrontRequest,
@@ -175,6 +181,7 @@ const rewriteUrlWithExperimentGroups = (
 
   return `${result}.html`;
 };
+
 /**
  * Check and parse the abTests field
  * @param manifest
@@ -185,7 +192,7 @@ export const checkABTestUrl = (
   request: CloudFrontRequest
 ): void => {
   debug(
-    `[checkABTestUrl] manifest: ${JSON.stringify(manifest)}, ${JSON.stringify(
+    `[checkABTestUrl] before: ${JSON.stringify(manifest)}, ${JSON.stringify(
       request
     )}`
   );
@@ -198,13 +205,6 @@ export const checkABTestUrl = (
     const originUrl = abTest.originUrl;
     const experimentGroups = abTest.experimentGroups;
 
-    debug(
-      `[checkABTestUrl]: ${originUrl}, ${requestUri}, ${isUriMatch(
-        originUrl,
-        requestUri
-      )}`
-    );
-
     if (isUriMatch(originUrl, requestUri)) {
       request.uri = rewriteUrlWithExperimentGroups(
         experimentGroups,
@@ -212,20 +212,9 @@ export const checkABTestUrl = (
         originUrl
       );
 
-      // adjust cache-related headers, let cloudfront not do caching.
-      if (request.headers) {
-        request.headers["cache-control"] = [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=0, must-revalidate"
-          }
-        ];
-      }
       break;
     }
   }
 
-  debug(
-    `[checkABTestUrl] After: ${request.uri}, ${JSON.stringify(request.headers)}`
-  );
+  debug(`[checkABTestUrl] After: ${request.uri}`);
 };
