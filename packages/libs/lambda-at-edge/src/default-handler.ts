@@ -825,9 +825,11 @@ const handleOriginRequest = async ({
   setCloudFrontResponseStatus(response, res);
 
   // We want data to be real time when previewing.
-  if (isPreviewRequest) {
-    setCacheControlToNoCache(response);
-  }
+  // if (isPreviewRequest) {
+  //   setCacheControlToNoCache(response);
+  // }
+
+  setCacheControlToNoCache(response);
 
   return response;
 };
