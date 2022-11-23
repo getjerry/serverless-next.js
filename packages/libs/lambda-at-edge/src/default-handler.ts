@@ -229,6 +229,22 @@ const router = (
   };
 };
 
+const isAbTestPath = (
+  manifest: OriginRequestDefaultHandlerManifest,
+  uri: string
+) => {
+  debug(`[isAbTestPath]: ${JSON.stringify(manifest)};; ${uri}`);
+
+  const abTestPaths = manifest.abTests?.reduce((acc, cur) => {
+    acc.push(cur.originUrl, ...cur.experimentGroups.map((_) => _.url));
+    return acc;
+  }, [] as string[]);
+
+  return (
+    abTestPaths && abTestPaths.some((_) => uri.split(".html")[0].endsWith(_))
+  );
+};
+
 /**
  * Stale revalidate
  */
@@ -997,7 +1013,7 @@ const handleOriginResponse = async ({
         headers: response.headers
       };
     }
-
+    debug(`[isAbTestPath]: ${uri};; ${isSSG}`);
     if (isSSG) {
       const s3JsonParams = {
         Bucket: bucketName,
@@ -1013,7 +1029,9 @@ const handleOriginResponse = async ({
         }static-pages/${manifest.buildId}${decodeURI(uri)}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678405, must-revalidate"
+        CacheControl: isAbTestPath(manifest, uri)
+          ? "public, max-age=0, s-maxage=0, must-revalidate"
+          : "public, max-age=0, s-maxage=2678400, must-revalidate"
       };
 
       debug(`[blocking-fallback] json to s3: ${JSON.stringify(s3JsonParams)}`);
@@ -1023,6 +1041,7 @@ const handleOriginResponse = async ({
         s3.send(new PutObjectCommand(s3HtmlParams))
       ]);
     }
+
     const htmlOut = {
       status: "200",
       statusDescription: "OK",
@@ -1037,7 +1056,9 @@ const handleOriginResponse = async ({
         "cache-control": [
           {
             key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=2678401, must-revalidate"
+            value: isAbTestPath(manifest, uri)
+              ? "public, max-age=0, s-maxage=0, must-revalidate"
+              : "public, max-age=0, s-maxage=2678400, must-revalidate"
           }
         ]
       },
