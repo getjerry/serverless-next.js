@@ -53,7 +53,7 @@ export async function createNotFoundResponse(
           key: "Cache-Control",
           value:
             CacheControl ??
-            "public, max-age=0, s-maxage=2678400, must-revalidate"
+            "public, max-age=0, s-maxage=2678411, must-revalidate"
         }
       ]
     },

@@ -1089,7 +1089,7 @@ const handleOriginResponse = async ({
           .replace(".json", ".html")}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678407, must-revalidate"
+        CacheControl: "public, max-age=0, s-maxage=2678408, must-revalidate"
       };
 
       debug(region);
