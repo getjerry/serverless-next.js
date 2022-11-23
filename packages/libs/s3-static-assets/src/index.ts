@@ -113,7 +113,7 @@ const uploadStaticAssetsFromBuild = async (
   const htmlPages = await readDirectoryFiles(
     path.join(assetsOutputDirectory, normalizedBasePath, "static-pages")
   );
-
+  console.log("======>>>>>>>", JSON.stringify(htmlPages));
   const htmlPagesUploads = htmlPages
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
@@ -130,6 +130,7 @@ const uploadStaticAssetsFromBuild = async (
           cacheControl: SERVER_NO_CACHE_CACHE_CONTROL_HEADER
         });
       } else {
+        console.log("======>>>>>>>", fileItem.path);
         return s3.uploadFile({
           s3Key,
           filePath: fileItem.path,
