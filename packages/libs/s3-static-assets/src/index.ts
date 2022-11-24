@@ -6,12 +6,7 @@ import filterOutDirectories from "./lib/filterOutDirectories";
 import {
   IMMUTABLE_CACHE_CONTROL_HEADER,
   SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
-  SERVER_CACHE_CONTROL_HEADER,
-  SERVER_CACHE_CONTROL_HEADER1,
-  SERVER_CACHE_CONTROL_HEADER2,
-  SERVER_CACHE_CONTROL_HEADER3,
-  SERVER_CACHE_CONTROL_HEADER4,
-  SERVER_CACHE_CONTROL_HEADER5
+  SERVER_CACHE_CONTROL_HEADER
 } from "./lib/constants";
 import S3ClientFactory, { Credentials } from "./lib/s3";
 import pathToPosix from "./lib/pathToPosix";
@@ -27,6 +22,7 @@ type UploadStaticAssetsOptions = {
   nextStaticDir?: string;
   credentials: Credentials;
   publicDirectoryCache?: PublicDirectoryCache;
+  abTestPaths?: string[];
 };
 
 /**
@@ -130,10 +126,18 @@ const uploadStaticAssetsFromBuild = async (
           cacheControl: SERVER_NO_CACHE_CACHE_CONTROL_HEADER
         });
       } else {
+        const isAbTestPath =
+          options.abTestPaths &&
+          options.abTestPaths.some((_) =>
+            fileItem.path.split(".html")[0].endsWith(_)
+          );
+
         return s3.uploadFile({
           s3Key,
           filePath: fileItem.path,
-          cacheControl: SERVER_CACHE_CONTROL_HEADER1
+          cacheControl: isAbTestPath
+            ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+            : SERVER_CACHE_CONTROL_HEADER
         });
       }
     });
@@ -244,7 +248,7 @@ const uploadStaticAssets = async (
           )
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER2
+        cacheControl: SERVER_CACHE_CONTROL_HEADER
       });
     });
 
@@ -269,7 +273,7 @@ const uploadStaticAssets = async (
         withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER3
+      cacheControl: SERVER_CACHE_CONTROL_HEADER
     });
   });
 
@@ -289,7 +293,7 @@ const uploadStaticAssets = async (
         withBasePath(path.posix.join("static-pages", relativePageFilePath))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER4
+      cacheControl: SERVER_CACHE_CONTROL_HEADER
     });
   });
 
@@ -309,7 +313,7 @@ const uploadStaticAssets = async (
           withBasePath(path.posix.join("static-pages", fallback))
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER5
+        cacheControl: SERVER_CACHE_CONTROL_HEADER
       });
     });
 
