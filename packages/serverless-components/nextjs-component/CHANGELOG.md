@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.1.2-alpha.5...@getjerry/serverless-next@2.2.0-alpha.0) (2022-11-24)
+
+### Bug Fixes
+
+- add more log ([17b3cfa](https://github.com/getjerry/serverless-next.js/commit/17b3cfa7789eb2891dbfe23828e7e42eb9b3f679))
+
+### Features
+
+- Set the cache field ([0b65210](https://github.com/getjerry/serverless-next.js/commit/0b65210a77506f339e9cbe6ebeef7017acb82747))
+
 ## [2.1.2-alpha.5](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.6...@getjerry/serverless-next@2.1.2-alpha.5) (2022-11-23)
 
 ### Bug Fixes
