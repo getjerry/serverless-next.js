@@ -257,7 +257,7 @@ interface RouteConfig {
   initialRevalidateSeconds: number | false;
 }
 
-// find first revalidation interval and use it globally
+// find first revalidation interval and use it globally.
 // if not exists, then will be undefined and may be used to detect if revalidation should be turned on
 const REVALIDATION_CONFIG = Object.values<RouteConfig>(
   PrerenderManifest.routes
