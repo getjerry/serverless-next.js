@@ -21,6 +21,7 @@ import {
   API_LAMBDA_CODE_DIR,
   DEFAULT_LAMBDA_CODE_DIR,
   IMAGE_LAMBDA_CODE_DIR,
+  PRE_CACHE_LAMBDA_ARN,
   RETRYABLE_UPDATE_CLOUDFRONT_DISTRIBUTION_ERRORS
 } from "./constants";
 import type {
@@ -764,6 +765,7 @@ class NextjsComponent extends Component {
       ],
       "lambda@edge": {
         ...defaultLambdaAtEdgeConfig,
+        "viewer-request": `${PRE_CACHE_LAMBDA_ARN}:$LATEST`,
         "origin-request": `${defaultEdgeLambdaOutputs.arn}:${defaultEdgeLambdaPublishOutputs.version}`,
         "origin-response": `${defaultEdgeLambdaOutputs.arn}:${defaultEdgeLambdaPublishOutputs.version}`
       },
