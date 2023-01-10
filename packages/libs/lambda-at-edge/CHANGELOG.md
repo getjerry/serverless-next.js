@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.1](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.0...@getjerry/lambda-at-edge@1.20.0-alpha.1) (2023-01-10)
+
+### Bug Fixes
+
+- compare all props ([3e99789](https://github.com/getjerry/serverless-next.js/commit/3e99789d4da92a133bf684b8b47410712ffbe8ef))
+- compare all props ([6c86d0b](https://github.com/getjerry/serverless-next.js/commit/6c86d0b184ef7d816b1875c48a4ea09795c959a2))
+
 # [1.20.0-alpha.0](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.6...@getjerry/lambda-at-edge@1.20.0-alpha.0) (2023-01-10)
 
 ### Bug Fixes
