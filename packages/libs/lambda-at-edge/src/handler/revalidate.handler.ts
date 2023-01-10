@@ -132,6 +132,10 @@ export class RevalidateHandler {
       omit(newData.pageProps, "generatedAt")
     );
 
+    debug(
+      `[isContentChanged] data compare ${JSON.stringify({ oldData, newData })}`
+    );
+
     return isDataChanged;
   }
 
