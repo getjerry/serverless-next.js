@@ -12,4 +12,4 @@ export const RETRYABLE_UPDATE_CLOUDFRONT_DISTRIBUTION_ERRORS = [
 ];
 
 export const PRE_CACHE_LAMBDA_ARN =
-  "arn:aws:lambda:us-east-1:919341117301:function:modify-cache-key-for-enforce-isr";
+  "arn:aws:lambda:us-east-1:919341117301:function:modify-cache-key-for-enforce-isr:1";

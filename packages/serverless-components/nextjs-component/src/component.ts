@@ -765,7 +765,7 @@ class NextjsComponent extends Component {
       ],
       "lambda@edge": {
         ...defaultLambdaAtEdgeConfig,
-        "viewer-request": `${PRE_CACHE_LAMBDA_ARN}:$LATEST`,
+        "viewer-request": PRE_CACHE_LAMBDA_ARN,
         "origin-request": `${defaultEdgeLambdaOutputs.arn}:${defaultEdgeLambdaPublishOutputs.version}`,
         "origin-response": `${defaultEdgeLambdaOutputs.arn}:${defaultEdgeLambdaPublishOutputs.version}`
       },
