@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0-alpha.2](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.1...@getjerry/serverless-next@2.9.0-alpha.2) (2023-01-10)
+
+### Bug Fixes
+
+- compare all props ([1f19123](https://github.com/getjerry/serverless-next.js/commit/1f1912337cdf4a78f1af0430dd40a8ccd7a18aa6))
+
 # [2.9.0-alpha.1](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.0...@getjerry/serverless-next@2.9.0-alpha.1) (2023-01-10)
 
 **Note:** Version bump only for package @getjerry/serverless-next
