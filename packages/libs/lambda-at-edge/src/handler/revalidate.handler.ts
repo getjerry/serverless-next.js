@@ -12,6 +12,7 @@ import { debug, getEnvironment, isDevMode } from "../lib/console";
 import { Resource, ResourceForIndexPage } from "../services/resource";
 // @ts-ignore
 import * as _ from "../lib/lodash";
+import { isEqual, omit } from "lodash";
 
 export class RevalidateHandler {
   constructor(
@@ -126,40 +127,12 @@ export class RevalidateHandler {
 
     const newData: S3JsonFile = candidatePage.getJson();
 
-    // some pages may do not have contentful data.
-    const isContentFulDataChanged =
-      !_.isEmpty(oldData.pageProps?.contentfulCache) &&
-      !_.isEqual(
-        oldData.pageProps?.contentfulCache,
-        newData.pageProps?.contentfulCache
-      );
-
-    // some pages may do not have ApolloStateData.
-    const isApolloStateDataChanged =
-      !_.isEmpty(oldData.pageProps?.initialApolloState) &&
-      !_.isEqual(
-        oldData.pageProps?.initialApolloState,
-        newData.pageProps?.initialApolloState
-      );
-
-    debug(
-      `[isContentChanged] old contentFul is empty : ${_.isEmpty(
-        oldData.pageProps?.contentfulCache
-      )}. old apolloState data is empty : ${_.isEmpty(
-        oldData.pageProps?.initialApolloState
-      )}`
-    );
-    debug(
-      `[isContentChanged] contentFul is equal : ${_.isEqual(
-        oldData.pageProps?.contentfulCache,
-        newData.pageProps?.contentfulCache
-      )}. apolloState data is equal : ${_.isEqual(
-        oldData.pageProps?.initialApolloState,
-        newData.pageProps?.initialApolloState
-      )}. `
+    const isDataChanged = !isEqual(
+      omit(oldData.pageProps, "generatedAt"),
+      omit(newData.pageProps, "generatedAt")
     );
 
-    return isContentFulDataChanged || isApolloStateDataChanged;
+    return isDataChanged;
   }
 
   /**
