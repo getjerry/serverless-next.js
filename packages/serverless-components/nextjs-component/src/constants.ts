@@ -10,6 +10,3 @@ export const RETRYABLE_UPDATE_CLOUDFRONT_DISTRIBUTION_ERRORS = [
   "PreconditionFailed", // normally because ETag changed, means distribution already updated to newer version.
   "OperationAborted" // specific that distribution is in updating status, wait and retry later.
 ];
-
-export const PRE_CACHE_LAMBDA_ARN =
-  "arn:aws:lambda:us-east-1:919341117301:function:modify-cache-key-for-enforce-isr:1";
