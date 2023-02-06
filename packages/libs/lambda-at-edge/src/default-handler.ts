@@ -1096,6 +1096,13 @@ const handleOriginResponse = async ({
       // and more IMPORTANT, 'html' will be a json string instead of html string in this case
       !renderOpts?.pageData?.pageProps?.__N_REDIRECT;
 
+    debug(
+      `['TEST-404'] should persist: ${shouldPersist}, data: ${{
+        renderOpts,
+        html
+      }}`
+    );
+
     if (shouldPersist) {
       const s3JsonParams = {
         Bucket: bucketName,
