@@ -24,13 +24,10 @@ export const renderPageToHtml = async (
   res: ServerResponse,
   renderMode?: "export" | "passthrough" | true
 ): Promise<{ html: string; renderOpts: Record<string, any> }> => {
-  const { renderOpts, html: htmlResult } = await page.renderReqToHTML(
-    req,
-    res,
-    renderMode
-  );
+  const s = await page.renderReqToHTML(req, res, renderMode);
+  const { renderOpts, html: htmlResult } = s;
 
-  console.log(`[TEST-404] renderPageToHtml: ${htmlResult}`);
+  console.log(`[TEST-404] renderPageToHtml: ${JSON.stringify(s)}`);
 
   let html = undefined;
   if (typeof htmlResult === "string") {
