@@ -24,10 +24,11 @@ export const renderPageToHtml = async (
   res: ServerResponse,
   renderMode?: "export" | "passthrough" | true
 ): Promise<{ html: string; renderOpts: Record<string, any> }> => {
-  const s = await page.renderReqToHTML(req, res, renderMode);
-  const { renderOpts, html: htmlResult } = s;
-
-  console.log(`[TEST-404] renderPageToHtml: ${JSON.stringify(s)}`);
+  const { renderOpts, html: htmlResult } = await page.renderReqToHTML(
+    req,
+    res,
+    renderMode
+  );
 
   let html = undefined;
   if (typeof htmlResult === "string") {
@@ -49,7 +50,9 @@ export const renderPageToHtml = async (
     console.log(
       "html is empty, falling back to using page's rendering function for html"
     );
-    html = (await page.renderReqToHTML(req, res)) as unknown as string;
+    html = renderOpts.idNotFound
+      ? ""
+      : ((await page.renderReqToHTML(req, res)) as unknown as string);
   }
 
   return { html, renderOpts };
