@@ -995,7 +995,7 @@ const handleOriginResponse = async ({
 
       const location = redirectResp?.headers?.location[0].value || "";
 
-      // Hack around 'read only' header changed error from aws
+      // Hack around 'read only' header changed error from aws.
       response.headers["location"] = [
         {
           key: "Location",
