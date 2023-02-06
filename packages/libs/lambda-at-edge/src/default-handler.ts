@@ -76,6 +76,7 @@ import {
   sentry_flush_timeout
 } from "./lib/sentry";
 import { renderPageToHtml } from "./services/utils/render.util";
+import { isEmpty } from "lodash";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -1094,7 +1095,10 @@ const handleOriginResponse = async ({
       isSSG &&
       // should redirect, json data no need to persist,
       // and more IMPORTANT, 'html' will be a json string instead of html string in this case
-      !renderOpts?.pageData?.pageProps?.__N_REDIRECT;
+      !renderOpts?.pageData?.pageProps?.__N_REDIRECT &&
+      // empty html should not be persist
+      // should not happen because we already handle not found above. keep this in case.
+      !isEmpty(html);
 
     if (shouldPersist) {
       const s3JsonParams = {
