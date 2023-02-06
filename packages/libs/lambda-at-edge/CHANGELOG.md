@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.9](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.8...@getjerry/lambda-at-edge@1.20.0-alpha.9) (2023-02-06)
+
+### Bug Fixes
+
+- handle redirect in getStaticProps ([1f8f0be](https://github.com/getjerry/serverless-next.js/commit/1f8f0be784738118d4bfeff81612d22cec5abe4c))
+- handle redirect in getStaticProps ([1b1f373](https://github.com/getjerry/serverless-next.js/commit/1b1f3738bdb2aa778ebe1add512f4300b03603a9))
+
 # [1.20.0-alpha.8](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.7...@getjerry/lambda-at-edge@1.20.0-alpha.8) (2023-02-06)
 
 ### Bug Fixes
