@@ -50,7 +50,7 @@ export const renderPageToHtml = async (
     console.log(
       "html is empty, falling back to using page's rendering function for html"
     );
-    html = renderOpts.idNotFound
+    html = renderOpts.isNotFound
       ? ""
       : ((await page.renderReqToHTML(req, res)) as unknown as string);
   }
