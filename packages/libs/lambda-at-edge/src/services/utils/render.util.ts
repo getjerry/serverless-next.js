@@ -30,6 +30,8 @@ export const renderPageToHtml = async (
     renderMode
   );
 
+  console.log(`[TEST-404] renderPageToHtml: ${htmlResult}`);
+
   let html = undefined;
   if (typeof htmlResult === "string") {
     html = htmlResult; // Next.js < 11.1

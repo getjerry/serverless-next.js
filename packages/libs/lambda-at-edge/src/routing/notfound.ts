@@ -71,6 +71,10 @@ export function isNotFoundPage(
   manifest: OriginRequestDefaultHandlerManifest,
   html: string
 ): boolean {
+  if (_.isEmpty(html) || _.isNil(html)) {
+    return true;
+  }
+
   if (_.isEmpty(manifest.notFoundPageMark)) {
     return false;
   }
