@@ -972,7 +972,7 @@ const handleOriginResponse = async ({
     );
 
     // Check if it is a `not Found` response. Return 404 in that case.
-    if (isNotFoundPage(manifest, html)) {
+    if (isNotFoundPage(manifest, html, renderOpts)) {
       debug(`[blocking-fallback] 'not found' response received. Sending 404.`);
       return createNotFoundResponse(
         response,

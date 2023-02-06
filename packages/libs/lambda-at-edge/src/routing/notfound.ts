@@ -66,12 +66,14 @@ export async function createNotFoundResponse(
  * check 404 page.
  * @param manifest
  * @param html
+ * @param renderProps
  */
 export function isNotFoundPage(
   manifest: OriginRequestDefaultHandlerManifest,
-  html: string
+  html: string,
+  renderProps: { isNotFound?: true }
 ): boolean {
-  if (_.isEmpty(html) || _.isNil(html)) {
+  if (renderProps.isNotFound) {
     return true;
   }
 
