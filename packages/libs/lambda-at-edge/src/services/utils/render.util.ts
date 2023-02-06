@@ -40,7 +40,7 @@ export const renderPageToHtml = async (
         try {
           html = await resultsToString([htmlResult]); // Next >= 11.1.1
         } catch (e) {
-          console.log("html could not be rendered using resultsToString().");
+          console.log("html could not be rendered using resultsToString()");
         }
       }
     }
