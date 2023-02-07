@@ -1097,7 +1097,6 @@ const handleOriginResponse = async ({
       // and more IMPORTANT, 'html' will be a json string instead of html string in this case
       !renderOpts?.pageData?.pageProps?.__N_REDIRECT &&
       // empty html should not be persist
-      // should not happen because we already handle not found above. keep this in case.
       !isEmpty(html);
 
     if (shouldPersist) {
