@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.12](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.11...@getjerry/lambda-at-edge@1.20.0-alpha.12) (2023-03-10)
+
+### Bug Fixes
+
+- support empty param. ([b9f036e](https://github.com/getjerry/serverless-next.js/commit/b9f036e6e738c8605eea9f7b098a06804baaea9b))
+
 # [1.20.0-alpha.11](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.6...@getjerry/lambda-at-edge@1.20.0-alpha.11) (2023-02-23)
 
 ### Bug Fixes
