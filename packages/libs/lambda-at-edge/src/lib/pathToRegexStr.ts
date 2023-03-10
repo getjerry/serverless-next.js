@@ -53,11 +53,11 @@ const isParamsMatch = (
 ): boolean => {
   const params = _.keys(parse(querystring));
 
-  if (_.isEmpty(params)) return false;
-
   if (typeof originUrlParams === "string") {
     originUrlParams = [originUrlParams];
   }
+
+  if (!_.isEmpty(originUrlParams) && _.isEmpty(params)) return false;
 
   const result = _.isEqual(params.sort(), originUrlParams.sort());
 
