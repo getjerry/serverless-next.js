@@ -33,16 +33,8 @@ export function getRewritePath(
     if (rewrite.has && params) {
       const hasParams = matchHas(
         {
-          headers: {
-            host: document.location.hostname
-          },
-          cookies: document.cookie
-            .split("; ")
-            .reduce<Record<string, string>>((acc, item) => {
-              const [key, ...value] = item.split("=");
-              acc[key] = value.join("=");
-              return acc;
-            }, {})
+          headers: {},
+          cookies: {}
         } as any,
         rewrite.has,
         queryParams
