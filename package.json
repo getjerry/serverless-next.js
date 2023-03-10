@@ -118,7 +118,8 @@
     ]
   },
   "dependencies": {
-    "opencollective-postinstall": "^2.0.3"
+    "opencollective-postinstall": "^2.0.3",
+    "query-string": "8.1.0"
   },
   "collective": {
     "type": "opencollective",

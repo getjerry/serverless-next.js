@@ -8,6 +8,8 @@ import Manifest from "./manifest.json";
 import RoutesManifestJson from "./routes-manifest.json";
 import lambdaAtEdgeCompat from "@getjerry/next-aws-cloudfront";
 
+import queryString from "query-string";
+
 import {
   CloudFrontOrigin,
   CloudFrontRequest,
@@ -667,6 +669,7 @@ const handleOriginRequest = async ({
   if (!isNonDynamicRoute && !isDataReq) {
     const customRewrite = getRewritePath(
       request.uri,
+      queryString.parse(request.querystring),
       routesManifest,
       router(manifest),
       uri
