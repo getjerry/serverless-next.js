@@ -119,7 +119,7 @@
   },
   "dependencies": {
     "opencollective-postinstall": "^2.0.3",
-    "query-string": "8.1.0"
+    "query-string": "7.1.3"
   },
   "collective": {
     "type": "opencollective",
