@@ -23,10 +23,7 @@ export function getRewritePath(
   const rewrites: RewriteData[] = routesManifest.rewrites;
 
   for (const rewrite of rewrites) {
-    const matcher = getPathMatch(rewrite.source, {
-      removeUnnamedParams: true,
-      strict: true
-    });
+    const matcher = getPathMatch(rewrite.source);
 
     let params = matcher(path);
 
