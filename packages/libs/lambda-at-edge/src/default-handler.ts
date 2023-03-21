@@ -993,7 +993,10 @@ const handleOriginResponse = async ({
     if (pageProps.__N_REDIRECT) {
       const redirectResp = createRedirectResponse(
         pageProps.__N_REDIRECT,
-        request.querystring,
+        // in Next source code,
+        //  page returned redirect will redirect to __N_REDIRECT with out query string
+        // explicit set query string to empty to align with this behavior.
+        "",
         pageProps.__N_REDIRECT_STATUS
       );
 
