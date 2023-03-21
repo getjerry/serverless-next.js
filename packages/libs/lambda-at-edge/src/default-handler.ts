@@ -989,7 +989,6 @@ const handleOriginResponse = async ({
 
     const pageProps = renderOpts?.pageData?.pageProps;
 
-    // Redirect.
     if (pageProps.__N_REDIRECT) {
       const redirectResp = createRedirectResponse(
         pageProps.__N_REDIRECT,
