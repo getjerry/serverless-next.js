@@ -967,9 +967,14 @@ const handleOriginResponse = async ({
   ) {
     // eslint-disable-next-line
     const page = require(`./${pagePath}`);
+
+    const htmlUri = uri === "/" ? "/index.html" : `${uri}.html`;
     const jsonPath = `${(basePath || "").replace(/^\//, "")}${
       basePath === "" ? "" : "/"
-    }_next/data/${manifest.buildId}${decodeURI(uri).replace(".html", ".json")}`;
+    }_next/data/${manifest.buildId}${decodeURI(htmlUri).replace(
+      ".html",
+      ".json"
+    )}`;
 
     const { req, res } = lambdaAtEdgeCompat(event.Records[0].cf, {
       enableHTTPCompression: manifest.enableHTTPCompression,
@@ -985,7 +990,7 @@ const handleOriginResponse = async ({
     const { renderOpts, html } = renderedRes;
 
     debug(
-      `[blocking-fallback] rendered page, uri: ${uri}, ${
+      `[blocking-fallback] rendered page, uri: ${htmlUri}, ${
         request.uri
       } pagePath: ${pagePath}, opts: ${JSON.stringify(
         renderOpts
@@ -1044,10 +1049,10 @@ const handleOriginResponse = async ({
         Bucket: bucketName,
         Key: `${(basePath || "").replace(/^\//, "")}${
           basePath === "" ? "" : "/"
-        }static-pages/${manifest.buildId}${decodeURI(uri)}`,
+        }static-pages/${manifest.buildId}${decodeURI(htmlUri)}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: isAbTestPath(manifest, uri)
+        CacheControl: isAbTestPath(manifest, htmlUri)
           ? "public, max-age=0, s-maxage=0, must-revalidate"
           : "public, max-age=0, s-maxage=2678400, must-revalidate"
       };
