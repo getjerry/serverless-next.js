@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.17](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.16...@getjerry/lambda-at-edge@1.20.0-alpha.17) (2023-03-22)
+
+### Bug Fixes
+
+- blocking fallback for static route ([8f711da](https://github.com/getjerry/serverless-next.js/commit/8f711da81cced8ad73baea8c45fcaa2b2841d1b6))
+
 # [1.20.0-alpha.16](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.15...@getjerry/lambda-at-edge@1.20.0-alpha.16) (2023-03-21)
 
 ### Bug Fixes
