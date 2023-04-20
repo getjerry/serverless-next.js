@@ -9,6 +9,8 @@ import { CloudFrontRequest } from "aws-lambda";
 
 // @ts-ignore
 import * as _ from "../lib/lodash";
+import * as querystring from "querystring";
+import { isNil, isNumber } from "lodash";
 
 const SLUG_PARAM_KEY = "slug";
 
@@ -166,6 +168,17 @@ const rewriteUrlWithExperimentGroups = (
   request: CloudFrontRequest,
   originUrl: string
 ) => {
+  // force to one group if query string match.
+  const queryParams = querystring.parse(request.querystring);
+  const forceGroupIndex = queryParams.forceTestGroup;
+  // force to origin.
+  if (forceGroupIndex === "original") {
+    return `${originUrl}.html`;
+  }
+  if (isNumber(forceGroupIndex) && experimentGroups[forceGroupIndex]) {
+    return `${experimentGroups[forceGroupIndex].url}.html`;
+  }
+
   const clientIp = request.clientIp;
 
   // gen hash map: [{url: '/car-insurance/information', ratio: 25}] => [25 zeros]
