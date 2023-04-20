@@ -168,10 +168,10 @@ const rewriteUrlWithExperimentGroups = (
   request: CloudFrontRequest,
   originUrl: string
 ) => {
-  // force to one group if query string match.
+  // force to one group if query string match
   const queryParams = querystring.parse(request.querystring);
   const forceGroupIndex = queryParams.forceTestGroup;
-  // force to origin.
+  // force to origin
   if (forceGroupIndex === "original") {
     return `${originUrl}.html`;
   }
