@@ -174,6 +174,7 @@ const rewriteUrlWithExperimentGroups = (
   if (isNumber(forceGroupIndex) && experimentGroups[forceGroupIndex]) {
     return `${experimentGroups[forceGroupIndex].url}.html`;
   }
+  // force to origin
   if (!isNil(forceGroupIndex)) {
     return `${originUrl}.html`;
   }
