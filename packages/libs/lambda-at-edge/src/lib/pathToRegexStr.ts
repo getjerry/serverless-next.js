@@ -170,6 +170,11 @@ const rewriteUrlWithExperimentGroups = (
 ) => {
   // force to one group if query string match
   const queryParams = querystring.parse(request.querystring);
+  debug(
+    `[rewriteUrlWithExperimentGroups]: query params: ${JSON.stringify(
+      queryParams
+    )}`
+  );
   const forceGroupIndex = queryParams.forceTestGroup;
   // force to origin
   if (forceGroupIndex === "original") {
@@ -179,6 +184,12 @@ const rewriteUrlWithExperimentGroups = (
     isNumber(forceGroupIndex) &&
     experimentGroups[toNumber(forceGroupIndex)]
   ) {
+    debug(
+      `[rewriteUrlWithExperimentGroups]: force serve url: ${
+        experimentGroups[toNumber(forceGroupIndex)].url
+      }`
+    );
+
     return `${experimentGroups[toNumber(forceGroupIndex)].url}.html`;
   }
 
