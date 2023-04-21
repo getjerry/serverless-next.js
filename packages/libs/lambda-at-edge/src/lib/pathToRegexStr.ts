@@ -232,6 +232,11 @@ export const checkABTestUrl = (
   const requestUri = request.uri.split(".")[0];
 
   for (const abTest of abTests) {
+    debug(
+      `[checkABTestUrl]: requestUri: ${requestUri}, check if in test: ${JSON.stringify(
+        abTest
+      )}`
+    );
     const originUrl = abTest.originUrl;
     const experimentGroups = abTest.experimentGroups;
 
