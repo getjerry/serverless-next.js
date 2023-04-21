@@ -10,7 +10,7 @@ import { CloudFrontRequest } from "aws-lambda";
 // @ts-ignore
 import * as _ from "../lib/lodash";
 import * as querystring from "querystring";
-import { isNumber, toNumber } from "lodash";
+import { isNil, toNumber } from "lodash";
 
 const SLUG_PARAM_KEY = "slug";
 
@@ -178,12 +178,11 @@ const rewriteUrlWithExperimentGroups = (
   const forceGroupIndex = queryParams.forceTestGroup;
   // force to origin
   if (forceGroupIndex === "original") {
+    debug(`[rewriteUrlWithExperimentGroups]: force use original url.`);
     return `${originUrl}.html`;
   }
-  if (
-    isNumber(forceGroupIndex) &&
-    experimentGroups[toNumber(forceGroupIndex)]
-  ) {
+
+  if (!isNil(forceGroupIndex) && experimentGroups[toNumber(forceGroupIndex)]) {
     debug(
       `[rewriteUrlWithExperimentGroups]: force serve url: ${
         experimentGroups[toNumber(forceGroupIndex)].url
