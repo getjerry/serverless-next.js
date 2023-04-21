@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.24](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.23...@getjerry/lambda-at-edge@1.20.0-alpha.24) (2023-04-21)
+
+### Features
+
+- force test group ([cff9adb](https://github.com/getjerry/serverless-next.js/commit/cff9adbfc8a5a1829d298749d0188cc2e910cdf0))
+- force test group ([55019ae](https://github.com/getjerry/serverless-next.js/commit/55019ae3bfb15e4e83826ac58f2df44a2b16c7a9))
+- force test group ([d6c8c01](https://github.com/getjerry/serverless-next.js/commit/d6c8c0197e94d06996997de53217e802e0f9ee27))
+
 # [1.20.0-alpha.23](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.22...@getjerry/lambda-at-edge@1.20.0-alpha.23) (2023-04-20)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
