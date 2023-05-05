@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0-alpha.31](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.30...@getjerry/serverless-next@2.9.0-alpha.31) (2023-05-05)
+
+### Bug Fixes
+
+- add s3 delete policy. ([80c0b6c](https://github.com/getjerry/serverless-next.js/commit/80c0b6c2f92c2835b625b9236be7266f6b61be4e))
+
 # [2.9.0-alpha.30](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.6...@getjerry/serverless-next@2.9.0-alpha.30) (2023-05-05)
 
 ### Bug Fixes
