@@ -69,8 +69,12 @@ export class RevalidateHandler {
 
     debug(`CANDIDATE PAGE: ${JSON.stringify(candidatePage)}`);
 
-    if (RevalidateHandler.isRedirect(candidatePage)) {
-      debug(`CANDIDATE PAGE is redirect`);
+    if (RevalidateHandler.shouldRemoveResource(candidatePage)) {
+      debug(
+        `remove old resource for ${{
+          candidatePage: JSON.stringify(candidatePage)
+        }}`
+      );
 
       // delete old objects since the resource should redirect to a new resource.
       await Promise.all([
@@ -109,18 +113,22 @@ export class RevalidateHandler {
   }
 
   /**
-   * Check if rendered page is redirect.
+   * Check if we should remove resource.
    * @param page
    * @private
    */
-  private static isRedirect(page: Page): boolean {
+  private static shouldRemoveResource(page: Page): boolean {
     const pageData = (page.getJson() ?? {}) as {
       pageProps?: { __N_REDIRECT: unknown };
     };
-    return (
+
+    const isRedirect =
       !isNil(pageData.pageProps?.__N_REDIRECT) &&
-      !isEmpty(pageData.pageProps?.__N_REDIRECT)
-    );
+      !isEmpty(pageData.pageProps?.__N_REDIRECT);
+
+    const isEmptyHtml = isEmpty(page.getHtmlBody());
+
+    return isRedirect || isEmptyHtml;
   }
 
   //check lastModified to control revalidate
