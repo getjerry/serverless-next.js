@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.27](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.26...@getjerry/lambda-at-edge@1.20.0-alpha.27) (2023-05-05)
+
+### Bug Fixes
+
+- add s3 delete policy. ([ec33344](https://github.com/getjerry/serverless-next.js/commit/ec33344351fe7730d66a2256a57394dc5cf5d2d0))
+
 # [1.20.0-alpha.26](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.6...@getjerry/lambda-at-edge@1.20.0-alpha.26) (2023-05-05)
 
 ### Bug Fixes
