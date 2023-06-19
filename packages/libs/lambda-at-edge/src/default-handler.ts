@@ -1093,7 +1093,7 @@ const handleOriginResponse = async ({
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
     );
-    return htmlOut;
+    return compressOutput({ manifest, request, output: htmlOut });
   }
 
   // 2.2 handle data request
