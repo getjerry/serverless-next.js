@@ -1420,7 +1420,7 @@ export const generatePermanentPageResponse = async (
     retryStrategy: await buildS3RetryStrategy()
   });
   debug(
-    `[generatePermanentPageResponse] manifest: ${manifest.permanentStaticPages}`
+    `[generatePermanentPageResponse] manifest: ${manifest.permanentStaticPages}.`
   );
   debug(`[generatePermanentPageResponse] uri: ${uri}`);
 
