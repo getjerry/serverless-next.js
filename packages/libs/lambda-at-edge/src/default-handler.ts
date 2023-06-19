@@ -1108,6 +1108,8 @@ const handleOriginResponse = async ({
         : "public, max-age=0, s-maxage=2678400, must-revalidate"
     );
 
+    htmlRes.end(html);
+
     const output = await responsePromise;
 
     debug(
