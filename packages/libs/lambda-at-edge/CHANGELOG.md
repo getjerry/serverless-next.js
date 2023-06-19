@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.32](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.31...@getjerry/lambda-at-edge@1.20.0-alpha.32) (2023-06-19)
+
+### Bug Fixes
+
+- supprot br ([59a8a54](https://github.com/getjerry/serverless-next.js/commit/59a8a544a43b9d580469299e70581de797bb59d8))
+
 # [1.20.0-alpha.31](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.30...@getjerry/lambda-at-edge@1.20.0-alpha.31) (2023-06-19)
 
 ### Bug Fixes
