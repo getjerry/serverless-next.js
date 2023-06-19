@@ -1373,7 +1373,7 @@ const compressOutput = ({
   }
 
   debug(
-    `[compressOutput] text length after compression and encoding: ${output.body.length}`
+    `[compressOutput] text length after compression and encoding: ${result.body.length}`
   );
   return result;
 };
