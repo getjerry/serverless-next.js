@@ -1315,16 +1315,21 @@ const hasFallbackForUri = (
   });
 };
 
-const isGzipSupported = (headers: CloudFrontHeaders) => {
-  let gz = false;
+const getSupportedCompression = (headers: CloudFrontHeaders) => {
+  let gz: "gzip" | "br" | false = false;
   const ae = headers["accept-encoding"];
-  debug(`[checkIsGzipSupported] accept encodings: ${JSON.stringify(ae)}`);
+  debug(`[checking accept encoding] accept encodings: ${JSON.stringify(ae)}`);
   if (ae) {
     for (let i = 0; i < ae.length; i++) {
       const { value } = ae[i];
       const bits = value.split(",").map((x) => x.split(";")[0].trim());
+
       if (bits.indexOf("gzip") !== -1) {
-        gz = true;
+        gz = "gzip";
+      }
+
+      if (bits.indexOf("br") !== -1) {
+        gz = "br";
       }
     }
   }
@@ -1342,33 +1347,52 @@ const compressOutput = ({
 }): CloudFrontResultResponse => {
   if (isNil(output.body)) return output;
 
-  const shouldGzip =
-    manifest.enableHTTPCompression && isGzipSupported(request.headers);
+  const useCompression =
+    manifest.enableHTTPCompression && getSupportedCompression(request.headers);
 
   debug(
     `[compressOutput] enableHTTPCompression: ${manifest.enableHTTPCompression}`
   );
-  debug(`[compressOutput] shouldGzip: ${shouldGzip}`);
+  debug(`[compressOutput] use compression: ${useCompression}`);
 
   debug(
     `[compressOutput] text length before compression and encoding: ${output.body.length}`
   );
 
+  let body;
+  let encoding;
+  switch (useCompression) {
+    case "br":
+      body = zlib
+        .brotliCompressSync(output.body, {
+          params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 }
+        })
+        .toString("base64");
+      encoding = "br";
+      break;
+    case "gzip":
+      body = zlib.gzipSync(output.body).toString("base64");
+      encoding = "gzip";
+      break;
+    default:
+      body = Buffer.from(output.body).toString("base64");
+  }
+
   const result = {
     ...output,
     bodyEncoding: "base64" as const,
-    body: shouldGzip
-      ? zlib.gzipSync(output.body).toString("base64")
-      : Buffer.from(output.body).toString("base64")
+    body
   };
-  if (shouldGzip) {
+  if (useCompression) {
     if (isNil(result.headers)) {
       result.headers = {
-        ["content-encoding"]: [{ key: "Content-Encoding", value: "gzip" }]
+        ["content-encoding"]: [
+          { key: "Content-Encoding", value: encoding as string }
+        ]
       };
     }
     result.headers["content-encoding"] = [
-      { key: "Content-Encoding", value: "gzip" }
+      { key: "Content-Encoding", value: encoding as string }
     ];
   }
 
