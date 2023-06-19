@@ -39,6 +39,10 @@ import {
 import { performance } from "perf_hooks";
 import { ServerResponse } from "http";
 import type { Readable } from "stream";
+import { isEmpty, isNil } from "lodash";
+import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
+import zlib from "zlib";
+
 import { createNotFoundResponse, isNotFoundPage } from "./routing/notfound";
 import {
   createRedirectResponse,
@@ -78,7 +82,6 @@ import {
   sentry_flush_timeout
 } from "./lib/sentry";
 import { renderPageToHtml } from "./services/utils/render.util";
-import { isEmpty } from "lodash";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -1310,6 +1313,69 @@ const hasFallbackForUri = (
     const re = new RegExp(routeConfig.routeRegex);
     return re.test(uri);
   });
+};
+
+const isGzipSupported = (headers: CloudFrontHeaders) => {
+  let gz = false;
+  const ae = headers["accept-encoding"];
+  debug(`[checkIsGzipSupported] accept encodings: ${JSON.stringify(ae)}`);
+  if (ae) {
+    for (let i = 0; i < ae.length; i++) {
+      const { value } = ae[i];
+      const bits = value.split(",").map((x) => x.split(";")[0].trim());
+      if (bits.indexOf("gzip") !== -1) {
+        gz = true;
+      }
+    }
+  }
+  return gz;
+};
+
+const compressOutput = ({
+  manifest,
+  request,
+  output
+}: {
+  manifest: OriginRequestDefaultHandlerManifest;
+  request: CloudFrontRequest;
+  output: CloudFrontResultResponse;
+}): CloudFrontResultResponse => {
+  if (isNil(output.body)) return output;
+
+  const shouldGzip =
+    manifest.enableHTTPCompression && isGzipSupported(request.headers);
+
+  debug(
+    `[compressOutput] enableHTTPCompression: ${manifest.enableHTTPCompression}`
+  );
+  debug(`[compressOutput] shouldGzip: ${shouldGzip}`);
+
+  debug(
+    `[compressOutput] text length before compression and encoding: ${output.body.length}`
+  );
+
+  const result = {
+    ...output,
+    bodyEncoding: "base64" as const,
+    body: shouldGzip
+      ? zlib.gzipSync(output.body).toString("base64")
+      : Buffer.from(output.body).toString("base64")
+  };
+  if (shouldGzip) {
+    if (isNil(result.headers)) {
+      result.headers = {
+        ["content-encoding"]: [{ key: "Content-Encoding", value: "gzip" }]
+      };
+    }
+    result.headers["content-encoding"] = [
+      { key: "Content-Encoding", value: "gzip" }
+    ];
+  }
+
+  debug(
+    `[compressOutput] text length after compression and encoding: ${output.body.length}`
+  );
+  return result;
 };
 
 // This sets CloudFront response for 404 or 500 statuses
