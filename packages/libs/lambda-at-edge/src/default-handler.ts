@@ -1093,7 +1093,28 @@ const handleOriginResponse = async ({
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
     );
-    return compressOutput({ manifest, request, output: htmlOut });
+
+    const { res: htmlRes, responsePromise } = lambdaAtEdgeCompat(
+      event.Records[0].cf,
+      {
+        enableHTTPCompression: manifest.enableHTTPCompression
+      }
+    );
+
+    htmlRes.setHeader(
+      "Cache-Control",
+      isAbTestPath(manifest, uri)
+        ? "public, max-age=0, s-maxage=0, must-revalidate"
+        : "public, max-age=0, s-maxage=2678400, must-revalidate"
+    );
+
+    const output = await responsePromise;
+
+    debug(
+      `[blocking-fallback] compress and encoded html size / before size: ${output.body?.length} / ${html.length}`
+    );
+
+    return output;
   }
 
   // 2.2 handle data request
