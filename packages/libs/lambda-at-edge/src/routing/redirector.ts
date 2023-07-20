@@ -120,7 +120,7 @@ export function createRedirectResponse(
     const uriQueryParams = queryString.parse(uriQuery);
 
     // overwrite params in original query string if necessary
-    const mergedParams = { ...queryParams, ...uriQueryParams };
+    const mergedParams = { ...originalQueryParams, ...uriQueryParams };
     location = `${uriPath}${
       isEmpty(mergedParams) ? "" : `?${queryString.stringify(mergedParams)}`
     }`;
