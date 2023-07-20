@@ -603,7 +603,11 @@ const handleOriginRequest = async ({
   // Handle domain redirects e.g www to non-www domain
   const domainRedirect = getDomainRedirectPath(request, manifest);
   if (domainRedirect) {
-    return createRedirectResponse(domainRedirect, request.querystring, 308);
+    return createRedirectResponse(
+      domainRedirect,
+      queryString.parse(request.querystring),
+      308
+    );
   }
 
   const basePath = routesManifest.basePath;
@@ -628,7 +632,7 @@ const handleOriginRequest = async ({
   ) {
     return createRedirectResponse(
       `https://${canonicalHostname}${request.uri}`,
-      request.querystring,
+      queryString.parse(request.querystring),
       301
     );
   }
@@ -657,15 +661,23 @@ const handleOriginRequest = async ({
   }
 
   if (newUri !== request.uri) {
-    return createRedirectResponse(newUri, request.querystring, 308);
+    return createRedirectResponse(
+      newUri,
+      queryString.parse(request.querystring),
+      308
+    );
   }
 
   // Handle other custom redirects on the original URI
-  const customRedirect = getRedirectPath(request.uri, routesManifest);
+  const customRedirect = getRedirectPath(
+    request.uri,
+    queryString.parse(request.querystring),
+    routesManifest
+  );
   if (customRedirect) {
     return createRedirectResponse(
       customRedirect.redirectPath,
-      request.querystring,
+      queryString.parse(request.querystring),
       customRedirect.statusCode
     );
   }
@@ -1020,7 +1032,7 @@ const handleOriginResponse = async ({
         // in Next source code,
         //  page returned redirect will redirect to __N_REDIRECT with out query string
         // explicit set query string to empty to align with this behavior.
-        "",
+        {},
         pageProps.__N_REDIRECT_STATUS
       );
 
