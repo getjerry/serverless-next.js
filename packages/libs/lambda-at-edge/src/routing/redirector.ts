@@ -104,23 +104,23 @@ export function getRedirectPath(
 /**
  * Create a redirect response with the given status code for CloudFront.
  * @param uri
- * @param queryParams
+ * @param originalQueryParams
  * @param statusCode
  */
 export function createRedirectResponse(
   uri: string,
-  queryParams: Params,
+  originalQueryParams: Params,
   statusCode: number
 ): CloudFrontResultResponse {
   let location;
 
   // Properly join query strings
-  if (queryParams) {
+  if (originalQueryParams) {
     const [uriPath, uriQuery] = uri.split("?");
     const uriQueryParams = queryString.parse(uriQuery);
 
     // overwrite params in original query string if necessary
-    const mergedParams = { ...uriQueryParams, ...queryParams };
+    const mergedParams = { ...queryParams, ...uriQueryParams };
     location = `${uriPath}${
       isEmpty(mergedParams) ? "" : `?${queryString.stringify(mergedParams)}`
     }`;
