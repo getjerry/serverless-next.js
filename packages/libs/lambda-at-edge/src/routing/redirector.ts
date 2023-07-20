@@ -12,7 +12,7 @@ import { CloudFrontResultResponse } from "aws-lambda";
 import { getPathMatch } from "next/dist/shared/lib/router/utils/path-match";
 import { matchHas } from "next/dist/shared/lib/router/utils/prepare-destination";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import * as queryString from "queryString";
+import * as queryString from "querystring";
 import { isEmpty } from "lodash";
 
 /**
