@@ -12,7 +12,7 @@ import { CloudFrontResultResponse } from "aws-lambda";
 import { getPathMatch } from "next/dist/shared/lib/router/utils/path-match";
 import { matchHas } from "next/dist/shared/lib/router/utils/prepare-destination";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import queryString from "query-string";
+import * as queryString from "queryString";
 import { isEmpty } from "lodash";
 
 /**
@@ -63,7 +63,7 @@ export function getRedirectPath(
   path: string,
   queryParams: Params,
   routesManifest: RoutesManifest
-): { redirectPath: string; statusCode: number; usedParams: Params } | null {
+): { redirectPath: string; statusCode: number } | null {
   const redirects: RedirectData[] = routesManifest.redirects;
 
   for (const redirect of redirects) {
@@ -92,7 +92,6 @@ export function getRedirectPath(
       if (destination) {
         return {
           redirectPath: destination,
-          usedParams: params,
           statusCode: redirect.statusCode
         };
       }
@@ -119,6 +118,8 @@ export function createRedirectResponse(
   if (queryParams) {
     const [uriPath, uriQuery] = uri.split("?");
     const uriQueryParams = queryString.parse(uriQuery);
+
+    // overwrite params in original query string if necessary
     const mergedParams = { ...uriQueryParams, ...queryParams };
     location = `${uriPath}${
       isEmpty(mergedParams) ? "" : `?${queryString.stringify(mergedParams)}`
