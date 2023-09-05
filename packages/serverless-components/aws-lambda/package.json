@@ -1,6 +1,6 @@
 {
   "name": "@getjerry/aws-lambda",
-  "version": "1.10.0-alpha.19",
+  "version": "1.10.0-alpha.20",
   "main": "serverless.js",
   "publishConfig": {
     "access": "public"
@@ -30,5 +30,5 @@
     "@serverless/core": "^1.1.2",
     "aws-sdk": "2.1093.0"
   },
-  "gitHead": "da0c19265338db04ed82075cc58731ea79a57f90"
+  "gitHead": "1eef976f574de1bef79eebac19e6889137825735"
 }
