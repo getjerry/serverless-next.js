@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.38](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.36...@getjerry/lambda-at-edge@1.20.0-alpha.38) (2023-09-05)
+
+### Features
+
+- support to match user state in ab test ([7cddb63](https://github.com/getjerry/serverless-next.js/commit/7cddb63a10eac763bf5e0f09d43ec04a009900cd))
+
 # [1.20.0-alpha.37](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.36...@getjerry/lambda-at-edge@1.20.0-alpha.37) (2023-09-05)
 
 ### Features
