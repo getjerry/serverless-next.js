@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.78](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.77...@getjerry/lambda-at-edge@1.20.0-alpha.78) (2023-09-06)
+
+### Features
+
+- use header to match ab test ([5c1f605](https://github.com/getjerry/serverless-next.js/commit/5c1f605b91ff783da855e4a3a0636ab50b4af54c))
+
 # [1.20.0-alpha.77](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.75...@getjerry/lambda-at-edge@1.20.0-alpha.77) (2023-09-06)
 
 ### Features
