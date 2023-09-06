@@ -13,7 +13,8 @@ const LOCAL_EXTERNALS = [
 ];
 const NPM_EXTERNALS = [
   "aws-lambda",
-  "aws-sdk/clients/s3"
+  "aws-sdk/clients/s3",
+  "geoip-lite"
   // "@aws-sdk/client-lambda",
   // "@aws-sdk/client-s3",
   // "@aws-sdk/client-cloudfront"
