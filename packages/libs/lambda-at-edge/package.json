@@ -75,7 +75,7 @@
     "execa": "^4.0.2",
     "fresh": "^0.5.2",
     "fs-extra": "^9.0.1",
-    "geoip-lite": "^1.4.7",
+    "geoip-lite": "1.4.6",
     "get-stream": "^6.0.0",
     "graphql": "^16.5.0",
     "graphql-request": "^4.2.0",
