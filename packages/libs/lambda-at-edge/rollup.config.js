@@ -2,6 +2,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import externals from "rollup-plugin-node-externals";
+import globals from "rollup-plugin-node-globals";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 
@@ -13,8 +14,7 @@ const LOCAL_EXTERNALS = [
 ];
 const NPM_EXTERNALS = [
   "aws-lambda",
-  "aws-sdk/clients/s3",
-  "geoip-lite"
+  "aws-sdk/clients/s3"
   // "@aws-sdk/client-lambda",
   // "@aws-sdk/client-s3",
   // "@aws-sdk/client-cloudfront"
@@ -30,8 +30,9 @@ const generateConfig = (input) => ({
     json(),
     commonjs(),
     externals({
-      exclude: ["@getjerry/next-aws-cloudfront"]
+      exclude: ["@getjerry/next-aws-cloudfront", "geoip-lite"]
     }),
+    globals(),
     nodeResolve(),
     typescript({
       tsconfig: "tsconfig.bundle.json"
