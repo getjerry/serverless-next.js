@@ -13,7 +13,8 @@
   "scripts": {
     "prepare": "yarn build",
     "copy-sharp-modules": "ts-node scripts/copy-sharp-modules.ts",
-    "build": "rollup --config && tsc -p tsconfig.build.json && yarn copy-sharp-modules"
+    "copy-geoip-data": "ts-node scripts/copy-geoip-data.ts",
+    "build": "rollup --config && tsc -p tsconfig.build.json && yarn copy-sharp-modules && yarn copy-geoip-data"
   },
   "files": [
     "dist"
