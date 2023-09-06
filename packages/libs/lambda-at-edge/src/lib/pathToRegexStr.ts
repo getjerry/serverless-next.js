@@ -170,7 +170,7 @@ const rewriteUrlWithExperimentGroups = (
   originUrl: string
 ) => {
   debug(
-    `[rewriteUrlWithExperimentGroups]: experimentGroups log ${JSON.stringify(
+    `[rewriteUrlWithExperimentGroups]: experimentGroups log is ${JSON.stringify(
       experimentGroups
     )}`
   );
