@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.73](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.72...@getjerry/lambda-at-edge@1.20.0-alpha.73) (2023-09-06)
+
+### Bug Fixes
+
+- remove import geoip lite data ([7c7bb88](https://github.com/getjerry/serverless-next.js/commit/7c7bb88f89730c7f1ceccfaa219d7b2eb4dd7b9e))
+
 # [1.20.0-alpha.72](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.71...@getjerry/lambda-at-edge@1.20.0-alpha.72) (2023-09-06)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
