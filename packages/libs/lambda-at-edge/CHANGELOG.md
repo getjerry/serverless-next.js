@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.77](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.75...@getjerry/lambda-at-edge@1.20.0-alpha.77) (2023-09-06)
+
+### Features
+
+- remove geoip-lite, using headers ([5e1f942](https://github.com/getjerry/serverless-next.js/commit/5e1f942645c4309eaf8eef24b6d357b0ed57e16e))
+
 # [1.20.0-alpha.76](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.75...@getjerry/lambda-at-edge@1.20.0-alpha.76) (2023-09-06)
 
 ### Features
