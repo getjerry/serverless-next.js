@@ -16,7 +16,8 @@
     "build": "rollup --config && tsc -p tsconfig.build.json && yarn copy-sharp-modules"
   },
   "files": [
-    "dist"
+    "dist",
+    "data"
   ],
   "repository": {
     "type": "git",
@@ -55,7 +56,6 @@
     "fetch-mock-jest": "^1.5.1",
     "rollup": "^2.26.6",
     "rollup-plugin-node-externals": "^2.2.0",
-    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.2",
     "sharp": "^0.26.3",
