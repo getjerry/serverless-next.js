@@ -11,7 +11,6 @@ import { CloudFrontRequest } from "aws-lambda";
 import * as _ from "../lib/lodash";
 import * as querystring from "querystring";
 import { isNil, toNumber } from "lodash";
-import geoip from "geoip-lite";
 
 const SLUG_PARAM_KEY = "slug";
 
@@ -170,6 +169,11 @@ const rewriteUrlWithExperimentGroups = (
   originUrl: string
 ) => {
   debug(
+    `[rewriteUrlWithExperimentGroups]: herders ${JSON.stringify(
+      request.headers
+    )}`
+  );
+  debug(
     `[rewriteUrlWithExperimentGroups]: experimentGroups log is ${JSON.stringify(
       experimentGroups
     )}`
@@ -219,22 +223,15 @@ const rewriteUrlWithExperimentGroups = (
     )}`
   );
   if (hitExperimentGroup?.states) {
-    const lookupRes = geoip.lookup(clientIp);
-    debug(
-      `[rewriteUrlWithExperimentGroups]: lookup res is ${JSON.stringify(
-        lookupRes
-      )}`
-    );
-    if (!lookupRes) {
-      resultUrl = originUrl;
-    } else {
-      const { region } = lookupRes;
-      debug(`[rewriteUrlWithExperimentGroups]: user region is ${region}`);
-      resultUrl =
-        hitExperimentGroup.states.findIndex((state) => state === region) >= 0
-          ? hitExperimentGroup.url
-          : originUrl;
-    }
+    resultUrl = originUrl;
+    // } else {
+    //   const { region } = lookupRes;
+    //   debug(`[rewriteUrlWithExperimentGroups]: user region is ${region}`);
+    //   resultUrl =
+    //     hitExperimentGroup.states.findIndex((state) => state === region) >= 0
+    //       ? hitExperimentGroup.url
+    //       : originUrl;
+    // }
   } else if (hitExperimentGroup) {
     resultUrl = hitExperimentGroup.url;
   }

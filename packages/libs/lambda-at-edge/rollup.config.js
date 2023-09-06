@@ -29,7 +29,7 @@ const generateConfig = (input) => ({
     json(),
     commonjs(),
     externals({
-      exclude: ["@getjerry/next-aws-cloudfront", "geoip-lite"]
+      exclude: ["@getjerry/next-aws-cloudfront"]
     }),
     nodeResolve(),
     typescript({

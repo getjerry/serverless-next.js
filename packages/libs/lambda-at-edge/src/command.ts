@@ -18,11 +18,7 @@ async function main(args: string[]) {
   const builder = new Builder(nextConfigDir, outputDir, {
     cmd: "./node_modules/.bin/next",
     cwd: process.cwd(),
-    env: {
-      GEODATADIR: process.env.AWS_LAMBDA_FUNCTION_NAME
-        ? "./node_modules/geoip-lite/lib/data/"
-        : undefined
-    },
+    env: {},
     args: ["build"],
     distributionId: ""
   });
