@@ -40,6 +40,7 @@ export const DEFAULT_LAMBDA_CODE_DIR = "default-lambda";
 export const API_LAMBDA_CODE_DIR = "api-lambda";
 export const IMAGE_LAMBDA_CODE_DIR = "image-lambda";
 export const ASSETS_DIR = "assets";
+export const DEFAULT_BUILD_ID = 'shared-storage';
 
 type BuildOptions = {
   args?: string[];
@@ -543,10 +544,10 @@ class Builder {
   }> {
     const pagesManifest = await this.readPagesManifest();
 
-    const buildId = await fse.readFile(
-      path.join(this.dotNextDir, "BUILD_ID"),
-      "utf-8"
-    );
+    // const buildId = await fse.readFile(
+    //   path.join(this.dotNextDir, "BUILD_ID"),
+    //   "utf-8"
+    // );
     const {
       logLambdaExecutionTimes = false,
       domainRedirects = {},
@@ -559,7 +560,7 @@ class Builder {
     // in dev mode, the max access number will always be 1
     const defaultInvalidationGroupNumber = 1;
     const defaultBuildManifest: OriginRequestDefaultHandlerManifest = {
-      buildId,
+      buildId: DEFAULT_BUILD_ID,
       logLambdaExecutionTimes,
       pages: {
         ssr: {
@@ -729,7 +730,6 @@ class Builder {
     defaultBuildManifest: OriginRequestDefaultHandlerManifest,
     routesManifest: RoutesManifest
   ) {
-    const buildId = defaultBuildManifest.buildId;
     const basePath = routesManifest.basePath;
     const nextConfigDir = this.nextConfigDir;
     const nextStaticDir = this.nextStaticDir;
@@ -791,7 +791,7 @@ class Builder {
         const destination = path.join(
           assetOutputDirectory,
           withBasePath(
-            `static-pages/${buildId}/${(relativePageFilePath as string).replace(
+            `static-pages/${DEFAULT_BUILD_ID}/${(relativePageFilePath as string).replace(
               /^pages\//,
               ""
             )}`
@@ -835,7 +835,7 @@ class Builder {
       );
       const destination = path.join(
         assetOutputDirectory,
-        withBasePath(path.join("static-pages", buildId, relativePageFilePath))
+        withBasePath(path.join("static-pages", DEFAULT_BUILD_ID, relativePageFilePath))
       );
 
       return copyIfExists(source, destination);
@@ -857,7 +857,7 @@ class Builder {
 
         const destination = path.join(
           assetOutputDirectory,
-          withBasePath(path.join("static-pages", buildId, fallback))
+          withBasePath(path.join("static-pages", DEFAULT_BUILD_ID, fallback))
         );
 
         return copyIfExists(source, destination);
@@ -1069,7 +1069,6 @@ class Builder {
   ) {
     const basePath = routesManifest.basePath;
     const normalizedBasePath = basePath ? basePath.slice(1) : "";
-    const buildId = defaultBuildManifest.buildId;
 
     //create invalidation url groups dir.
     const directoryPath = path.join(
@@ -1078,7 +1077,7 @@ class Builder {
       normalizedBasePath,
       "_next",
       "data",
-      buildId,
+      DEFAULT_BUILD_ID,
       INVALIDATION_DATA_DIR
     );
 
@@ -1112,7 +1111,6 @@ class Builder {
 
     const basePath = routesManifest.basePath;
     const normalizedBasePath = basePath ? basePath.slice(1) : "";
-    const buildId = defaultBuildManifest.buildId;
 
     const copyIfExists = async (
       source: string,
@@ -1128,7 +1126,7 @@ class Builder {
       ASSETS_DIR,
       normalizedBasePath,
       "static-pages",
-      buildId
+      DEFAULT_BUILD_ID
     );
 
     //create Permanent Static Pages dir.

@@ -82,6 +82,7 @@ import {
   sentry_flush_timeout
 } from "./lib/sentry";
 import { renderPageToHtml } from "./services/utils/render.util";
+import { DEFAULT_BUILD_ID } from "./build";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -175,7 +176,7 @@ const normaliseDataRequestUri = (
   manifest: OriginRequestDefaultHandlerManifest
 ): string => {
   let normalisedUri = uri
-    .replace(`/_next/data/${manifest.buildId}`, "")
+    .replace(`/_next/data/${DEFAULT_BUILD_ID}`, "")
     .replace(".json", "");
 
   // Normalise to "/" for index data request
@@ -354,16 +355,16 @@ const handleRevalidation = async ({
   const canonicalUrl = decodeURI(uri)
     .replace(`${basePath}`, "")
     .replace(`/_next/data/`, "")
-    .replace(`${manifest.buildId}/`, "")
+    .replace(`${DEFAULT_BUILD_ID}/`, "")
     .replace(".json", "")
     .replace(".html", "");
 
   const htmlKey = `${(basePath || "").replace(/^\//, "")}${
     !basePath ? "" : "/"
-  }static-pages/${manifest.buildId}/${decodeURI(canonicalUrl)}.html`;
+  }static-pages/${DEFAULT_BUILD_ID}/${decodeURI(canonicalUrl)}.html`;
   const jsonKey = `${(basePath || "").replace(/^\//, "")}${
     !basePath ? "" : "/"
-  }_next/data/${manifest.buildId}/${decodeURI(canonicalUrl)}.json`;
+  }_next/data/${DEFAULT_BUILD_ID}/${decodeURI(canonicalUrl)}.json`;
 
   // get heads from s3
   const { domainName, region } = request.origin!.s3!;
@@ -753,7 +754,7 @@ const handleOriginRequest = async ({
         request.uri = request.uri.replace(basePath, "");
       }
     } else if (isHTMLPage || hasFallback) {
-      s3Origin.path = `${basePath}/static-pages/${manifest.buildId}`;
+      s3Origin.path = `${basePath}/static-pages/${DEFAULT_BUILD_ID}`;
       const pageName = uri === "/" ? "/index" : uri;
       request.uri = `${pageName}.html`;
       checkAndRewriteUrl(manifest, request);
@@ -765,7 +766,7 @@ const handleOriginRequest = async ({
       debug(`[origin-request] is json, uri: ${request.uri}`);
       if (pagePath === "pages/404.html") {
         // Request static 404 page from s3
-        s3Origin.path = `${basePath}/static-pages/${manifest.buildId}`;
+        s3Origin.path = `${basePath}/static-pages/${DEFAULT_BUILD_ID}`;
         request.uri = pagePath.replace("pages", "");
         debug(`[origin-request] is 404, uri: ${request.uri}`);
       } else if (
@@ -798,7 +799,7 @@ const handleOriginRequest = async ({
   );
 
   if (pagePath.endsWith(".html") && !isPreviewRequest) {
-    s3Origin.path = `${basePath}/static-pages/${manifest.buildId}`;
+    s3Origin.path = `${basePath}/static-pages/${DEFAULT_BUILD_ID}`;
     request.uri = pagePath.replace("pages", "");
     addS3HostHeader(request, normalisedS3DomainName);
 
@@ -924,7 +925,7 @@ const handleOriginResponse = async ({
     } else {
       const revalidationKey = decodeURI(uri)
         .replace(`_next/data/`, "")
-        .replace(`${manifest.buildId}/`, "")
+        .replace(`${DEFAULT_BUILD_ID}/`, "")
         .replace(".json", "")
         .replace(".html", "");
 
@@ -986,7 +987,7 @@ const handleOriginResponse = async ({
     const htmlUri = uri === "/" ? "/index.html" : `${uri}.html`;
     const jsonPath = `${(basePath || "").replace(/^\//, "")}${
       basePath === "" ? "" : "/"
-    }_next/data/${manifest.buildId}${decodeURI(htmlUri).replace(
+    }_next/data/${DEFAULT_BUILD_ID}${decodeURI(htmlUri).replace(
       ".html",
       ".json"
     )}`;
@@ -1064,7 +1065,7 @@ const handleOriginResponse = async ({
         Bucket: bucketName,
         Key: `${(basePath || "").replace(/^\//, "")}${
           basePath === "" ? "" : "/"
-        }static-pages/${manifest.buildId}${decodeURI(htmlUri)}`,
+        }static-pages/${DEFAULT_BUILD_ID}${decodeURI(htmlUri)}`,
         Body: html,
         ContentType: "text/html",
         CacheControl: isAbTestPath(manifest, htmlUri)
@@ -1156,9 +1157,9 @@ const handleOriginResponse = async ({
         Bucket: bucketName,
         Key: `${(basePath || "").replace(/^\//, "")}${
           basePath === "" ? "" : "/"
-        }static-pages/${manifest.buildId}/${decodeURI(normaliseUri(request.uri))
+        }static-pages/${DEFAULT_BUILD_ID}/${decodeURI(normaliseUri(request.uri))
           .replace(`/_next/data/`, "")
-          .replace(`${manifest.buildId}/`, "")
+          .replace(`${DEFAULT_BUILD_ID}/`, "")
           .replace(".json", ".html")}`,
         Body: html,
         ContentType: "text/html",
@@ -1197,7 +1198,7 @@ const handleOriginResponse = async ({
     // If route has fallback, return that page from S3, otherwise return 404 page
     const s3Key = `${(basePath || "").replace(/^\//, "")}${
       basePath === "" ? "" : "/"
-    }static-pages/${manifest.buildId}${hasFallback.fallback || "/404.html"}`;
+    }static-pages/${DEFAULT_BUILD_ID}${hasFallback.fallback || "/404.html"}`;
 
     debug(`[origin-response] has fallback: ${JSON.stringify(hasFallback)}`);
 
@@ -1463,7 +1464,7 @@ export const generatePermanentPageResponse = async (
   //get page from S3
   const s3Key = `${(basePath || "").replace(/^\//, "")}${
     basePath === "" ? "" : "/"
-  }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
+  }static-pages/${DEFAULT_BUILD_ID}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
 
   const getStream = await import("get-stream");
 

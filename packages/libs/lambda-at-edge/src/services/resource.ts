@@ -1,3 +1,5 @@
+import { DEFAULT_BUILD_ID } from "../build";
+
 export interface FallbackRoute {
   routeRegex: string;
   fallback: string | false;
@@ -39,7 +41,7 @@ export class Resource {
   public getHtmlKey(): string {
     return `${(this.basePath || "").replace(/^\//, "")}${
       !this.basePath ? "" : "/"
-    }static-pages/${this.buildId}${this.getCanonicalUri()}.html`;
+    }static-pages/${DEFAULT_BUILD_ID}${this.getCanonicalUri()}.html`;
   }
 
   public getHtmlUri(): string {
@@ -49,7 +51,7 @@ export class Resource {
   public getJsonKey(): string {
     return `${(this.basePath || "").replace(/^\//, "")}${
       !this.basePath ? "" : "/"
-    }_next/data/${this.buildId}${this.getCanonicalUri()}.json`;
+    }_next/data/${DEFAULT_BUILD_ID}${this.getCanonicalUri()}.json`;
   }
 
   public getJsonUri(): string {
@@ -76,7 +78,7 @@ export class Resource {
   public getCanonicalUri(): string {
     return this.getNormalUri()
       .replace(`${this.basePath}`, "")
-      .replace(`_next/data/${this.buildId}/`, "")
+      .replace(`_next/data/${DEFAULT_BUILD_ID}/`, "")
       .replace(".json", "")
       .replace(".html", "");
   }

@@ -6,6 +6,7 @@ import type { Readable } from "stream";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 // @ts-ignore
 import * as _ from "../lib/lodash";
+import { DEFAULT_BUILD_ID } from "../build";
 
 /**
  * Return a 404 response.
@@ -25,7 +26,7 @@ export async function createNotFoundResponse(
 ): Promise<CloudFrontResultResponse> {
   const s3Key = `${(basePath || "").replace(/^\//, "")}${
     basePath === "" ? "" : "/"
-  }static-pages/${manifest.buildId}/404.html`;
+  }static-pages/${DEFAULT_BUILD_ID}/404.html`;
 
   const getStream = await import("get-stream");
 
