@@ -223,15 +223,17 @@ const rewriteUrlWithExperimentGroups = (
     )}`
   );
   if (hitExperimentGroup?.states) {
-    resultUrl = originUrl;
-    // } else {
-    //   const { region } = lookupRes;
-    //   debug(`[rewriteUrlWithExperimentGroups]: user region is ${region}`);
-    //   resultUrl =
-    //     hitExperimentGroup.states.findIndex((state) => state === region) >= 0
-    //       ? hitExperimentGroup.url
-    //       : originUrl;
-    // }
+    const region =
+      request.headers?.["cloudfront-viewer-country-region"]?.[0]?.value;
+    if (!region) {
+      resultUrl = originUrl;
+    } else {
+      debug(`[rewriteUrlWithExperimentGroups]: user region is ${region}`);
+      resultUrl =
+        hitExperimentGroup.states.findIndex((state) => state === region) >= 0
+          ? hitExperimentGroup.url
+          : originUrl;
+    }
   } else if (hitExperimentGroup) {
     resultUrl = hitExperimentGroup.url;
   }
