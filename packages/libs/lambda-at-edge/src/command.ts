@@ -10,10 +10,19 @@ async function main(args: string[]) {
   const nextConfigDir = args[0] || ".";
   const outputDir = join(nextConfigDir, ".serverless_nextjs");
 
+  console.info(
+    "AWS_LAMBDA_FUNCTION_NAME: ",
+    process.env.AWS_LAMBDA_FUNCTION_NAME
+  );
+
   const builder = new Builder(nextConfigDir, outputDir, {
     cmd: "./node_modules/.bin/next",
     cwd: process.cwd(),
-    env: {},
+    env: {
+      GEODATADIR: process.env.AWS_LAMBDA_FUNCTION_NAME
+        ? "./node_modules/geoip-lite/lib/data/"
+        : undefined
+    },
     args: ["build"],
     distributionId: ""
   });

@@ -39,9 +39,7 @@ const defaults = {
   shims: [],
   handler: "handler.hello",
   runtime: "nodejs12.x",
-  env: {
-    GEODATADIR: "./node_modules/geoip-lite/lib/data/"
-  },
+  env: {},
   region: "us-east-1"
 };
 
