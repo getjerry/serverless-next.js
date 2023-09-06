@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.69](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.68...@getjerry/lambda-at-edge@1.20.0-alpha.69) (2023-09-06)
+
+### Features
+
+- add data to npm files ([3abe77e](https://github.com/getjerry/serverless-next.js/commit/3abe77e7ebed787c9c8161be98e53941c8454725))
+
 # [1.20.0-alpha.68](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.67...@getjerry/lambda-at-edge@1.20.0-alpha.68) (2023-09-06)
 
 ### Features
