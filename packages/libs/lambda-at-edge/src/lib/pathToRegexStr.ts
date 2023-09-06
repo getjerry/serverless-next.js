@@ -12,6 +12,7 @@ import * as _ from "../lib/lodash";
 import * as querystring from "querystring";
 import { isNil, toNumber } from "lodash";
 import geoip from "geoip-lite";
+import "geoip-lite/data";
 
 const SLUG_PARAM_KEY = "slug";
 
