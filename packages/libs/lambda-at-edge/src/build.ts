@@ -40,7 +40,7 @@ export const DEFAULT_LAMBDA_CODE_DIR = "default-lambda";
 export const API_LAMBDA_CODE_DIR = "api-lambda";
 export const IMAGE_LAMBDA_CODE_DIR = "image-lambda";
 export const ASSETS_DIR = "assets";
-export const DEFAULT_BUILD_ID = 'shared-storage';
+export const DEFAULT_BUILD_ID = "shared-storage";
 
 type BuildOptions = {
   args?: string[];
@@ -544,10 +544,6 @@ class Builder {
   }> {
     const pagesManifest = await this.readPagesManifest();
 
-    // const buildId = await fse.readFile(
-    //   path.join(this.dotNextDir, "BUILD_ID"),
-    //   "utf-8"
-    // );
     const {
       logLambdaExecutionTimes = false,
       domainRedirects = {},
@@ -791,10 +787,9 @@ class Builder {
         const destination = path.join(
           assetOutputDirectory,
           withBasePath(
-            `static-pages/${DEFAULT_BUILD_ID}/${(relativePageFilePath as string).replace(
-              /^pages\//,
-              ""
-            )}`
+            `static-pages/${DEFAULT_BUILD_ID}/${(
+              relativePageFilePath as string
+            ).replace(/^pages\//, "")}`
           )
         );
 
@@ -835,7 +830,9 @@ class Builder {
       );
       const destination = path.join(
         assetOutputDirectory,
-        withBasePath(path.join("static-pages", DEFAULT_BUILD_ID, relativePageFilePath))
+        withBasePath(
+          path.join("static-pages", DEFAULT_BUILD_ID, relativePageFilePath)
+        )
       );
 
       return copyIfExists(source, destination);
