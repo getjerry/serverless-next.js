@@ -92,7 +92,8 @@ export class Resource {
   }
 
   public getBuildId(): string {
-    return this.buildId;
+    // return this.buildId;
+    return DEFAULT_BUILD_ID;
   }
 }
 

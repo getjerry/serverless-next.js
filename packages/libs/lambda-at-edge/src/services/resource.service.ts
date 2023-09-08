@@ -11,6 +11,7 @@ import {
   ResourceForIndexPage
 } from "./resource";
 import { debug } from "../lib/console";
+import { DEFAULT_BUILD_ID } from "../build";
 
 export class ResourceService {
   constructor(
@@ -56,7 +57,8 @@ export class ResourceService {
   }
 
   public getBuildId(): string {
-    return this.manifest.buildId;
+    // return this.manifest.buildId;
+    return DEFAULT_BUILD_ID;
   }
 
   public findStaticRoute(resource: Resource): string | undefined {
@@ -140,9 +142,8 @@ export class ResourceService {
             dynamicRoute.file === `pages${prerenderManifestRoute}.js`;
 
           if (fileMatchesPrerenderRoute) {
-            foundFallback = this.prerenderManifest.dynamicRoutes[
-              prerenderManifestRoute
-            ];
+            foundFallback =
+              this.prerenderManifest.dynamicRoutes[prerenderManifestRoute];
           }
 
           return fileMatchesPrerenderRoute;
