@@ -59,10 +59,10 @@ const uploadStaticAssetsFromBuild = async (
     normalizedBasePath,
     "BUILD_ID"
   );
-  const buildIdUpload = s3.uploadFile({
-    s3Key: pathToPosix(path.join(normalizedBasePath, "BUILD_ID")),
-    filePath: buildIdPath
-  });
+  // const buildIdUpload = s3.uploadFile({
+  //   s3Key: pathToPosix(path.join(normalizedBasePath, "BUILD_ID")),
+  //   filePath: buildIdPath
+  // });
 
   // Upload Next.js static files
 
@@ -75,8 +75,8 @@ const uploadStaticAssetsFromBuild = async (
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      );
-
+      ).replace(buildId, "shared-storage");
+      console.log("[test 0912]: 1", s3Key, fileItem.path);
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
@@ -99,7 +99,7 @@ const uploadStaticAssetsFromBuild = async (
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       ).replace(buildId, "shared-storage");
-
+      console.log("[test 0912]: 2", s3Key, fileItem.path);
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
@@ -119,7 +119,7 @@ const uploadStaticAssetsFromBuild = async (
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       ).replace(buildId, "shared-storage");
-
+      console.log("[test 0912]: 3", s3Key, fileItem.path);
       // Dynamic fallback HTML pages should never be cached as it will override actual pages once generated and stored in S3.
       const isDynamicFallback = /\[.*]/.test(s3Key);
       if (isDynamicFallback) {
