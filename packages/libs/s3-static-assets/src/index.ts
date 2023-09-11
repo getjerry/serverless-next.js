@@ -64,6 +64,9 @@ const uploadStaticAssetsFromBuild = async (
   //   filePath: buildIdPath
   // });
 
+  // Get buildId
+  const buildId = await fse.readFile(buildIdPath, "utf-8");
+
   // Upload Next.js static files
 
   const nextStaticFiles = await readDirectoryFiles(
@@ -83,9 +86,6 @@ const uploadStaticAssetsFromBuild = async (
         cacheControl: IMMUTABLE_CACHE_CONTROL_HEADER
       });
     });
-
-  // Get buildId
-  const buildId = await fse.readFile(buildIdPath, "utf-8");
 
   // Upload Next.js data files
 
