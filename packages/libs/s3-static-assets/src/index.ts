@@ -44,7 +44,6 @@ const uploadStaticAssetsFromBuild = async (
     bucketName,
     credentials: credentials
   });
-  console.log("before uploadStaticAssetsFromBuild");
   const normalizedBasePath = basePath ? basePath.slice(1) : "";
 
   const assetsOutputDirectory = path.join(
@@ -392,6 +391,7 @@ type DeleteOldStaticAssetsOptions = {
 const deleteOldStaticAssets = async (
   options: DeleteOldStaticAssetsOptions
 ): Promise<void> => {
+  console.log("deleteOldStaticAssets start: ", options);
   const { bucketName, basePath } = options;
 
   const normalizedBasePathPrefix = basePath ? basePath.slice(1) + "/" : "";
