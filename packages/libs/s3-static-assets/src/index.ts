@@ -44,7 +44,7 @@ const uploadStaticAssetsFromBuild = async (
     bucketName,
     credentials: credentials
   });
-
+  console.log("before uploadStaticAssetsFromBuild");
   const normalizedBasePath = basePath ? basePath.slice(1) : "";
 
   const assetsOutputDirectory = path.join(

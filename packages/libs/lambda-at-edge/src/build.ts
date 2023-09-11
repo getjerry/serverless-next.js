@@ -752,11 +752,11 @@ class Builder {
     };
 
     // Copy BUILD_ID file
-    // const copyBuildId = copyIfExists(
-    //   path.join(dotNextDirectory, "BUILD_ID"),
-    //   path.join(assetOutputDirectory, withBasePath("BUILD_ID"))
-    // );
-
+    const copyBuildId = copyIfExists(
+      path.join(dotNextDirectory, "BUILD_ID"),
+      path.join(assetOutputDirectory, withBasePath("BUILD_ID"))
+    );
+    console.log("----a11");
     const buildStaticFiles = await readDirectoryFiles(
       path.join(dotNextDirectory, "static")
     );
@@ -898,7 +898,7 @@ class Builder {
     const staticDirAssets = await buildPublicOrStaticDirectory("static");
 
     return Promise.all([
-      // copyBuildId, // BUILD_ID
+      copyBuildId, // BUILD_ID
       ...staticFileAssets, // .next/static
       ...htmlPageAssets, // prerendered html pages
       ...prerenderManifestJSONPropFileAssets, // SSG json files
