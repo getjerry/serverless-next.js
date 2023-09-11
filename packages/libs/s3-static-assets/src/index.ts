@@ -73,6 +73,7 @@ const uploadStaticAssetsFromBuild = async (
   const nextStaticFilesUploads = nextStaticFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      console.log("[test 0911]: ", fileItem.path, assetsOutputDirectory);
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
@@ -93,6 +94,7 @@ const uploadStaticAssetsFromBuild = async (
   const nextDataFilesUploads = nextDataFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      console.log("[test 0911 data]: ", fileItem.path, assetsOutputDirectory);
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
@@ -173,8 +175,8 @@ const uploadStaticAssetsFromBuild = async (
     ...nextStaticFilesUploads,
     ...nextDataFilesUploads,
     ...htmlPagesUploads,
-    ...publicAndStaticUploads,
-    buildIdUpload
+    ...publicAndStaticUploads
+    // buildIdUpload
   ]);
 };
 
