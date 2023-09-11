@@ -27,7 +27,11 @@ export class RevalidateHandler {
     cacheControl?: string
   ): Promise<void> {
     const resource = this.resourceService.get(event);
-
+    debug(
+      `[RevalidateHandler] 1: ${JSON.stringify(event)} || ${JSON.stringify(
+        context
+      )} || ${JSON.stringify(manifest)}`
+    );
     console.log(JSON.stringify(resource));
 
     debug(JSON.stringify(event));

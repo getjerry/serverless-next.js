@@ -2,6 +2,7 @@
 import * as _ from "../lodash";
 import { Resource } from "../../services/resource";
 import { debug } from "../console";
+import { DEFAULT_BUILD_ID } from "../../build";
 
 export const INVALIDATION_DATA_DIR = "/_invalidation_group_data/";
 
@@ -33,7 +34,7 @@ export function getGroupS3Key(
 ): string {
   return `${(resource.getBasePath() || "").replace(/^\//, "")}${
     !resource.getBasePath() ? "" : "/"
-  }_next/data/${resource.getBuildId()}${INVALIDATION_DATA_DIR}${getGroupFilename(
+  }_next/data/${DEFAULT_BUILD_ID}${INVALIDATION_DATA_DIR}${getGroupFilename(
     basicGroup
   )}`;
 }
@@ -41,10 +42,11 @@ export function getGroupS3Key(
 export function getGroupFilename(
   basicGroup: BasicInvalidationUrlGroup
 ): string {
-  const filename = `${basicGroup.invalidationPath}${basicGroup.maxAccessNumber}`.replace(
-    /[^a-z0-9A-Z]/g,
-    "_"
-  );
+  const filename =
+    `${basicGroup.invalidationPath}${basicGroup.maxAccessNumber}`.replace(
+      /[^a-z0-9A-Z]/g,
+      "_"
+    );
   return `${filename}.json`;
 }
 

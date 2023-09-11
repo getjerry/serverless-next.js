@@ -44,7 +44,6 @@ const uploadStaticAssetsFromBuild = async (
     bucketName,
     credentials: credentials
   });
-
   const normalizedBasePath = basePath ? basePath.slice(1) : "";
 
   const assetsOutputDirectory = path.join(
@@ -59,10 +58,13 @@ const uploadStaticAssetsFromBuild = async (
     normalizedBasePath,
     "BUILD_ID"
   );
-  const buildIdUpload = s3.uploadFile({
-    s3Key: pathToPosix(path.join(normalizedBasePath, "BUILD_ID")),
-    filePath: buildIdPath
-  });
+  // const buildIdUpload = s3.uploadFile({
+  //   s3Key: pathToPosix(path.join(normalizedBasePath, "BUILD_ID")),
+  //   filePath: buildIdPath
+  // });
+
+  // Get buildId
+  const buildId = await fse.readFile(buildIdPath, "utf-8");
 
   // Upload Next.js static files
 
@@ -93,9 +95,11 @@ const uploadStaticAssetsFromBuild = async (
   const nextDataFilesUploads = nextDataFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      // fileItem.path: /home/ubuntu/work/jerry-serverless/jerry-serverless/dist/apps/seo-submodule/ui-expert-qna/.serverless_nextjs/assets/questions/_next/data/p7wUWPyy6zXVCIwdE21V3/does-the-2011-honda-pilot-have-bluetooth.json
+      // s3Key: questions/_next/data/shared-storage/does-the-2011-honda-pilot-have-bluetooth.json
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      );
+      ).replace(buildId, "shared-storage");
 
       return s3.uploadFile({
         s3Key,
@@ -116,7 +120,6 @@ const uploadStaticAssetsFromBuild = async (
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
-
       // Dynamic fallback HTML pages should never be cached as it will override actual pages once generated and stored in S3.
       const isDynamicFallback = /\[.*]/.test(s3Key);
       if (isDynamicFallback) {
@@ -155,6 +158,7 @@ const uploadStaticAssetsFromBuild = async (
   const publicAndStaticUploads = [...publicFiles, ...staticFiles]
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      // questions/public/favicon-16x16.png
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
@@ -173,8 +177,8 @@ const uploadStaticAssetsFromBuild = async (
     ...nextStaticFilesUploads,
     ...nextDataFilesUploads,
     ...htmlPagesUploads,
-    ...publicAndStaticUploads,
-    buildIdUpload
+    ...publicAndStaticUploads
+    // buildIdUpload
   ]);
 };
 
@@ -267,7 +271,14 @@ const uploadStaticAssets = async (
         }`
       )
     );
-
+    console.log(
+      "[test 0914]: 4",
+      pageFilePath,
+      prerenderManifest.routes[key].dataRoute.slice(1),
+      pathToPosix(
+        withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
+      )
+    );
     return s3.uploadFile({
       s3Key: pathToPosix(
         withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
@@ -380,6 +391,7 @@ type DeleteOldStaticAssetsOptions = {
 const deleteOldStaticAssets = async (
   options: DeleteOldStaticAssetsOptions
 ): Promise<void> => {
+  console.log("deleteOldStaticAssets start: ", options);
   const { bucketName, basePath } = options;
 
   const normalizedBasePathPrefix = basePath ? basePath.slice(1) + "/" : "";
