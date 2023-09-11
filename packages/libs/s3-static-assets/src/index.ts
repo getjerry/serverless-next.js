@@ -73,7 +73,6 @@ const uploadStaticAssetsFromBuild = async (
   const nextStaticFilesUploads = nextStaticFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
-      console.log("[test 0911]: ", fileItem.path, assetsOutputDirectory);
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
@@ -88,7 +87,6 @@ const uploadStaticAssetsFromBuild = async (
   // Get buildId
   const buildId = await fse.readFile(buildIdPath, "utf-8");
 
-  console.log("[test 0913]: ", buildId);
   // Upload Next.js data files
 
   const nextDataFiles = await readDirectoryFiles(
@@ -98,13 +96,9 @@ const uploadStaticAssetsFromBuild = async (
   const nextDataFilesUploads = nextDataFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
-      console.log("[test 0911 data]: ", fileItem.path, assetsOutputDirectory);
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      );
-      const tmp = s3Key.replace(buildId, "shared-storage");
-
-      console.log("[test 0913] 2: ", tmp, s3Key);
+      ).replace(buildId, "shared-storage");
 
       return s3.uploadFile({
         s3Key,
@@ -124,7 +118,7 @@ const uploadStaticAssetsFromBuild = async (
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      );
+      ).replace(buildId, "shared-storage");
 
       // Dynamic fallback HTML pages should never be cached as it will override actual pages once generated and stored in S3.
       const isDynamicFallback = /\[.*]/.test(s3Key);
@@ -167,7 +161,7 @@ const uploadStaticAssetsFromBuild = async (
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
-
+      console.log("[test 0914]: ", fileItem.path, s3Key);
       return s3.uploadFile({
         filePath: fileItem.path,
         s3Key: s3Key,
@@ -227,6 +221,7 @@ const uploadStaticAssets = async (
             .replace(/^.next/, "_next")
         )
       );
+      console.log("[test 0914]: 2", fileItem.path, s3Key);
 
       return s3.uploadFile({
         s3Key,
@@ -276,7 +271,14 @@ const uploadStaticAssets = async (
         }`
       )
     );
-
+    console.log(
+      "[test 0914]: 4",
+      pageFilePath,
+      prerenderManifest.routes[key].dataRoute.slice(1),
+      pathToPosix(
+        withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
+      )
+    );
     return s3.uploadFile({
       s3Key: pathToPosix(
         withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
