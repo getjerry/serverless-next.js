@@ -78,8 +78,8 @@ const uploadStaticAssetsFromBuild = async (
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      ).replace(buildId, "shared-storage");
-      console.log("[test 0912]: 1", s3Key, fileItem.path);
+      );
+
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
@@ -96,10 +96,12 @@ const uploadStaticAssetsFromBuild = async (
   const nextDataFilesUploads = nextDataFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      // fileItem.path: /home/ubuntu/work/jerry-serverless/jerry-serverless/dist/apps/seo-submodule/ui-expert-qna/.serverless_nextjs/assets/questions/_next/data/p7wUWPyy6zXVCIwdE21V3/does-the-2011-honda-pilot-have-bluetooth.json
+      // s3Key: questions/_next/data/shared-storage/does-the-2011-honda-pilot-have-bluetooth.json
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       ).replace(buildId, "shared-storage");
-      console.log("[test 0912]: 2", s3Key, fileItem.path);
+
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
@@ -118,8 +120,7 @@ const uploadStaticAssetsFromBuild = async (
     .map(async (fileItem) => {
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
-      ).replace(buildId, "shared-storage");
-      console.log("[test 0912]: 3", s3Key, fileItem.path);
+      );
       // Dynamic fallback HTML pages should never be cached as it will override actual pages once generated and stored in S3.
       const isDynamicFallback = /\[.*]/.test(s3Key);
       if (isDynamicFallback) {
@@ -158,10 +159,11 @@ const uploadStaticAssetsFromBuild = async (
   const publicAndStaticUploads = [...publicFiles, ...staticFiles]
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      // questions/public/favicon-16x16.png
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
-      console.log("[test 0914]: ", fileItem.path, s3Key);
+
       return s3.uploadFile({
         filePath: fileItem.path,
         s3Key: s3Key,
@@ -221,7 +223,6 @@ const uploadStaticAssets = async (
             .replace(/^.next/, "_next")
         )
       );
-      console.log("[test 0914]: 2", fileItem.path, s3Key);
 
       return s3.uploadFile({
         s3Key,
