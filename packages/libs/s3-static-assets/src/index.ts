@@ -85,6 +85,10 @@ const uploadStaticAssetsFromBuild = async (
       });
     });
 
+  // Get buildId
+  const buildId = await fse.readFile(buildIdPath, "utf-8");
+
+  console.log("[test 0913]: ", buildId);
   // Upload Next.js data files
 
   const nextDataFiles = await readDirectoryFiles(
@@ -98,6 +102,9 @@ const uploadStaticAssetsFromBuild = async (
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
+      const tmp = s3Key.replace(buildId, "shared-storage");
+
+      console.log("[test 0913] 2: ", tmp, s3Key);
 
       return s3.uploadFile({
         s3Key,
