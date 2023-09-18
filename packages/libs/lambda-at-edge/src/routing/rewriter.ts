@@ -20,6 +20,9 @@ export function getRewritePath(
   router: (uri: string) => string | null,
   normalisedPath: string
 ): string | null {
+  console.log(
+    `[getRewritePath] routesManifest: ${JSON.stringify(routesManifest)}`
+  );
   const rewrites: RewriteData[] = routesManifest.rewrites;
 
   for (const rewrite of rewrites) {
@@ -56,6 +59,7 @@ export function getRewritePath(
         }
       }
 
+      console.log(`[getRewritePath] destination: ${destination}`);
       return destination;
     }
   }

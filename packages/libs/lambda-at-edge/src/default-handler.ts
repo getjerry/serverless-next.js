@@ -727,6 +727,7 @@ const handleOriginRequest = async ({
       uri = normaliseUri(request.uri);
     }
   }
+  debug(`[handleOriginRequest] uri1: ${uri}`);
 
   const isStaticPage = pages.html.nonDynamic[uri]; // plain page without any props
   const isPrerenderedPage = prerenderManifest.routes[decodedUri]; // prerendered pages are also static pages like "pages.html" above, but are defined in the prerender-manifest
