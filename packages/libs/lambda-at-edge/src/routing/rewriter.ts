@@ -25,10 +25,13 @@ export function getRewritePath(
   );
   const rewrites: RewriteData[] = routesManifest.rewrites;
 
+  console.log(`[getRewritePath] path: ${path}`);
   for (const rewrite of rewrites) {
+    console.log(`[getRewritePath] rewrite source: ${rewrite}`);
     const matcher = getPathMatch(rewrite.source);
 
     let params = matcher(path);
+    console.log(`[getRewritePath] rewrite params: ${JSON.stringify(params)}`);
 
     if (rewrite.has && params) {
       const hasParams = matchHas(
