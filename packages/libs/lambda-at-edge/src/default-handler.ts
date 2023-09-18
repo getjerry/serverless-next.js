@@ -589,6 +589,7 @@ const handleOriginRequest = async ({
   routesManifest: RoutesManifest;
   context?: Context;
 }) => {
+  debug(`[handleOriginRequest] manifest: ${JSON.stringify(manifest)}`);
   const request = event.Records[0].cf.request;
   // Handle basic auth
   const authorization = request.headers.authorization;
@@ -611,7 +612,9 @@ const handleOriginRequest = async ({
   }
 
   const basePath = routesManifest.basePath;
+  debug(`[handleOriginRequest] before normaliseUri: ${request.uri}`);
   let uri = normaliseUri(request.uri);
+  debug(`[handleOriginRequest] after normaliseUri: ${uri}`);
   const decodedUri = decodeURI(uri);
   const { pages, publicFiles, canonicalHostname } = manifest;
 
@@ -689,6 +692,7 @@ const handleOriginRequest = async ({
   let rewrittenUri;
   // Handle custom rewrites, but don't rewrite non-dynamic pages, public files or data requests per Next.js docs: https://nextjs.org/docs/api-reference/next.config.js/rewrites
   if (!isNonDynamicRoute && !isDataReq) {
+    debug(`[handleOriginRequest] getRewritePath: ${uri}`);
     const customRewrite = getRewritePath(
       request.uri,
       queryString.parse(request.querystring),
@@ -760,7 +764,11 @@ const handleOriginRequest = async ({
       checkABTestUrl(manifest, request);
     } else if (isDataReq) {
       // We need to check whether data request is unmatched i.e routed to 404.html or _error.js
+      debug(`[handleOriginRequest] before normaliseDataRequestUri: ${uri}`);
       const normalisedDataRequestUri = normaliseDataRequestUri(uri, manifest);
+      debug(
+        `[handleOriginRequest] after normaliseDataRequestUri: ${normalisedDataRequestUri}`
+      );
       const pagePath = router(manifest)(normalisedDataRequestUri);
       debug(`[origin-request] is json, uri: ${request.uri}`);
       if (pagePath === "pages/404.html") {
@@ -791,7 +799,9 @@ const handleOriginRequest = async ({
     return request;
   }
 
+  debug(`[handleOriginRequest] before router: ${uri}`);
   const pagePath = router(manifest)(uri);
+  debug(`[handleOriginRequest] after router: ${pagePath}`);
 
   debug(
     `[origin-request] [ssr] start ssr for uri: uri: ${request.uri}, pagePath: ${pagePath}`
