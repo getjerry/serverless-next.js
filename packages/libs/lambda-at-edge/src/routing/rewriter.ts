@@ -27,7 +27,7 @@ export function getRewritePath(
 
   console.log(`[getRewritePath] path: ${path}`);
   for (const rewrite of rewrites) {
-    console.log(`[getRewritePath] rewrite source: ${rewrite}`);
+    console.log(`[getRewritePath] rewrite source: ${rewrite.source}`);
     const matcher = getPathMatch(rewrite.source);
 
     let params = matcher(path);
