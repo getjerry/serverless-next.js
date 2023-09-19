@@ -79,6 +79,16 @@ const uploadStaticAssetsFromBuild = async (
       if (serveFakeManifest && fileItem.path.endsWith("_buildManifest.js")) {
         console.info("clear _buildManifest.js");
         fse.writeFileSync(fileItem.path, "");
+        const s3Key = pathToPosix(
+          path.relative(assetsOutputDirectory, fileItem.path)
+        );
+
+        // not using cache in case we encounter any bugs and need to recover the file
+        return s3.uploadFile({
+          s3Key,
+          filePath: fileItem.path,
+          cacheControl: SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+        });
       }
 
       const s3Key = pathToPosix(
