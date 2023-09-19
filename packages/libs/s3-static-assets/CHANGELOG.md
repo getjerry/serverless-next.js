@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.28](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.27...@getjerry/s3-static-assets@1.8.0-alpha.28) (2023-09-19)
+
+### Features
+
+- update cache header ([a88d51a](https://github.com/getjerry/serverless-next.js/commit/a88d51a3963d2b31b940db4bc9bc91a2295121f9))
+
 # [1.8.0-alpha.27](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.26...@getjerry/s3-static-assets@1.8.0-alpha.27) (2023-09-18)
 
 **Note:** Version bump only for package @getjerry/s3-static-assets
