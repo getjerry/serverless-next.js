@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.30](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.29...@getjerry/s3-static-assets@1.8.0-alpha.30) (2023-09-20)
+
+**Note:** Version bump only for package @getjerry/s3-static-assets
+
+# [1.8.0-alpha.29](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.26...@getjerry/s3-static-assets@1.8.0-alpha.29) (2023-09-19)
+
+### Features
+
+- no cache fake manifest file ([f31d8ec](https://github.com/getjerry/serverless-next.js/commit/f31d8ecdf2a2ad6a9e4a65c82aa6fe04f1da61c3))
+
+# [1.8.0-alpha.28](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.27...@getjerry/s3-static-assets@1.8.0-alpha.28) (2023-09-19)
+
+### Features
+
+- update cache header ([a88d51a](https://github.com/getjerry/serverless-next.js/commit/a88d51a3963d2b31b940db4bc9bc91a2295121f9))
+
+# [1.8.0-alpha.27](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.26...@getjerry/s3-static-assets@1.8.0-alpha.27) (2023-09-18)
+
+**Note:** Version bump only for package @getjerry/s3-static-assets
+
+# [1.8.0-alpha.26](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.4.13...@getjerry/s3-static-assets@1.8.0-alpha.26) (2023-09-15)
+
+### Bug Fixes
+
+- redirect props got stored ([#59](https://github.com/getjerry/serverless-next.js/issues/59)) ([12b5c0f](https://github.com/getjerry/serverless-next.js/commit/12b5c0fa214ee2193de2a665c9236e272f75489b))
+- **default-handler:** add logic to handle not found from getStaticProps ([#55](https://github.com/getjerry/serverless-next.js/issues/55)) ([ba08d6e](https://github.com/getjerry/serverless-next.js/commit/ba08d6ef85b4b1f20674f815a6e6694e8bdf1bde))
+- modify content equals ([#54](https://github.com/getjerry/serverless-next.js/issues/54)) ([73c1a4a](https://github.com/getjerry/serverless-next.js/commit/73c1a4a92b1f3ed8b221739294bcf5827b48ac1c))
+
+### Features
+
+- ab test enhancement ([#58](https://github.com/getjerry/serverless-next.js/issues/58)) ([f09b346](https://github.com/getjerry/serverless-next.js/commit/f09b34614ede134fec890ee0a3ab480dd8bd96fd))
+- clear manifest file ([5c7ab33](https://github.com/getjerry/serverless-next.js/commit/5c7ab333f5d87f02b44999e82159a1e126a8f8a7))
+- Modify SN to support A/B Test ([#51](https://github.com/getjerry/serverless-next.js/issues/51)) ([a801469](https://github.com/getjerry/serverless-next.js/commit/a8014698303611844d8dc5de0e4bd9b030472a4b))
+- support ab test base on region ([#62](https://github.com/getjerry/serverless-next.js/issues/62)) ([6acb468](https://github.com/getjerry/serverless-next.js/commit/6acb4685b51f804c3498c940d2b139121cdd0785))
+- support rewrite has field ([#57](https://github.com/getjerry/serverless-next.js/issues/57)) ([b751580](https://github.com/getjerry/serverless-next.js/commit/b751580ecf92be7825a9e74dce7c92a4c4fa71fd))
+
 # [1.8.0-alpha.25](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.4.13...@getjerry/s3-static-assets@1.8.0-alpha.25) (2023-09-12)
 
 ### Bug Fixes

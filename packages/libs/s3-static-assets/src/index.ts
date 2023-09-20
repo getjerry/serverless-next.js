@@ -23,6 +23,7 @@ type UploadStaticAssetsOptions = {
   credentials: Credentials;
   publicDirectoryCache?: PublicDirectoryCache;
   abTestPaths?: string[];
+  serveFakeManifest?: boolean;
 };
 
 /**
@@ -38,7 +39,8 @@ const uploadStaticAssetsFromBuild = async (
     credentials,
     basePath,
     publicDirectoryCache,
-    nextConfigDir
+    nextConfigDir,
+    serveFakeManifest
   } = options;
   const s3 = await S3ClientFactory({
     bucketName,
@@ -73,6 +75,21 @@ const uploadStaticAssetsFromBuild = async (
   const nextStaticFilesUploads = nextStaticFiles
     .filter(filterOutDirectories)
     .map(async (fileItem) => {
+      if (serveFakeManifest && fileItem.path.endsWith("_buildManifest.js")) {
+        console.info("[uploadStaticAssetsFromBuild] clear _buildManifest.js");
+        fse.writeFileSync(fileItem.path, "");
+        const s3Key = pathToPosix(
+          path.relative(assetsOutputDirectory, fileItem.path)
+        );
+
+        // not using cache in case we encounter any bugs and need to recover the file
+        return s3.uploadFile({
+          s3Key,
+          filePath: fileItem.path,
+          cacheControl: SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+        });
+      }
+
       const s3Key = pathToPosix(
         path.relative(assetsOutputDirectory, fileItem.path)
       );
