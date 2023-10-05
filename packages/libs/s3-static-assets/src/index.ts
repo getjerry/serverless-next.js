@@ -446,6 +446,7 @@ const deleteSpecificRoutes = async (
     // Delete old _next/data versions except for buildId
     const deleteNextDataFiles = s3.deleteFilesByPattern({
       prefix: `${normalizedBasePathPrefix}_next/data`,
+      isEvict: true,
       pattern: new RegExp(
         `${normalizedBasePathPrefix}_next/data/${buildId}/${evictRoute}`
       ) // Ensure to only delete versioned directories
@@ -457,6 +458,7 @@ const deleteSpecificRoutes = async (
     // Delete old static-pages versions except for buildId
     const deleteStaticPageFiles = s3.deleteFilesByPattern({
       prefix: `${normalizedBasePathPrefix}static-pages`,
+      isEvict: true,
       // pattern: new RegExp(`${normalizedBasePathPrefix}static-pages/.+/`),
       pattern: new RegExp(
         `${normalizedBasePathPrefix}static-pages/${buildId}/${evictRoute}`
