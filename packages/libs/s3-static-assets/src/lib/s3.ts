@@ -105,6 +105,7 @@ export default async ({
           })
           .promise();
 
+        console.warn(`[deleteFilesByPattern]`, options, data);
         // Push all objects
         const contents: ObjectList = data.Contents ?? [];
         contents.forEach(function (content) {
