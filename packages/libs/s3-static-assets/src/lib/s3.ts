@@ -130,6 +130,12 @@ export default async ({
         }
       }
 
+      console.warn(
+        `[deleteFilesByPattern foundKeys]`,
+        foundKeys,
+        options.pattern
+      );
+
       const maxKeysToDelete = 1000; // From https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html
 
       // 2. Delete all the objects in batch mode
