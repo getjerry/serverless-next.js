@@ -443,29 +443,20 @@ const deleteSpecificRoutes = async (
   });
 
   if (buildId) {
-    // Delete old _next/data versions except for buildId
+    // Delete _next/data of specific routes
     const deleteNextDataFiles = s3.deleteFilesByPattern({
       prefix: `${normalizedBasePathPrefix}_next/data`,
-      isEvict: true,
       pattern: new RegExp(
         `${normalizedBasePathPrefix}_next/data/${buildId}/${evictRoute}`
-      ) // Ensure to only delete versioned directories
-      // excludePattern: new RegExp(
-      //   `${normalizedBasePathPrefix}_next/data/${buildId}/`
-      // )
+      )
     });
 
-    // Delete old static-pages versions except for buildId
+    // Delete static-pages of specific routes
     const deleteStaticPageFiles = s3.deleteFilesByPattern({
       prefix: `${normalizedBasePathPrefix}static-pages`,
-      isEvict: true,
-      // pattern: new RegExp(`${normalizedBasePathPrefix}static-pages/.+/`),
       pattern: new RegExp(
         `${normalizedBasePathPrefix}static-pages/${buildId}/${evictRoute}`
       )
-      // excludePattern: new RegExp(
-      //   `${normalizedBasePathPrefix}static-pages/${buildId}/`
-      // )
     });
 
     // Run deletion tasks in parallel (safe since they have different prefixes)

@@ -19,7 +19,6 @@ type DeleteFilesByPatternOptions = {
   prefix: string;
   pattern: RegExp;
   excludePattern?: RegExp;
-  isEvict?: boolean;
 };
 
 type GetFileOptions = {
@@ -91,7 +90,7 @@ export default async ({
     deleteFilesByPattern: async (
       options: DeleteFilesByPatternOptions
     ): Promise<void> => {
-      const { prefix, pattern, excludePattern, isEvict } = options;
+      const { prefix, pattern, excludePattern } = options;
 
       // 1. Get all objects by given prefix and matching the pattern, but excluding a pattern.
       const foundKeys: string[] = [];
@@ -106,9 +105,6 @@ export default async ({
           })
           .promise();
 
-        if (isEvict) {
-          console.warn(`[deleteFilesByPattern]`, options, data);
-        }
         // Push all objects
         const contents: ObjectList = data.Contents ?? [];
         contents.forEach(function (content) {
@@ -131,15 +127,6 @@ export default async ({
         } else {
           break;
         }
-      }
-
-      if (isEvict) {
-        console.warn(
-          `[deleteFilesByPattern foundKeys]`,
-          foundKeys,
-          bucketName,
-          options.pattern
-        );
       }
 
       const maxKeysToDelete = 1000; // From https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html
