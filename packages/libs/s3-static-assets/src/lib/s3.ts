@@ -121,6 +121,8 @@ export default async ({
           }
         });
 
+        console.info(`All foundKeys by pattern: ${pattern}:`, foundKeys);
+
         // Continue listing since ListObjectsV2 gets up to 1000 objects at a time
         if (data.IsTruncated) {
           continuationToken = data.NextContinuationToken;
