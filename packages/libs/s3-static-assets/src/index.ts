@@ -222,7 +222,7 @@ const uploadStaticAssets = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: IMMUTABLE_CACHE_CONTROL_HEADER
+        cacheControl: SERVER_CACHE_CONTROL_HEADER
       });
     });
 
