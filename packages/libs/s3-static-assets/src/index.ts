@@ -4,7 +4,6 @@ import fse from "fs-extra";
 import readDirectoryFiles from "./lib/readDirectoryFiles";
 import filterOutDirectories from "./lib/filterOutDirectories";
 import {
-  IMMUTABLE_CACHE_CONTROL_HEADER,
   SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
   SERVER_CACHE_CONTROL_HEADER
 } from "./lib/constants";
@@ -80,7 +79,7 @@ const uploadStaticAssetsFromBuild = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: IMMUTABLE_CACHE_CONTROL_HEADER
+        cacheControl: SERVER_CACHE_CONTROL_HEADER
       });
     });
 
