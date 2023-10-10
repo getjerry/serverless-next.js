@@ -12,7 +12,8 @@ import {
 import {
   deleteOldStaticAssets,
   uploadStaticAssets,
-  uploadStaticAssetsFromBuild
+  uploadStaticAssetsFromBuild,
+  deleteSpecificRoutes
 } from "@getjerry/s3-static-assets";
 import createInvalidation from "@getjerry/cloudfront";
 import obtainDomains from "./lib/obtainDomains";
@@ -388,6 +389,19 @@ class NextjsComponent extends Component {
         publicDirectoryCache: inputs.publicDirectoryCache,
         abTestPaths
       });
+
+      const evictRoute = process.env.EVICT_ROUTE;
+
+      console.warn(`[deleteSpecificRoutes]`, evictRoute);
+
+      if (evictRoute) {
+        await deleteSpecificRoutes({
+          bucketName: bucketOutputs.name,
+          basePath: routesManifest.basePath,
+          credentials: this.context.credentials.aws,
+          evictRoute
+        });
+      }
     } else {
       await uploadStaticAssets({
         bucketName: bucketOutputs.name,

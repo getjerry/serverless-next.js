@@ -418,8 +418,54 @@ const deleteOldStaticAssets = async (
   }
 };
 
+type DeleteSpecificRoutesOptions = {
+  bucketName: string;
+  basePath: string;
+  credentials: Credentials;
+  evictRoute: string;
+};
+const deleteSpecificRoutes = async (
+  options: DeleteSpecificRoutesOptions
+): Promise<void> => {
+  const { bucketName, basePath, evictRoute } = options;
+
+  const normalizedBasePathPrefix = basePath ? basePath.slice(1) + "/" : "";
+
+  const s3 = await S3ClientFactory({
+    bucketName,
+    credentials: options.credentials
+  });
+
+  // Get BUILD_ID file from S3 if it exists
+  const buildId = await s3.getFile({
+    key: normalizedBasePathPrefix + "BUILD_ID"
+  });
+
+  if (buildId) {
+    // Delete _next/data of specific routes
+    const deleteNextDataFiles = s3.deleteFilesByPattern({
+      prefix: `${normalizedBasePathPrefix}_next/data`,
+      pattern: new RegExp(
+        `${normalizedBasePathPrefix}_next/data/${buildId}/${evictRoute}`
+      )
+    });
+
+    // Delete static-pages of specific routes
+    const deleteStaticPageFiles = s3.deleteFilesByPattern({
+      prefix: `${normalizedBasePathPrefix}static-pages`,
+      pattern: new RegExp(
+        `${normalizedBasePathPrefix}static-pages/${buildId}/${evictRoute}`
+      )
+    });
+
+    // Run deletion tasks in parallel (safe since they have different prefixes)
+    await Promise.all([deleteNextDataFiles, deleteStaticPageFiles]);
+  }
+};
+
 export {
   deleteOldStaticAssets,
+  deleteSpecificRoutes,
   uploadStaticAssetsFromBuild,
   uploadStaticAssets
 };
