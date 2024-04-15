@@ -322,13 +322,12 @@ const runRevalidation = async (
   context: Context
 ): Promise<void> => {
   const edgeFunctionName = context.functionName.split(".").pop();
-  const nonEdgeFunctionName = `${edgeFunctionName}-arm64`;
+  const nonEdgeFunctionName = `${edgeFunctionName}-isr`;
   const enc = new TextEncoder();
   const params = {
     FunctionName: nonEdgeFunctionName,
     InvocationType: "Event",
     Payload: enc.encode(JSON.stringify(event))
-    // Qualifier: "LATEST"
   };
   debug(`[revalidation] invoke: ${JSON.stringify(params)}`);
   const response = await lambda.send(new InvokeCommand(params));

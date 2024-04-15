@@ -17,7 +17,7 @@ export const populateNames = (
       apiLambda: `${input.name}-api-${stage}`,
       imageLambda: `${input.name}-image-${stage}`,
       defaultLambda: `${input.name}-default-${stage}`,
-      defaultNonEdgeLambda: `${input.name}-default-${stage}-arm64`
+      defaultNonEdgeLambda: `${input.name}-default-${stage}-isr`
     }
   };
 };
