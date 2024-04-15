@@ -99,6 +99,7 @@ export type LambdaInput = {
   timeout: number;
   runtime: string;
   name?: string;
+  region?: string;
 };
 
 type UrlRewriteOptions = {

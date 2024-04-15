@@ -698,6 +698,7 @@ class NextjsComponent extends Component {
     );
     const defaultNonEdgeLambdaInput: LambdaInput = {
       ...defaultEdgeLambdaInput,
+      region: "us-west-2",
       name: readLambdaInputValue("name", "defaultNonEdgeLambda", undefined) as
         | string
         | undefined
