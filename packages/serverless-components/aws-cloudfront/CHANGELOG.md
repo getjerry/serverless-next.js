@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.36](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-cloudfront@1.8.0-alpha.35...@getjerry/aws-cloudfront@1.8.0-alpha.36) (2024-04-15)
+
+**Note:** Version bump only for package @getjerry/aws-cloudfront
+
 # [1.8.0-alpha.35](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-cloudfront@1.8.0-alpha.34...@getjerry/aws-cloudfront@1.8.0-alpha.35) (2024-04-15)
 
 **Note:** Version bump only for package @getjerry/aws-cloudfront
