@@ -6,6 +6,7 @@ export interface LambdaNames<T> {
   defaultLambda?: T;
   apiLambda?: T;
   imageLambda?: T;
+  defaultNonEdgeLambda?: T;
 }
 export interface LambdaOptions {
   memory?: number | LambdaNames<number>;
@@ -77,7 +78,11 @@ export type BuildOptions = {
   postBuildCommands?: string[];
 };
 
-export type LambdaType = "defaultLambda" | "apiLambda" | "imageLambda";
+export type LambdaType =
+  | "defaultLambda"
+  | "apiLambda"
+  | "imageLambda"
+  | "defaultNonEdgeLambda";
 
 export enum Lambdas {
   default = "default",

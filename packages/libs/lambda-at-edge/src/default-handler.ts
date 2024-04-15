@@ -321,10 +321,11 @@ const runRevalidation = async (
   event: RevalidationEvent,
   context: Context
 ): Promise<void> => {
-  const functionName = context.functionName.split(".").pop();
+  const edgeFunctionName = context.functionName.split(".").pop();
+  const nonEdgeFunctionName = `${edgeFunctionName}-arm64`;
   const enc = new TextEncoder();
   const params = {
-    FunctionName: functionName,
+    FunctionName: nonEdgeFunctionName,
     InvocationType: "Event",
     Payload: enc.encode(JSON.stringify(event)),
     Qualifier: context.functionVersion
