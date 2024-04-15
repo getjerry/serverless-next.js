@@ -328,7 +328,7 @@ const runRevalidation = async (
     FunctionName: nonEdgeFunctionName,
     InvocationType: "Event",
     Payload: enc.encode(JSON.stringify(event)),
-    Qualifier: context.functionVersion
+    Qualifier: "LATEST"
   };
   debug(`[revalidation] invoke: ${JSON.stringify(params)}`);
   const response = await lambda.send(new InvokeCommand(params));
