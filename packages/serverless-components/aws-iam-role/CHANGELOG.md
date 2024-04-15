@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0-alpha.19](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-iam-role@1.2.0-alpha.18...@getjerry/aws-iam-role@1.2.0-alpha.19) (2024-04-15)
+
+**Note:** Version bump only for package @getjerry/aws-iam-role
+
 # [1.2.0-alpha.18](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-iam-role@1.1.12...@getjerry/aws-iam-role@1.2.0-alpha.18) (2024-04-15)
 
 ### Bug Fixes

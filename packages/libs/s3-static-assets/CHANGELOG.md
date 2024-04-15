@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.41](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.8.0-alpha.40...@getjerry/s3-static-assets@1.8.0-alpha.41) (2024-04-15)
+
+**Note:** Version bump only for package @getjerry/s3-static-assets
+
 # [1.8.0-alpha.40](https://github.com/getjerry/serverless-next.js/compare/@getjerry/s3-static-assets@1.4.13...@getjerry/s3-static-assets@1.8.0-alpha.40) (2024-04-15)
 
 ### Bug Fixes

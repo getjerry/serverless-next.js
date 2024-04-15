@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0-alpha.33](https://github.com/serverless-nextjs/serverless-next.js/compare/@getjerry/cloudfront@2.7.0-alpha.32...@getjerry/cloudfront@2.7.0-alpha.33) (2024-04-15)
+
+**Note:** Version bump only for package @getjerry/cloudfront
+
 # [2.7.0-alpha.32](https://github.com/serverless-nextjs/serverless-next.js/compare/@getjerry/cloudfront@2.0.0...@getjerry/cloudfront@2.7.0-alpha.32) (2024-04-15)
 
 ### Bug Fixes
