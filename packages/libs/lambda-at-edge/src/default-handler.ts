@@ -99,8 +99,6 @@ const resourceService = new ResourceService(
   RoutesManifestJson
 );
 
-const lambda = new LambdaClient({ region: "us-east-1" });
-
 const basePath = RoutesManifestJson.basePath;
 
 const perfLogger = (logLambdaExecutionTimes: boolean): PerfLogger => {
@@ -321,15 +319,16 @@ const runRevalidation = async (
   event: RevalidationEvent,
   context: Context
 ): Promise<void> => {
-  const functionName = context.functionName.split(".").pop();
+  const edgeFunctionName = context.functionName.split(".").pop();
+  const nonEdgeFunctionName = `${edgeFunctionName}-isr`;
   const enc = new TextEncoder();
   const params = {
-    FunctionName: functionName,
+    FunctionName: nonEdgeFunctionName,
     InvocationType: "Event",
-    Payload: enc.encode(JSON.stringify(event)),
-    Qualifier: context.functionVersion
+    Payload: enc.encode(JSON.stringify(event))
   };
   debug(`[revalidation] invoke: ${JSON.stringify(params)}`);
+  const lambda = new LambdaClient({ region: "us-west-2" });
   const response = await lambda.send(new InvokeCommand(params));
   debug(`[revalidation] invoked, response:${JSON.stringify(response)}`);
   return;

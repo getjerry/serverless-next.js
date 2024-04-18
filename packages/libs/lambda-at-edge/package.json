@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.20.0-alpha.112",
+  "version": "1.20.0-alpha.119",
   "description": "Provides handlers that can be used in CloudFront Lambda@Edge to deploy next.js applications to the edge.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -56,7 +56,7 @@
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.2",
-    "sharp": "^0.26.3",
+    "sharp": "^0.29.3",
     "ts-loader": "^7.0.5",
     "ts-node": "^9.0.0",
     "typescript": "~4.1.0"

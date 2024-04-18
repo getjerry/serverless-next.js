@@ -347,12 +347,14 @@ class NextjsComponent extends Component {
       bucket,
       cloudFront,
       defaultEdgeLambda,
+      defaultNonEdgeLambda,
       apiEdgeLambda,
       imageEdgeLambda
     ] = await Promise.all([
       this.load("@serverless/aws-s3"),
       this.load("@getjerry/aws-cloudfront"),
       this.load("@getjerry/aws-lambda", "defaultEdgeLambda"),
+      this.load("@getjerry/aws-lambda", "defaultNonEdgeLambda"),
       this.load("@getjerry/aws-lambda", "apiEdgeLambda"),
       this.load("@getjerry/aws-lambda", "imageEdgeLambda")
     ]);
@@ -657,9 +659,7 @@ class NextjsComponent extends Component {
     }
 
     const defaultEdgeLambdaInput: LambdaInput = {
-      description:
-        inputs.description ||
-        "Default Lambda@Edge for Next CloudFront distribution",
+      description: inputs.description || "Default Lambda for Next ISR",
       handler: inputs.handler || "index.handler",
       code: join(nextConfigPath, DEFAULT_LAMBDA_CODE_DIR),
       role: inputs.roleArn
@@ -692,6 +692,19 @@ class NextjsComponent extends Component {
 
     const defaultEdgeLambdaPublishOutputs =
       await defaultEdgeLambda.publishVersion();
+
+    this.context.debug(
+      `Default non-edge lambda input: ${JSON.stringify(defaultEdgeLambdaInput)}`
+    );
+    const defaultNonEdgeLambdaInput: LambdaInput = {
+      ...defaultEdgeLambdaInput,
+      region: "us-west-2",
+      name: readLambdaInputValue("name", "defaultNonEdgeLambda", undefined) as
+        | string
+        | undefined
+    };
+    await defaultNonEdgeLambda(defaultNonEdgeLambdaInput);
+    await defaultNonEdgeLambda.publishVersion();
 
     cloudFrontOrigins[0].pathPatterns[
       this.pathPattern("_next/data/*", routesManifest)
