@@ -327,6 +327,7 @@ class NextjsComponent extends Component {
 
     const staticCachePolicyId = inputs.staticCachePolicyId;
     const staticOriginRequestPolicyId = inputs.staticOriginRequestPolicyId;
+    const staticResponseHeadersPolicyId = inputs.staticResponseHeadersPolicyId;
     const nextImageLoader = inputs.nextImageLoader;
     const dynamicCachePolicyId = inputs.dynamicCachePolicyId;
     const dynamicOriginRequestPolicyId = inputs.dynamicOriginRequestPolicyId;
@@ -456,6 +457,7 @@ class NextjsComponent extends Component {
     ] = {
       cachePolicyId: staticCachePolicyId,
       originRequestPolicyId: staticOriginRequestPolicyId,
+      responseHeadersPolicyId: staticResponseHeadersPolicyId,
       minTTL: 0,
       defaultTTL: 86400,
       maxTTL: 31536000,
@@ -471,6 +473,7 @@ class NextjsComponent extends Component {
     ] = {
       cachePolicyId: staticCachePolicyId,
       originRequestPolicyId: staticOriginRequestPolicyId,
+      responseHeadersPolicyId: staticResponseHeadersPolicyId,
       minTTL: 0,
       defaultTTL: 86400,
       maxTTL: 31536000,
