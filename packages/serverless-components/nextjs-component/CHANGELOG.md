@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0-alpha.139](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.138...@getjerry/serverless-next@2.9.0-alpha.139) (2024-04-19)
+
+### Features
+
+- add response header policy ([c1ab38c](https://github.com/getjerry/serverless-next.js/commit/c1ab38c8b543aeef26d561446956c17bf57c6581))
+
 # [2.9.0-alpha.138](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.0.5-alpha.6...@getjerry/serverless-next@2.9.0-alpha.138) (2024-04-19)
 
 ### Bug Fixes
