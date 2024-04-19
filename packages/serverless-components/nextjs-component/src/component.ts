@@ -599,64 +599,69 @@ class NextjsComponent extends Component {
       };
     }
 
-    if (imageBuildManifest) {
-      const imageEdgeLambdaInput: LambdaInput = {
-        description: inputs.description
-          ? `${inputs.description} (Image)`
-          : "Image Lambda@Edge for Next CloudFront distribution",
-        handler: inputs.handler || "index.handler",
-        code: join(nextConfigPath, IMAGE_LAMBDA_CODE_DIR),
-        role: {
-          service: ["lambda.amazonaws.com", "edgelambda.amazonaws.com"],
-          policy
-        },
-        memory: readLambdaInputValue("memory", "imageLambda", 512) as number,
-        timeout: readLambdaInputValue("timeout", "imageLambda", 10) as number,
-        runtime: readLambdaInputValue(
-          "runtime",
-          "imageLambda",
-          "nodejs12.x"
-        ) as string,
-        name: readLambdaInputValue("name", "imageLambda", undefined) as
-          | string
-          | undefined
-      };
-
-      const imageEdgeLambdaOutputs = await imageEdgeLambda(
-        imageEdgeLambdaInput
-      );
-
-      const imageEdgeLambdaPublishOutputs =
-        await imageEdgeLambda.publishVersion();
-
-      cloudFrontOrigins[0].pathPatterns[
-        this.pathPattern("_next/image*", routesManifest)
-      ] = {
-        cachePolicyId:
-          nextImageLoader?.cachePolicyId ||
-          cloudFrontDefaultsInputs?.cachePolicyId,
-        originRequestPolicyId:
-          nextImageLoader?.originRequestPolicyId || staticOriginRequestPolicyId,
-        minTTL: 0,
-        defaultTTL: 60,
-        maxTTL: 31536000,
-        allowedHttpMethods: [
-          "HEAD",
-          "DELETE",
-          "POST",
-          "GET",
-          "OPTIONS",
-          "PUT",
-          "PATCH"
-        ],
-        forward: {
-          headers: ["Accept"]
-        },
-        "lambda@edge": {
-          "origin-request": `${imageEdgeLambdaOutputs.arn}:${imageEdgeLambdaPublishOutputs.version}`
-        }
-      };
-    }
+    /**
+     * We use TF implementation of next image optimizer.
+     * And we want the optimizer to be under Jerry host.
+     * So we have to disable this section and manually configure image optimizer origin in cloudfront
+     */
+    // if (imageBuildManifest) {
+    //   const imageEdgeLambdaInput: LambdaInput = {
+    //     description: inputs.description
+    //       ? `${inputs.description} (Image)`
+    //       : "Image Lambda@Edge for Next CloudFront distribution",
+    //     handler: inputs.handler || "index.handler",
+    //     code: join(nextConfigPath, IMAGE_LAMBDA_CODE_DIR),
+    //     role: {
+    //       service: ["lambda.amazonaws.com", "edgelambda.amazonaws.com"],
+    //       policy
+    //     },
+    //     memory: readLambdaInputValue("memory", "imageLambda", 512) as number,
+    //     timeout: readLambdaInputValue("timeout", "imageLambda", 10) as number,
+    //     runtime: readLambdaInputValue(
+    //       "runtime",
+    //       "imageLambda",
+    //       "nodejs12.x"
+    //     ) as string,
+    //     name: readLambdaInputValue("name", "imageLambda", undefined) as
+    //       | string
+    //       | undefined
+    //   };
+    //
+    //   const imageEdgeLambdaOutputs = await imageEdgeLambda(
+    //     imageEdgeLambdaInput
+    //   );
+    //
+    //   const imageEdgeLambdaPublishOutputs =
+    //     await imageEdgeLambda.publishVersion();
+    //
+    //   cloudFrontOrigins[0].pathPatterns[
+    //     this.pathPattern("_next/image*", routesManifest)
+    //   ] = {
+    //     cachePolicyId:
+    //       nextImageLoader?.cachePolicyId ||
+    //       cloudFrontDefaultsInputs?.cachePolicyId,
+    //     originRequestPolicyId:
+    //       nextImageLoader?.originRequestPolicyId || staticOriginRequestPolicyId,
+    //     minTTL: 0,
+    //     defaultTTL: 60,
+    //     maxTTL: 31536000,
+    //     allowedHttpMethods: [
+    //       "HEAD",
+    //       "DELETE",
+    //       "POST",
+    //       "GET",
+    //       "OPTIONS",
+    //       "PUT",
+    //       "PATCH"
+    //     ],
+    //     forward: {
+    //       headers: ["Accept"]
+    //     },
+    //     "lambda@edge": {
+    //       "origin-request": `${imageEdgeLambdaOutputs.arn}:${imageEdgeLambdaPublishOutputs.version}`
+    //     }
+    //   };
+    // }
 
     const defaultEdgeLambdaInput: LambdaInput = {
       description: inputs.description || "Default Lambda for Next ISR",
