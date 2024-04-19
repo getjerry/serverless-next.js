@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.41](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-cloudfront@1.8.0-alpha.40...@getjerry/aws-cloudfront@1.8.0-alpha.41) (2024-04-19)
+
+### Features
+
+- add response header policy ([75d8554](https://github.com/getjerry/serverless-next.js/commit/75d8554dbb3b5bcca4352487633e083b8c43ff53))
+
 # [1.8.0-alpha.40](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-cloudfront@1.8.0-alpha.39...@getjerry/aws-cloudfront@1.8.0-alpha.40) (2024-04-19)
 
 **Note:** Version bump only for package @getjerry/aws-cloudfront
