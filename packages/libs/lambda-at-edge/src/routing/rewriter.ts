@@ -39,7 +39,7 @@ export function getRewritePath({
 
     let params = matcher(path);
 
-    if (rewrite.has && params) {
+    if (rewrite.has) {
       const hasParams = matchHas(
         {
           headers: headers || {},
@@ -49,8 +49,14 @@ export function getRewritePath({
         queryParams
       );
 
+      console.log(
+        `[REWRITER] rewrite has check: has - ${JSON.stringify(
+          rewrite.has
+        )}, hasParams - ${JSON.stringify(hasParams)}`
+      );
+
       if (hasParams) {
-        Object.assign(params, hasParams);
+        Object.assign(params ?? {}, hasParams);
       } else {
         params = false;
       }
