@@ -11,7 +11,8 @@ module.exports = (pathPattern, pathPatternConfig, originId) => {
     viewerProtocolPolicy = "https-only",
     fieldLevelEncryptionId = "",
     cachePolicyId,
-    originRequestPolicyId
+    originRequestPolicyId,
+    responseHeadersPolicyId
   } = pathPatternConfig;
 
   const cacheBehaviour = {
@@ -56,6 +57,10 @@ module.exports = (pathPattern, pathPatternConfig, originId) => {
 
   if (originRequestPolicyId) {
     cacheBehaviour.OriginRequestPolicyId = originRequestPolicyId;
+  }
+
+  if (responseHeadersPolicyId) {
+    cacheBehaviour.ResponseHeadersPolicyId = responseHeadersPolicyId;
   }
 
   return cacheBehaviour;

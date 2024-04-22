@@ -40,6 +40,7 @@ export type ServerlessComponentInputs = {
   domainRedirects?: { [key: string]: string };
   staticCachePolicyId?: string;
   staticOriginRequestPolicyId?: string;
+  staticResponseHeadersPolicyId?: string;
   dynamicCachePolicyId?: string;
   dynamicOriginRequestPolicyId?: string;
   nextImageLoader?: {
