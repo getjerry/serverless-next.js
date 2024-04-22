@@ -65,7 +65,7 @@ export function getRewritePath({
       );
 
       if (hasParams) {
-        Object.assign(params ?? {}, hasParams);
+        params ? Object.assign(params, hasParams) : (params = hasParams);
       } else {
         params = false;
       }
