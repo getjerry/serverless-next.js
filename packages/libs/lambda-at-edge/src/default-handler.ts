@@ -72,7 +72,7 @@ import { RevalidateHandler } from "./handler/revalidate.handler";
 import { RenderService } from "./services/render.service";
 import { debug, getEnvironment, isDevMode } from "./lib/console";
 import { PERMANENT_STATIC_PAGES_DIR } from "./lib/permanentStaticPages";
-import { checkABTestUrl, checkAndRewriteUrl } from "./lib/pathToRegexStr";
+import { checkABTestUrl } from "./lib/pathToRegexStr";
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 
@@ -688,13 +688,14 @@ const handleOriginRequest = async ({
   let rewrittenUri;
   // Handle custom rewrites, but don't rewrite non-dynamic pages, public files or data requests per Next.js docs: https://nextjs.org/docs/api-reference/next.config.js/rewrites
   if (!isNonDynamicRoute && !isDataReq) {
-    const customRewrite = getRewritePath(
-      request.uri,
-      queryString.parse(request.querystring),
+    const customRewrite = getRewritePath({
+      path: request.uri,
+      queryParams: queryString.parse(request.querystring),
       routesManifest,
-      router(manifest),
-      uri
-    );
+      router: router(manifest),
+      normalisedPath: uri,
+      headers: request.headers
+    });
     if (customRewrite) {
       if (isExternalRewrite(customRewrite)) {
         const { req, res, responsePromise } = lambdaAtEdgeCompat(
@@ -755,7 +756,6 @@ const handleOriginRequest = async ({
       s3Origin.path = `${basePath}/static-pages/${manifest.buildId}`;
       const pageName = uri === "/" ? "/index" : uri;
       request.uri = `${pageName}.html`;
-      checkAndRewriteUrl(manifest, request);
       checkABTestUrl(manifest, request);
     } else if (isDataReq) {
       // We need to check whether data request is unmatched i.e routed to 404.html or _error.js

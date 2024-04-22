@@ -4,6 +4,7 @@ import { IncomingMessage, ServerResponse } from "http";
 import { getPathMatch } from "next/dist/shared/lib/router/utils/path-match";
 import { matchHas } from "next/dist/shared/lib/router/utils/prepare-destination";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 
 /**
  * Get the rewrite of the given path, if it exists. Otherwise return null.
@@ -12,14 +13,25 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
  * @param routesManifest
  * @param router
  * @param normalisedPath
+ * @param headers
  */
-export function getRewritePath(
-  path: string,
-  queryParams: Params,
-  routesManifest: RoutesManifest,
-  router: (uri: string) => string | null,
-  normalisedPath: string
-): string | null {
+export function getRewritePath({
+  path,
+  queryParams,
+  routesManifest,
+  router,
+  normalisedPath,
+  headers
+}: {
+  path: string;
+  queryParams: Params;
+  headers?: CloudFrontHeaders;
+  routesManifest: RoutesManifest;
+  router: (uri: string) => string | null;
+  normalisedPath: string;
+}): string | null {
+  console.log(`[REWRITER] headers: ${JSON.stringify(headers)}`);
+
   const rewrites: RewriteData[] = routesManifest.rewrites;
 
   for (const rewrite of rewrites) {
@@ -30,7 +42,7 @@ export function getRewritePath(
     if (rewrite.has && params) {
       const hasParams = matchHas(
         {
-          headers: {},
+          headers: headers || {},
           cookies: {}
         } as any,
         rewrite.has,

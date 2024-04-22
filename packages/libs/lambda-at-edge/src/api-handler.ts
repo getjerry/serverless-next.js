@@ -112,13 +112,14 @@ export const handler = async (
   let uri = normaliseUri(request.uri);
 
   if (!isNonDynamicRoute) {
-    const customRewrite = getRewritePath(
-      request.uri,
-      queryString.parse(request.querystring),
+    const customRewrite = getRewritePath({
+      path: request.uri,
+      queryParams: queryString.parse(request.querystring),
       routesManifest,
-      router(manifest),
-      uri
-    );
+      router: router(manifest),
+      normalisedPath: uri,
+      headers: request.headers
+    });
     if (customRewrite) {
       if (isExternalRewrite(customRewrite)) {
         const { req, res, responsePromise } = lambdaAtEdgeCompat(
