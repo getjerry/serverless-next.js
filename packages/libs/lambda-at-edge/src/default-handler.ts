@@ -687,7 +687,7 @@ const handleOriginRequest = async ({
 
   let rewrittenUri;
   // Handle custom rewrites, but don't rewrite non-dynamic pages, public files or data requests per Next.js docs: https://nextjs.org/docs/api-reference/next.config.js/rewrites
-  if (!isNonDynamicRoute && !isDataReq) {
+  if (!isDataReq) {
     const customRewrite = getRewritePath({
       path: request.uri,
       queryParams: queryString.parse(request.querystring),
