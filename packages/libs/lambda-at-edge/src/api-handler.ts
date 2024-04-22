@@ -118,7 +118,7 @@ export const handler = async (
       routesManifest,
       router: router(manifest),
       normalisedPath: uri,
-      headers: request.headers
+      cloudFrontHeaders: request.headers
     });
     if (customRewrite) {
       if (isExternalRewrite(customRewrite)) {
