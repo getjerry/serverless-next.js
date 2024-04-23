@@ -31,15 +31,9 @@ export function getRewritePath({
   router: (uri: string) => string | null;
   normalisedPath: string;
 }): string | null {
-  console.log(
-    `[REWRITER] cloudFrontHeaders: ${JSON.stringify(cloudFrontHeaders)}`
-  );
-
   const headers = _.mapValues(cloudFrontHeaders, (listedValues) =>
     _.map(listedValues, ({ value }) => value)
   );
-
-  console.log(`[REWRITER] headers: ${JSON.stringify(headers)}`);
 
   const rewrites: RewriteData[] = routesManifest.rewrites;
 
@@ -56,12 +50,6 @@ export function getRewritePath({
         } as any,
         rewrite.has,
         queryParams
-      );
-
-      console.log(
-        `[REWRITER] rewrite has check: has - ${JSON.stringify(
-          rewrite.has
-        )}, hasParams - ${JSON.stringify(hasParams)}`
       );
 
       if (hasParams) {
