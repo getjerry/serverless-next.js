@@ -31,8 +31,9 @@ export function getRewritePath({
   router: (uri: string) => string | null;
   normalisedPath: string;
 }): string | null {
-  const headers = _.mapValues(cloudFrontHeaders, (listedValues) =>
-    _.map(listedValues, ({ value }) => value)
+  // transform cloudfront headers into nextjs headers
+  const headers = _.mapValues(cloudFrontHeaders, (listedHeaderValues) =>
+    _.map(listedHeaderValues, ({ value }) => value)
   );
 
   const rewrites: RewriteData[] = routesManifest.rewrites;
