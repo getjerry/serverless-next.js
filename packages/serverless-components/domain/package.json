@@ -1,6 +1,6 @@
 {
   "name": "@getjerry/domain",
-  "version": "1.7.0-alpha.46",
+  "version": "1.7.0-alpha.47",
   "main": "serverless.js",
   "publishConfig": {
     "access": "public"
