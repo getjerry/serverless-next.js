@@ -43,12 +43,6 @@ export function getRewritePath({
 
     let params = matcher(path);
 
-    console.log(
-      `Rewriting ${JSON.stringify(
-        rewrite
-      )}, path: ${path}, params: ${JSON.stringify(params)}`
-    );
-
     if (rewrite.has && params) {
       const hasParams = matchHas(
         {
@@ -58,8 +52,6 @@ export function getRewritePath({
         rewrite.has,
         queryParams
       );
-
-      console.log(`Rewriting hasParams: ${JSON.stringify(hasParams)}`);
 
       if (hasParams) {
         params ? Object.assign(params, hasParams) : (params = hasParams);
