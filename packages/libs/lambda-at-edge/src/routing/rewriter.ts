@@ -49,7 +49,7 @@ export function getRewritePath({
       )}, path: ${path}, params: ${JSON.stringify(params)}`
     );
 
-    if (rewrite.has) {
+    if (rewrite.has && params) {
       const hasParams = matchHas(
         {
           headers,
