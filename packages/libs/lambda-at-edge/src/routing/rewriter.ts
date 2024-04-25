@@ -55,6 +55,8 @@ export function getRewritePath({
         queryParams
       );
 
+      console.log(`Rewriting hasParams: ${hasParams}`);
+
       if (hasParams) {
         params ? Object.assign(params, hasParams) : (params = hasParams);
       } else {
