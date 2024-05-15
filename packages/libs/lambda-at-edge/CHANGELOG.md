@@ -3,6 +3,76 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.136](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.135...@getjerry/lambda-at-edge@1.20.0-alpha.136) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.135](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.134...@getjerry/lambda-at-edge@1.20.0-alpha.135) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.134](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.133...@getjerry/lambda-at-edge@1.20.0-alpha.134) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.133](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.132...@getjerry/lambda-at-edge@1.20.0-alpha.133) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.132](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.131...@getjerry/lambda-at-edge@1.20.0-alpha.132) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.131](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.130...@getjerry/lambda-at-edge@1.20.0-alpha.131) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.130](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.129...@getjerry/lambda-at-edge@1.20.0-alpha.130) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.129](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.128...@getjerry/lambda-at-edge@1.20.0-alpha.129) (2024-04-25)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.128](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.127...@getjerry/lambda-at-edge@1.20.0-alpha.128) (2024-04-23)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.127](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.126...@getjerry/lambda-at-edge@1.20.0-alpha.127) (2024-04-22)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.126](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.125...@getjerry/lambda-at-edge@1.20.0-alpha.126) (2024-04-22)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.125](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.124...@getjerry/lambda-at-edge@1.20.0-alpha.125) (2024-04-22)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.124](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.123...@getjerry/lambda-at-edge@1.20.0-alpha.124) (2024-04-22)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
+# [1.20.0-alpha.123](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.12.0-alpha.6...@getjerry/lambda-at-edge@1.20.0-alpha.123) (2024-04-22)
+
+### Bug Fixes
+
+- redirect props got stored ([#59](https://github.com/getjerry/serverless-next.js/issues/59)) ([12b5c0f](https://github.com/getjerry/serverless-next.js/commit/12b5c0fa214ee2193de2a665c9236e272f75489b))
+- **default-handler:** add logic to handle not found from getStaticProps ([#55](https://github.com/getjerry/serverless-next.js/issues/55)) ([ba08d6e](https://github.com/getjerry/serverless-next.js/commit/ba08d6ef85b4b1f20674f815a6e6694e8bdf1bde))
+- html string ([#45](https://github.com/getjerry/serverless-next.js/issues/45)) ([6920106](https://github.com/getjerry/serverless-next.js/commit/6920106340aeb42d00b97107313b18e42f5da385))
+- modify content equals ([#54](https://github.com/getjerry/serverless-next.js/issues/54)) ([73c1a4a](https://github.com/getjerry/serverless-next.js/commit/73c1a4a92b1f3ed8b221739294bcf5827b48ac1c))
+
+### Features
+
+- ab test enhancement ([#58](https://github.com/getjerry/serverless-next.js/issues/58)) ([f09b346](https://github.com/getjerry/serverless-next.js/commit/f09b34614ede134fec890ee0a3ab480dd8bd96fd))
+- arm 64 isr handler ([#66](https://github.com/getjerry/serverless-next.js/issues/66)) ([6ad0210](https://github.com/getjerry/serverless-next.js/commit/6ad0210fd96ea998ea1f735872df9cf1eebef7d6))
+- disable image optimizer ([#67](https://github.com/getjerry/serverless-next.js/issues/67)) ([c06635a](https://github.com/getjerry/serverless-next.js/commit/c06635a948d546874ce3fb49cef885323468eb41))
+- Modify SN to support A/B Test ([#51](https://github.com/getjerry/serverless-next.js/issues/51)) ([a801469](https://github.com/getjerry/serverless-next.js/commit/a8014698303611844d8dc5de0e4bd9b030472a4b))
+- support ab test base on region ([#62](https://github.com/getjerry/serverless-next.js/issues/62)) ([6acb468](https://github.com/getjerry/serverless-next.js/commit/6acb4685b51f804c3498c940d2b139121cdd0785))
+- support rewrite has field ([#57](https://github.com/getjerry/serverless-next.js/issues/57)) ([b751580](https://github.com/getjerry/serverless-next.js/commit/b751580ecf92be7825a9e74dce7c92a4c4fa71fd))
+
 # [1.20.0-alpha.122](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.121...@getjerry/lambda-at-edge@1.20.0-alpha.122) (2024-04-19)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
