@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0-alpha.42](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-iam-role@1.1.12...@getjerry/aws-iam-role@1.2.0-alpha.42) (2024-05-15)
+
+### Bug Fixes
+
+- redirect props got stored ([#59](https://github.com/getjerry/serverless-next.js/issues/59)) ([12b5c0f](https://github.com/getjerry/serverless-next.js/commit/12b5c0fa214ee2193de2a665c9236e272f75489b))
+
+### Features
+
+- arm 64 isr handler ([#66](https://github.com/getjerry/serverless-next.js/issues/66)) ([6ad0210](https://github.com/getjerry/serverless-next.js/commit/6ad0210fd96ea998ea1f735872df9cf1eebef7d6))
+- disable image optimizer ([#67](https://github.com/getjerry/serverless-next.js/issues/67)) ([c06635a](https://github.com/getjerry/serverless-next.js/commit/c06635a948d546874ce3fb49cef885323468eb41))
+- support ab test base on region ([#62](https://github.com/getjerry/serverless-next.js/issues/62)) ([6acb468](https://github.com/getjerry/serverless-next.js/commit/6acb4685b51f804c3498c940d2b139121cdd0785))
+- support headers in rewrite ([#68](https://github.com/getjerry/serverless-next.js/issues/68)) ([28e5c9f](https://github.com/getjerry/serverless-next.js/commit/28e5c9f2d2d9d79dc39aa1c490fd651772c8e0d0))
+
 # [1.2.0-alpha.41](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-iam-role@1.2.0-alpha.40...@getjerry/aws-iam-role@1.2.0-alpha.41) (2024-04-25)
 
 **Note:** Version bump only for package @getjerry/aws-iam-role
