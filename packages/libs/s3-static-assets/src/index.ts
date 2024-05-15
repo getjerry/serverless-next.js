@@ -5,7 +5,6 @@ import readDirectoryFiles from "./lib/readDirectoryFiles";
 import filterOutDirectories from "./lib/filterOutDirectories";
 import {
   SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
-  SERVER_CACHE_CONTROL_HEADER,
   SWR_CACHE_CONTROL_HEADER,
   IMMUTABLE_CACHE_CONTROL_HEADER
 } from "./lib/constants";
