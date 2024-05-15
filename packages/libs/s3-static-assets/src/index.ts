@@ -226,10 +226,16 @@ const uploadStaticAssets = async (
         )
       );
 
+      const isNonHashedFile =
+        s3Key.endsWith("/_buildManifest.js") ||
+        s3Key.endsWith("/_ssgManifest.js");
+
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: isNonHashedFile
+          ? SWR_CACHE_CONTROL_HEADER
+          : IMMUTABLE_CACHE_CONTROL_HEADER
       });
     });
 
@@ -255,7 +261,7 @@ const uploadStaticAssets = async (
           )
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: SWR_CACHE_CONTROL_HEADER
       });
     });
 
@@ -280,7 +286,7 @@ const uploadStaticAssets = async (
         withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER
+      cacheControl: SWR_CACHE_CONTROL_HEADER
     });
   });
 
@@ -300,7 +306,7 @@ const uploadStaticAssets = async (
         withBasePath(path.posix.join("static-pages", relativePageFilePath))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER
+      cacheControl: SWR_CACHE_CONTROL_HEADER
     });
   });
 
@@ -320,7 +326,7 @@ const uploadStaticAssets = async (
           withBasePath(path.posix.join("static-pages", fallback))
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: SWR_CACHE_CONTROL_HEADER
       });
     });
 
