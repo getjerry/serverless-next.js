@@ -85,7 +85,6 @@ const uploadStaticAssetsFromBuild = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        // TODO: fix this, most files has hash in file name so they can be immutable
         cacheControl: isNonHashedFile
           ? SWR_CACHE_CONTROL_HEADER
           : IMMUTABLE_CACHE_CONTROL_HEADER
