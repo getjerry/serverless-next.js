@@ -6,7 +6,8 @@ import filterOutDirectories from "./lib/filterOutDirectories";
 import {
   SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
   SERVER_CACHE_CONTROL_HEADER,
-  SWR_CACHE_CONTROL_HEADER
+  SWR_CACHE_CONTROL_HEADER,
+  IMMUTABLE_CACHE_CONTROL_HEADER
 } from "./lib/constants";
 import S3ClientFactory, { Credentials } from "./lib/s3";
 import pathToPosix from "./lib/pathToPosix";
@@ -77,15 +78,17 @@ const uploadStaticAssetsFromBuild = async (
         path.relative(assetsOutputDirectory, fileItem.path)
       );
 
-      if (s3Key.includes("buildManifest")) {
-        console.log(`[S3KEY] build manifest: ${s3Key}`);
-      }
+      const isNonHashedFile =
+        s3Key.endsWith("/_buildManifest.js") ||
+        s3Key.endsWith("/_ssgManifest.js");
 
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
         // TODO: fix this, most files has hash in file name so they can be immutable
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: isNonHashedFile
+          ? SWR_CACHE_CONTROL_HEADER
+          : IMMUTABLE_CACHE_CONTROL_HEADER
       });
     });
 
