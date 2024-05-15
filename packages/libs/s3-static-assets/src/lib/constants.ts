@@ -4,6 +4,10 @@ export const IMMUTABLE_CACHE_CONTROL_HEADER =
 export const SERVER_CACHE_CONTROL_HEADER =
   "public, max-age=0, s-maxage=2678400, must-revalidate";
 
+// stale while revalidating
+export const SWR_CACHE_CONTROL_HEADER =
+  "public, max-age=300, s-maxage=900, stale-while-revalidate=31536000, stale-while-error=31536000";
+
 export const DEFAULT_PUBLIC_DIR_CACHE_CONTROL =
   "public, max-age=31536000, must-revalidate";
 
