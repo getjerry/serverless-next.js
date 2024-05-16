@@ -84,6 +84,7 @@ const uploadStaticAssetsFromBuild = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
+        /** This actually has no impact because S3 will add 'system determined' cache control header. and we force rewrite response headers in cloudfront*/
         cacheControl: isNonHashedFile
           ? SWR_CACHE_CONTROL_HEADER
           : IMMUTABLE_CACHE_CONTROL_HEADER
@@ -232,6 +233,7 @@ const uploadStaticAssets = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
+        /** This actually has no impact because S3 will add 'system determined' cache control header. and we force rewrite response headers in cloudfront*/
         cacheControl: isNonHashedFile
           ? SWR_CACHE_CONTROL_HEADER
           : IMMUTABLE_CACHE_CONTROL_HEADER
