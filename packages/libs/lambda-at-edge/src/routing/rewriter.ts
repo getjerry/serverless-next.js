@@ -6,6 +6,7 @@ import { matchHas } from "next/dist/shared/lib/router/utils/prepare-destination"
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 import * as _ from "lodash";
+import { SWR_CACHE_CONTROL_HEADER } from "../../../constants";
 
 /**
  * Get the rewrite of the given path, if it exists. Otherwise return null.
@@ -137,6 +138,7 @@ export async function createExternalRewriteResponse(
     }
   }
   res.statusCode = fetchResponse.status;
+  res.setHeader("cache-control", SWR_CACHE_CONTROL_HEADER);
   const text = await fetchResponse.text();
   res.end(text);
 }

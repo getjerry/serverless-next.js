@@ -6,6 +6,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3/commands/GetObjectCommand";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3/commands/DeleteObjectCommand";
+import { SWR_CACHE_CONTROL_HEADER } from "../../../constants";
 
 interface S3ServiceOptions {
   bucketName?: string;
@@ -85,8 +86,7 @@ export class S3Service {
         Body: body,
         Bucket: this.options.bucketName,
         ContentType: contentType,
-        CacheControl:
-          cacheControl ?? "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: cacheControl ?? SWR_CACHE_CONTROL_HEADER
       })
     );
   }

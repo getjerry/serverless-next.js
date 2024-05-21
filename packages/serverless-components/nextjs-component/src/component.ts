@@ -106,6 +106,10 @@ class NextjsComponent extends Component {
     stillToMatch.delete(this.pathPattern("api/*", routesManifest));
     stillToMatch.delete(this.pathPattern("static/*", routesManifest));
     stillToMatch.delete(this.pathPattern("_next/static/*", routesManifest));
+    stillToMatch.delete(
+      this.pathPattern("_next/static/chunks/*", routesManifest)
+    );
+
     stillToMatch.delete(this.pathPattern("_next/data/*", routesManifest));
 
     // check for other api like paths
@@ -453,11 +457,26 @@ class NextjsComponent extends Component {
     ];
 
     cloudFrontOrigins[0].pathPatterns[
-      this.pathPattern("_next/static/*", routesManifest)
+      this.pathPattern("_next/static/chunks/*", routesManifest)
     ] = {
       cachePolicyId: staticCachePolicyId,
       originRequestPolicyId: staticOriginRequestPolicyId,
       responseHeadersPolicyId: staticResponseHeadersPolicyId,
+      minTTL: 0,
+      defaultTTL: 86400,
+      maxTTL: 31536000,
+      forward: {
+        headers: "none",
+        cookies: "none",
+        queryString: false
+      }
+    };
+
+    cloudFrontOrigins[0].pathPatterns[
+      this.pathPattern("_next/static/*", routesManifest)
+    ] = {
+      cachePolicyId: staticCachePolicyId,
+      originRequestPolicyId: staticOriginRequestPolicyId,
       minTTL: 0,
       defaultTTL: 86400,
       maxTTL: 31536000,

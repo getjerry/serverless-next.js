@@ -82,6 +82,10 @@ import {
   sentry_flush_timeout
 } from "./lib/sentry";
 import { renderPageToHtml } from "./services/utils/render.util";
+import {
+  SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
+  SWR_CACHE_CONTROL_HEADER
+} from "../../constants";
 
 process.env.PRERENDER = "true";
 process.env.DEBUGMODE = Manifest.enableDebugMode;
@@ -498,7 +502,7 @@ export const handler = async (
       event,
       context,
       manifest,
-      isAbTest ? "public, max-age=0, s-maxage=0, must-revalidate" : undefined
+      isAbTest ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER : undefined
     );
     return;
   }
@@ -1057,7 +1061,7 @@ const handleOriginResponse = async ({
         Key: jsonPath,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: SWR_CACHE_CONTROL_HEADER
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1067,8 +1071,8 @@ const handleOriginResponse = async ({
         Body: html,
         ContentType: "text/html",
         CacheControl: isAbTestPath(manifest, htmlUri)
-          ? "public, max-age=0, s-maxage=0, must-revalidate"
-          : "public, max-age=0, s-maxage=2678400, must-revalidate"
+          ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+          : SWR_CACHE_CONTROL_HEADER
       };
 
       debug(`[blocking-fallback] json to s3: ${JSON.stringify(s3JsonParams)}`);
@@ -1094,8 +1098,8 @@ const handleOriginResponse = async ({
           {
             key: "Cache-Control",
             value: isAbTestPath(manifest, uri)
-              ? "public, max-age=0, s-maxage=0, must-revalidate"
-              : "public, max-age=0, s-maxage=2678400, must-revalidate"
+              ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+              : SWR_CACHE_CONTROL_HEADER
           }
         ]
       },
@@ -1149,7 +1153,7 @@ const handleOriginResponse = async ({
         }${decodeURI(uri.replace(/^\//, ""))}`,
         Body: JSON.stringify(renderOpts.pageData),
         ContentType: "application/json",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: SWR_CACHE_CONTROL_HEADER
       };
       const s3HtmlParams = {
         Bucket: bucketName,
@@ -1161,7 +1165,7 @@ const handleOriginResponse = async ({
           .replace(".json", ".html")}`,
         Body: html,
         ContentType: "text/html",
-        CacheControl: "public, max-age=0, s-maxage=2678400, must-revalidate"
+        CacheControl: SWR_CACHE_CONTROL_HEADER
       };
 
       debug(region);
@@ -1233,8 +1237,8 @@ const handleOriginResponse = async ({
             value:
               CacheControl ??
               (hasFallback.fallback // Use cache-control from S3 response if possible, otherwise use defaults
-                ? "public, max-age=0, s-maxage=0, must-revalidate" // fallback should never be cached
-                : "public, max-age=0, s-maxage=2678400, must-revalidate")
+                ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER // fallback should never be cached
+                : SWR_CACHE_CONTROL_HEADER)
           }
         ]
       },
@@ -1434,7 +1438,7 @@ const setCacheControlToNoCache = (response: CloudFrontResultResponse): void => {
     "cache-control": [
       {
         key: "Cache-Control",
-        value: "public, max-age=0, s-maxage=0, must-revalidate"
+        value: SERVER_NO_CACHE_CACHE_CONTROL_HEADER
       }
     ]
   };
@@ -1496,7 +1500,7 @@ export const generatePermanentPageResponse = async (
       "cache-control": [
         {
           key: "Cache-Control",
-          value: "public, max-age=0, s-maxage=2678400, must-revalidate"
+          value: SWR_CACHE_CONTROL_HEADER
         }
       ]
     },

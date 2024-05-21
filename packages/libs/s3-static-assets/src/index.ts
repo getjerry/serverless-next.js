@@ -1,11 +1,12 @@
 import AWS from "aws-sdk";
-import path, { join } from "path";
+import path from "path";
 import fse from "fs-extra";
 import readDirectoryFiles from "./lib/readDirectoryFiles";
 import filterOutDirectories from "./lib/filterOutDirectories";
 import {
   SERVER_NO_CACHE_CACHE_CONTROL_HEADER,
-  SERVER_CACHE_CONTROL_HEADER
+  SWR_CACHE_CONTROL_HEADER,
+  IMMUTABLE_CACHE_CONTROL_HEADER
 } from "./lib/constants";
 import S3ClientFactory, { Credentials } from "./lib/s3";
 import pathToPosix from "./lib/pathToPosix";
@@ -36,7 +37,7 @@ const uploadStaticAssetsFromBuild = async (
     bucketName,
     credentials,
     basePath,
-    publicDirectoryCache,
+    publicDirectoryCache = { value: SWR_CACHE_CONTROL_HEADER },
     nextConfigDir
   } = options;
   const s3 = await S3ClientFactory({
@@ -76,10 +77,17 @@ const uploadStaticAssetsFromBuild = async (
         path.relative(assetsOutputDirectory, fileItem.path)
       );
 
+      const isNonHashedFile =
+        s3Key.endsWith("/_buildManifest.js") ||
+        s3Key.endsWith("/_ssgManifest.js");
+
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        /** This actually has no impact because S3 will add 'system determined' cache control header. and we force rewrite response headers in cloudfront*/
+        cacheControl: isNonHashedFile
+          ? SWR_CACHE_CONTROL_HEADER
+          : IMMUTABLE_CACHE_CONTROL_HEADER
       });
     });
 
@@ -99,7 +107,7 @@ const uploadStaticAssetsFromBuild = async (
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: SWR_CACHE_CONTROL_HEADER
       });
     });
 
@@ -136,7 +144,7 @@ const uploadStaticAssetsFromBuild = async (
           filePath: fileItem.path,
           cacheControl: isAbTestPath
             ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER
-            : SERVER_CACHE_CONTROL_HEADER
+            : SWR_CACHE_CONTROL_HEADER
         });
       }
     });
@@ -218,10 +226,17 @@ const uploadStaticAssets = async (
         )
       );
 
+      const isNonHashedFile =
+        s3Key.endsWith("/_buildManifest.js") ||
+        s3Key.endsWith("/_ssgManifest.js");
+
       return s3.uploadFile({
         s3Key,
         filePath: fileItem.path,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        /** This actually has no impact because S3 will add 'system determined' cache control header. and we force rewrite response headers in cloudfront*/
+        cacheControl: isNonHashedFile
+          ? SWR_CACHE_CONTROL_HEADER
+          : IMMUTABLE_CACHE_CONTROL_HEADER
       });
     });
 
@@ -247,7 +262,7 @@ const uploadStaticAssets = async (
           )
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: SWR_CACHE_CONTROL_HEADER
       });
     });
 
@@ -272,7 +287,7 @@ const uploadStaticAssets = async (
         withBasePath(prerenderManifest.routes[key].dataRoute.slice(1))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER
+      cacheControl: SWR_CACHE_CONTROL_HEADER
     });
   });
 
@@ -292,7 +307,7 @@ const uploadStaticAssets = async (
         withBasePath(path.posix.join("static-pages", relativePageFilePath))
       ),
       filePath: pageFilePath,
-      cacheControl: SERVER_CACHE_CONTROL_HEADER
+      cacheControl: SWR_CACHE_CONTROL_HEADER
     });
   });
 
@@ -312,7 +327,7 @@ const uploadStaticAssets = async (
           withBasePath(path.posix.join("static-pages", fallback))
         ),
         filePath: pageFilePath,
-        cacheControl: SERVER_CACHE_CONTROL_HEADER
+        cacheControl: SWR_CACHE_CONTROL_HEADER
       });
     });
 

@@ -6,6 +6,7 @@ import type { Readable } from "stream";
 import { OriginRequestDefaultHandlerManifest } from "../../types";
 // @ts-ignore
 import * as _ from "../lib/lodash";
+import { SWR_CACHE_CONTROL_HEADER } from "../../../constants";
 
 /**
  * Return a 404 response.
@@ -51,9 +52,7 @@ export async function createNotFoundResponse(
       "cache-control": [
         {
           key: "Cache-Control",
-          value:
-            CacheControl ??
-            "public, max-age=0, s-maxage=2678400, must-revalidate"
+          value: CacheControl ?? SWR_CACHE_CONTROL_HEADER
         }
       ]
     },
