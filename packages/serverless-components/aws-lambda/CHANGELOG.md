@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0-alpha.74](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-lambda@1.10.0-alpha.73...@getjerry/aws-lambda@1.10.0-alpha.74) (2024-05-21)
+
+**Note:** Version bump only for package @getjerry/aws-lambda
+
 # [1.10.0-alpha.73](https://github.com/getjerry/serverless-next.js/compare/@getjerry/aws-lambda@1.10.0-alpha.72...@getjerry/aws-lambda@1.10.0-alpha.73) (2024-05-16)
 
 **Note:** Version bump only for package @getjerry/aws-lambda
