@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.20.0-alpha.143",
+  "version": "1.20.0-alpha.144",
   "description": "Provides handlers that can be used in CloudFront Lambda@Edge to deploy next.js applications to the edge.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -69,6 +69,7 @@
     "@sentry/node": "7.4.1",
     "@sentry/tracing": "7.4.1",
     "@vercel/nft": "0.17.5",
+    "cheerio": "1.0.0-rc.12",
     "cookie": "^0.4.1",
     "execa": "^4.0.2",
     "fresh": "^0.5.2",
