@@ -9,6 +9,7 @@ import RoutesManifestJson from "./routes-manifest.json";
 import lambdaAtEdgeCompat from "@getjerry/next-aws-cloudfront";
 
 import queryString from "query-string";
+import cheerio from "cheerio";
 
 import {
   CloudFrontOrigin,
@@ -39,7 +40,7 @@ import {
 import { performance } from "perf_hooks";
 import { ServerResponse } from "http";
 import type { Readable } from "stream";
-import { isEmpty, isNil } from "lodash";
+import { isEmpty, isNil, each, map } from "lodash";
 import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 import zlib from "zlib";
 
@@ -1005,7 +1006,9 @@ const handleOriginResponse = async ({
 
     debug(`[blocking-fallback] rendered res: ${JSON.stringify(renderedRes)}`);
 
-    const { renderOpts, html } = renderedRes;
+    const { renderOpts, html: renderedHtml } = renderedRes;
+
+    const html = rocketHtml(renderedHtml);
 
     debug(
       `[blocking-fallback] rendered page, uri: ${htmlUri}, ${
@@ -1247,6 +1250,55 @@ const handleOriginResponse = async ({
     debug(`[origin-response] fallback response: ${JSON.stringify(out)}`);
     return out;
   }
+};
+
+const rocketHtml = (html: string): string => {
+  const $ = cheerio.load(html);
+
+  const $scripts = $("script");
+
+  each($scripts, (script) => {
+    const $script = $(script);
+    // bypass nomodule
+    if ($script.attr("nomodule")) {
+      $script.attr("jerry-rocket-checked", "nomodule");
+      return;
+    }
+
+    if ($script.attr("type") === "") {
+      $script.attr("jerry-rocket-checked", "nomodule");
+      return;
+    }
+
+    const type = $script.attr("type");
+    // bypass json
+    if (type === "application/ld+json" || type === "application/json") {
+      return;
+    }
+    if (type) {
+      $script.attr("data-rocket-type", type);
+      $script.removeAttr("type");
+    }
+
+    // transform src
+    const src = $script.attr("src");
+    if (src) {
+      $script.attr("data-rocket-src", src);
+      $script.removeAttr("src");
+    }
+
+    $script.attr("type", "rocketlazyloadscript");
+  });
+
+  // add rocket script
+  const $head = $("head");
+  $head
+    .last()
+    .insertAfter(
+      '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>'
+    );
+
+  return $.html();
 };
 
 const isOriginResponse = (
