@@ -1298,7 +1298,7 @@ const rocketHtml = (html: string): string => {
     '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>';
   lastChild
     ? $(lastChild).insertAfter(rocketScript)
-    : $head.append(rocketScript);
+    : $children.append(rocketScript);
 
   return $.html();
 };
