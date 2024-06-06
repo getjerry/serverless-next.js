@@ -40,7 +40,7 @@ import {
 import { performance } from "perf_hooks";
 import { ServerResponse } from "http";
 import type { Readable } from "stream";
-import { isEmpty, isNil, each, map } from "lodash";
+import { isEmpty, isNil, each, last } from "lodash";
 import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 import zlib from "zlib";
 
@@ -1292,11 +1292,13 @@ const rocketHtml = (html: string): string => {
 
   // add rocket script
   const $head = $("head");
-  $head
-    .last()
-    .insertAfter(
-      '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>'
-    );
+  const $children = $head.children();
+  const lastChild = last($children);
+  const rocketScript =
+    '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>';
+  lastChild
+    ? $(lastChild).insertAfter(rocketScript)
+    : $head.append(rocketScript);
 
   return $.html();
 };
