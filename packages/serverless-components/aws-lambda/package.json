@@ -1,6 +1,6 @@
 {
   "name": "@getjerry/aws-lambda",
-  "version": "1.10.0-alpha.85",
+  "version": "1.10.0-alpha.86",
   "main": "serverless.js",
   "publishConfig": {
     "access": "public"
