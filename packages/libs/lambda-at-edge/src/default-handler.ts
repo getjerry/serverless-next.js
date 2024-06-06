@@ -968,7 +968,7 @@ const handleOriginResponse = async ({
           // cloudfront will not expose body to origin response handler, so we have to fetch html body manually
           const s3Key = `${(basePath || "").replace(/^\//, "")}${
             basePath === "" ? "" : "/"
-          }static-pages/${manifest.buildId}${uri}`;
+          }static-pages/${manifest.buildId}${uri}.html`;
 
           const getStream = await import("get-stream");
 
