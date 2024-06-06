@@ -1292,13 +1292,9 @@ const rocketHtml = (html: string): string => {
 
   // add rocket script
   const $head = $("head");
-  const $children = $head.children();
-  const lastChild = last($children);
   const rocketScript =
     '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>';
-  lastChild
-    ? $(lastChild).insertAfter(rocketScript)
-    : $children.append(rocketScript);
+  $head.append(rocketScript);
 
   return $.html();
 };
