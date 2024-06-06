@@ -1265,20 +1265,13 @@ const rocketHtml = (html: string): string => {
       return;
     }
 
-    if ($script.attr("type") === "") {
-      $script.attr("jerry-rocket-checked", "nomodule");
+    const type = $script.attr("type");
+    if (!isNil(type) && type !== "text/javascript" && type !== "module") {
       return;
     }
 
-    const type = $script.attr("type");
-    // bypass json
-    if (type === "application/ld+json" || type === "application/json") {
-      return;
-    }
-    if (type) {
-      $script.attr("data-rocket-type", type);
-      $script.removeAttr("type");
-    }
+    $script.attr("data-rocket-type", type);
+    $script.removeAttr("type");
 
     // transform src
     const src = $script.attr("src");
