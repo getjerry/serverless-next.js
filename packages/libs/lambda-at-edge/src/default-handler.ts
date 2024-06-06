@@ -1260,7 +1260,11 @@ const rocketHtml = (html: string): string => {
   each($scripts, (script) => {
     const $script = $(script);
     // bypass nomodule
-    console.log($script.attr("src"), $script.attr("nomodule"));
+    console.log(
+      `${$script.attr("src")}, ${$script.attr(
+        "nomodule"
+      )}, ${typeof $script.attr("nomodule")}`
+    );
     if (typeof $script.attr("nomodule") !== undefined) {
       $script.attr("jerry-rocket-checked", "nomodule");
       return;
