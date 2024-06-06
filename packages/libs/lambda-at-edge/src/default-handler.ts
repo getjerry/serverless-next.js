@@ -949,7 +949,7 @@ const handleOriginResponse = async ({
         setStaleIn(revalidationKey, REVALIDATE_IN);
       }
 
-      if (isHTMLPage) {
+      if (isRequestForHtml) {
         try {
           const { domainName, region } =
             event.Records[0].cf.request.origin!.s3!;
@@ -962,13 +962,13 @@ const handleOriginResponse = async ({
             maxAttempts: 3,
             retryStrategy: await buildS3RetryStrategy()
           });
-          debug(`[rocket] uri: ${uri}`);
+          debug(`[rocket] uri: ${request.uri}`);
 
           // get page from S3.
           // cloudfront will not expose body to origin response handler, so we have to fetch html body manually
           const s3Key = `${(basePath || "").replace(/^\//, "")}${
             basePath === "" ? "" : "/"
-          }static-pages/${manifest.buildId}${uri}.html`;
+          }static-pages/${manifest.buildId}${request.uri}`;
 
           const getStream = await import("get-stream");
 
