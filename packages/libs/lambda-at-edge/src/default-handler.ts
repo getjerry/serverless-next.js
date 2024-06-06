@@ -948,6 +948,69 @@ const handleOriginResponse = async ({
         await runRevalidation({ ...event, revalidate: true }, context);
         setStaleIn(revalidationKey, REVALIDATE_IN);
       }
+
+      if (isHTMLPage) {
+        try {
+          const { domainName, region } =
+            event.Records[0].cf.request.origin!.s3!;
+          const bucketName = domainName.replace(
+            `.s3.${region}.amazonaws.com`,
+            ""
+          );
+          const s3 = new S3Client({
+            region,
+            maxAttempts: 3,
+            retryStrategy: await buildS3RetryStrategy()
+          });
+          debug(`[rocket] uri: ${uri}`);
+
+          // get page from S3.
+          // cloudfront will not expose body to origin response handler, so we have to fetch html body manually
+          const s3Key = `${(basePath || "").replace(/^\//, "")}${
+            basePath === "" ? "" : "/"
+          }static-pages/${manifest.buildId}${PERMANENT_STATIC_PAGES_DIR}${uri}`;
+
+          const getStream = await import("get-stream");
+
+          const s3Params = {
+            Bucket: bucketName,
+            Key: s3Key
+          };
+          debug(`[rocket] s3Params: ${JSON.stringify(s3Params)}`);
+
+          const { Body, $metadata } = await s3.send(
+            new GetObjectCommand(s3Params)
+          );
+          const bodyString = await getStream.default(Body as Readable);
+
+          const htmlOut = {
+            status: "200",
+            statusDescription: "OK",
+            headers: {
+              ...response.headers,
+              "content-type": [
+                {
+                  key: "Content-Type",
+                  value: "text/html"
+                }
+              ],
+              "cache-control": [
+                {
+                  key: "Cache-Control",
+                  value: isAbTestPath(manifest, uri)
+                    ? SERVER_NO_CACHE_CACHE_CONTROL_HEADER
+                    : SWR_CACHE_CONTROL_HEADER
+                }
+              ]
+            },
+            body: rocketHtml(bodyString)
+          };
+          debug(`[rocket] responded with html: ${JSON.stringify(htmlOut)}`);
+          return compressOutput({ manifest, request, output: htmlOut });
+        } catch (err) {
+          debug(`[rocket] error: ${err}`);
+        }
+      }
     }
 
     return response;
@@ -1006,9 +1069,7 @@ const handleOriginResponse = async ({
 
     debug(`[blocking-fallback] rendered res: ${JSON.stringify(renderedRes)}`);
 
-    const { renderOpts, html: renderedHtml } = renderedRes;
-
-    const html = rocketHtml(renderedHtml);
+    const { renderOpts, html } = renderedRes;
 
     debug(
       `[blocking-fallback] rendered page, uri: ${htmlUri}, ${
@@ -1106,7 +1167,7 @@ const handleOriginResponse = async ({
           }
         ]
       },
-      body: html
+      body: rocketHtml(html)
     };
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
