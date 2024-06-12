@@ -1,7 +1,7 @@
 import { Component } from "@serverless/core";
 import { pathExists, readJSON } from "fs-extra";
 import { join, resolve } from "path";
-import { Builder } from "@getjerry/lambda-at-edge/dist/lambda-at-edge/src";
+import { Builder } from "@getjerry/lambda-at-edge/src";
 import {
   OriginRequestApiHandlerManifest,
   OriginRequestDefaultHandlerManifest,

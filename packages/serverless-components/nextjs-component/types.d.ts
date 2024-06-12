@@ -1,5 +1,5 @@
 import { PublicDirectoryCache } from "@getjerry/s3-static-assets/src/lib/getPublicAssetCacheControl";
-import { BasicInvalidationUrlGroup } from "@getjerry/lambda-at-edge/dist/lambda-at-edge/src/lib/invalidation/invalidationUrlGroup";
+import { BasicInvalidationUrlGroup } from "@getjerry/lambda-at-edge/src/lib/invalidation/invalidationUrlGroup";
 import { ABTest } from "@getjerry/lambda-at-edge/types";
 
 export interface LambdaNames<T> {
