@@ -1003,7 +1003,7 @@ const handleOriginResponse = async ({
                 }
               ]
             },
-            body: rocketHtml(bodyString)
+            body: rocketHtml({ html: bodyString, manifest })
           };
           debug(`[rocket] responded with html: ${JSON.stringify(htmlOut)}`);
           return compressOutput({ manifest, request, output: htmlOut });
@@ -1167,7 +1167,7 @@ const handleOriginResponse = async ({
           }
         ]
       },
-      body: rocketHtml(html)
+      body: rocketHtml({ html, manifest })
     };
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
@@ -1313,7 +1313,15 @@ const handleOriginResponse = async ({
   }
 };
 
-const rocketHtml = (html: string): string => {
+const rocketHtml = ({
+  html,
+  manifest
+}: {
+  html: string;
+  manifest: OriginRequestDefaultHandlerManifest;
+}): string => {
+  if (!manifest.enableFasterThanLight) return html;
+
   const $ = cheerio.load(html);
 
   const $scripts = $("script");

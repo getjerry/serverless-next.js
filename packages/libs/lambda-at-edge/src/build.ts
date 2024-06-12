@@ -51,6 +51,7 @@ type BuildOptions = {
   domainRedirects?: { [key: string]: string };
   minifyHandlers?: boolean;
   enableHTTPCompression?: boolean;
+  enableFasterThanLight?: boolean;
   handler?: string;
   authentication?: { username: string; password: string } | undefined;
   resolve?: (
@@ -75,7 +76,7 @@ type BuildOptions = {
   enableRemoteInvalidation?: boolean;
 };
 
-const defaultBuildOptions = {
+const defaultBuildOptions: BuildOptions = {
   args: [],
   cwd: process.cwd(),
   env: {},
@@ -85,6 +86,7 @@ const defaultBuildOptions = {
   domainRedirects: {},
   minifyHandlers: false,
   enableHTTPCompression: true,
+  enableFasterThanLight: false,
   authentication: undefined,
   resolve: undefined,
   baseDir: process.cwd(),
@@ -551,6 +553,7 @@ class Builder {
       logLambdaExecutionTimes = false,
       domainRedirects = {},
       enableHTTPCompression = false,
+      enableFasterThanLight = false,
       authentication = undefined
     } = this.buildOptions;
 
@@ -578,6 +581,7 @@ class Builder {
       canonicalHostname: this.buildOptions.canonicalHostname,
       distributionId: this.buildOptions.distributionId,
       enableHTTPCompression,
+      enableFasterThanLight,
       urlRewrites: this.buildOptions.urlRewrites,
       enableDebugMode: this.buildOptions.enableDebugMode,
       invalidationUrlGroups: this.buildOptions.invalidationUrlGroups?.map(
