@@ -1,7 +1,7 @@
 import { Component } from "@serverless/core";
 import { pathExists, readJSON } from "fs-extra";
 import { join, resolve } from "path";
-import { Builder } from "@getjerry/lambda-at-edge";
+import { Builder } from "@getjerry/lambda-at-edge/src";
 import {
   OriginRequestApiHandlerManifest,
   OriginRequestDefaultHandlerManifest,
@@ -249,6 +249,7 @@ class NextjsComponent extends Component {
           distributionId: inputs.cloudfront?.distributionId,
           minifyHandlers: inputs.minifyHandlers || false,
           enableHTTPCompression: inputs.enableHTTPCompression,
+          enableFasterThanLight: inputs.enableFasterThanLight,
           handler: inputs.handler
             ? `${inputs.handler.split(".")[0]}.js`
             : undefined,

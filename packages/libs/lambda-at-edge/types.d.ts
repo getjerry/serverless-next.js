@@ -66,6 +66,7 @@ export type OriginRequestDefaultHandlerManifest = {
   };
   trailingSlash: boolean;
   enableHTTPCompression: boolean;
+  enableFasterThanLight: boolean;
   domainRedirects: {
     [key: string]: string;
   };
