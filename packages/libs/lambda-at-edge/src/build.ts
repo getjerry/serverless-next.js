@@ -950,16 +950,22 @@ class Builder {
     await fse.emptyDir(join(this.outputDir, ASSETS_DIR));
 
     const { restoreUserConfig } = await createServerlessConfig(
+      // @ts-ignore
       cwd,
       path.join(this.nextConfigDir),
       useServerlessTraceTarget
     );
 
     try {
-      const subprocess = execa(cmd, args, {
-        cwd,
-        env: env as NodeJS.ProcessEnv
-      });
+      const subprocess = execa(
+        // @ts-ignore
+        cmd,
+        args,
+        {
+          cwd,
+          env: env as NodeJS.ProcessEnv
+        }
+      );
 
       if (debugMode) {
         // @ts-ignore
