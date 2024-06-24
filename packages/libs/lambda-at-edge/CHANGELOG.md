@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.160](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.159...@getjerry/lambda-at-edge@1.20.0-alpha.160) (2024-06-24)
+
+### Reverts
+
+- Revert "Revert "wip"" ([5b54732](https://github.com/getjerry/serverless-next.js/commit/5b547327d08dbe0f2dc527b4801d84c777aec258))
+
 # [1.20.0-alpha.159](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.158...@getjerry/lambda-at-edge@1.20.0-alpha.159) (2024-06-12)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge

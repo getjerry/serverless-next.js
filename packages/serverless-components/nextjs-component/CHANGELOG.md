@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0-alpha.178](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.177...@getjerry/serverless-next@2.9.0-alpha.178) (2024-06-24)
+
+### Reverts
+
+- Revert "wip" ([b5c850e](https://github.com/getjerry/serverless-next.js/commit/b5c850ebd6e302e09914e75c7827d8846796b4f6))
+
 # [2.9.0-alpha.177](https://github.com/getjerry/serverless-next.js/compare/@getjerry/serverless-next@2.9.0-alpha.176...@getjerry/serverless-next@2.9.0-alpha.177) (2024-06-12)
 
 **Note:** Version bump only for package @getjerry/serverless-next
