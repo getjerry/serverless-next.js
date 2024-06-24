@@ -962,7 +962,7 @@ const handleOriginResponse = async ({
             maxAttempts: 3,
             retryStrategy: await buildS3RetryStrategy()
           });
-          debug(`[rocket] uri: ${request.uri}`);
+          debug(`[ftl] uri: ${request.uri}`);
 
           // get page from S3.
           // cloudfront will not expose body to origin response handler, so we have to fetch html body manually
@@ -976,7 +976,7 @@ const handleOriginResponse = async ({
             Bucket: bucketName,
             Key: s3Key
           };
-          debug(`[rocket] s3Params: ${JSON.stringify(s3Params)}`);
+          debug(`[ftl] s3Params: ${JSON.stringify(s3Params)}`);
 
           const { Body, $metadata } = await s3.send(
             new GetObjectCommand(s3Params)
@@ -1003,12 +1003,12 @@ const handleOriginResponse = async ({
                 }
               ]
             },
-            body: rocketHtml({ html: bodyString })
+            body: fasterThanLightHtml({ html: bodyString })
           };
-          debug(`[rocket] responded with html: ${JSON.stringify(htmlOut)}`);
+          debug(`[ftl] responded with html: ${JSON.stringify(htmlOut)}`);
           return compressOutput({ manifest, request, output: htmlOut });
         } catch (err) {
-          debug(`[rocket] error: ${err}`);
+          debug(`[ftl] error: ${err}`);
         }
       }
     }
@@ -1167,7 +1167,7 @@ const handleOriginResponse = async ({
           }
         ]
       },
-      body: rocketHtml({ html })
+      body: fasterThanLightHtml({ html })
     };
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
@@ -1313,7 +1313,7 @@ const handleOriginResponse = async ({
   }
 };
 
-const rocketHtml = ({ html }: { html: string }): string => {
+const fasterThanLightHtml = ({ html }: { html: string }): string => {
   const $ = cheerio.load(html);
 
   const $scripts = $("script");
@@ -1330,7 +1330,7 @@ const rocketHtml = ({ html }: { html: string }): string => {
     const $script = $(script);
     // bypass nomodule
     if (typeof $script.attr("nomodule") === "string") {
-      $script.attr("jerry-rocket-checked", "nomodule");
+      $script.attr("jerry-ftl-checked", "nomodule");
       return;
     }
 
@@ -1339,24 +1339,478 @@ const rocketHtml = ({ html }: { html: string }): string => {
       return;
     }
 
-    $script.attr("data-rocket-type", type);
+    $script.attr("data-ftl-type", type);
     $script.removeAttr("type");
 
     // transform src
     const src = $script.attr("src");
     if (src) {
-      $script.attr("data-rocket-src", src);
+      $script.attr("data-ftl-src", src);
       $script.removeAttr("src");
     }
 
-    $script.attr("type", "rocketlazyloadscript");
+    $script.attr("type", "ftllazyloadscript");
   });
 
-  // add rocket script
+  // add ftl script
   const $head = $("head");
-  const rocketScript =
-    '<script type="text/javascript" src="/_next/static/rocket.js" defer="" ></script>';
-  $head.append(rocketScript);
+  const ftlScript = `<script type="text/javascript">
+class FasterThanLightScripts {
+  constructor() {
+    (this.triggerEvents = [
+      'keydown',
+      'mousedown',
+      'mousemove',
+      'touchmove',
+      'touchstart',
+      'touchend',
+      'wheel',
+    ]),
+    (this.userEventHandler = this._triggerListener.bind(this)),
+    (this.touchStartHandler = this._onTouchStart.bind(this)),
+    (this.touchMoveHandler = this._onTouchMove.bind(this)),
+    (this.touchEndHandler = this._onTouchEnd.bind(this)),
+    (this.clickHandler = this._onClick.bind(this)),
+    (this.interceptedClicks = []),
+    window.addEventListener('pageshow', (t) => {
+      this.persisted = t.persisted;
+    }),
+    window.addEventListener('DOMContentLoaded', () => {
+      this._preconnect3rdParties();
+    }),
+    (this.delayedScripts = {
+      normal: [],
+      async: [],
+      defer: [],
+    }),
+    (this.trash = []),
+    (this.allJQueries = []);
+  }
+
+  _addUserInteractionListener(t) {
+    if (document.hidden) {
+      t._triggerListener();
+      return;
+    }
+    this.triggerEvents.forEach((e) =>
+      window.addEventListener(e, t.userEventHandler, {
+        passive: !0,
+      }),
+    ),
+      window.addEventListener('touchstart', t.touchStartHandler, {
+        passive: !0,
+      }),
+      window.addEventListener('mousedown', t.touchStartHandler),
+      document.addEventListener('visibilitychange', t.userEventHandler);
+  }
+
+  _removeUserInteractionListener() {
+    this.triggerEvents.forEach((t) =>
+      window.removeEventListener(t, this.userEventHandler, {
+        passive: !0,
+      }),
+    ),
+      document.removeEventListener('visibilitychange', this.userEventHandler);
+  }
+
+  _onTouchStart(t) {
+    'HTML' !== t.target.tagName &&
+    (window.addEventListener('touchend', this.touchEndHandler),
+      window.addEventListener('mouseup', this.touchEndHandler),
+      window.addEventListener('touchmove', this.touchMoveHandler, {
+        passive: !0,
+      }),
+      window.addEventListener('mousemove', this.touchMoveHandler),
+      t.target.addEventListener('click', this.clickHandler),
+      this._renameDOMAttribute(t.target, 'onclick', 'ftl-onclick'),
+      this._pendingClickStarted());
+  }
+
+  _onTouchMove(t) {
+    window.removeEventListener('touchend', this.touchEndHandler),
+      window.removeEventListener('mouseup', this.touchEndHandler),
+      window.removeEventListener('touchmove', this.touchMoveHandler, {
+        passive: !0,
+      }),
+      window.removeEventListener('mousemove', this.touchMoveHandler),
+      t.target.removeEventListener('click', this.clickHandler),
+      this._renameDOMAttribute(t.target, 'ftl-onclick', 'onclick'),
+      this._pendingClickFinished();
+  }
+
+  _onTouchEnd(t) {
+    window.removeEventListener('touchend', this.touchEndHandler),
+      window.removeEventListener('mouseup', this.touchEndHandler),
+      window.removeEventListener('touchmove', this.touchMoveHandler, {
+        passive: !0,
+      }),
+      window.removeEventListener('mousemove', this.touchMoveHandler);
+  }
+
+  _onClick(t) {
+    t.target.removeEventListener('click', this.clickHandler),
+      this._renameDOMAttribute(t.target, 'ftl-onclick', 'onclick'),
+      this.interceptedClicks.push(t),
+      t.preventDefault(),
+      t.stopPropagation(),
+      t.stopImmediatePropagation(),
+      this._pendingClickFinished();
+  }
+
+  _replayClicks() {
+    window.removeEventListener('touchstart', this.touchStartHandler, {
+      passive: !0,
+    }),
+      window.removeEventListener('mousedown', this.touchStartHandler),
+      this.interceptedClicks.forEach((t) => {
+        t.target.dispatchEvent(
+          new MouseEvent('click', {
+            view: t.view,
+            bubbles: !0,
+            cancelable: !0,
+          }),
+        );
+      });
+  }
+
+  _waitForPendingClicks() {
+    return new Promise((t) => {
+      this._isClickPending ? (this._pendingClickFinished = t) : t();
+    });
+  }
+
+  _pendingClickStarted() {
+    this._isClickPending = !0;
+  }
+
+  _pendingClickFinished() {
+    this._isClickPending = !1;
+  }
+
+  _renameDOMAttribute(t, e, r) {
+    t.hasAttribute &&
+    t.hasAttribute(e) &&
+    (event.target.setAttribute(r, event.target.getAttribute(e)), event.target.removeAttribute(e));
+  }
+
+  _triggerListener() {
+    this._removeUserInteractionListener(this),
+      'loading' === document.readyState
+        ? document.addEventListener('DOMContentLoaded', this._loadEverythingNow.bind(this))
+        : this._loadEverythingNow();
+  }
+
+  _preconnect3rdParties() {
+    let t = [];
+    document.querySelectorAll('script[type=ftllazyloadscript]').forEach((e) => {
+      if (e.hasAttribute('src')) {
+        let r = new URL(e.src).origin;
+        r !== location.origin &&
+        t.push({
+          src: r,
+          crossOrigin: e.crossOrigin || 'module' === e.getAttribute('data-ftl-type'),
+        });
+      }
+    }),
+      (t = [...new Map(t.map((t) => [JSON.stringify(t), t])).values()]),
+      this._batchInjectResourceHints(t, 'preconnect');
+  }
+
+  async _loadEverythingNow() {
+    (this.lastBreath = Date.now()),
+      this._delayEventListeners(this),
+      this._delayJQueryReady(this),
+      this._handleDocumentWrite(),
+      this._registerAllDelayedScripts(),
+      this._preloadAllScripts(),
+      console.log(this.delayedScripts),
+      await this._loadScriptsFromList(this.delayedScripts.normal),
+      await this._loadScriptsFromList(this.delayedScripts.defer),
+      await this._loadScriptsFromList(this.delayedScripts.async);
+    try {
+      await this._triggerDOMContentLoaded(), await this._triggerWindowLoad();
+    } catch (t) {
+      console.error(t);
+    }
+    window.dispatchEvent(new Event('ftl-allScriptsLoaded')),
+      this._waitForPendingClicks().then(() => {
+        this._replayClicks();
+      }),
+      this._emptyTrash();
+  }
+
+  _registerAllDelayedScripts() {
+    document.querySelectorAll('script[type=ftllazyloadscript]').forEach((t) => {
+      t.hasAttribute('data-ftl-src')
+        ? t.hasAttribute('async') && !1 !== t.async
+          ? this.delayedScripts.async.push(t)
+          : (t.hasAttribute('defer') && !1 !== t.defer) || 'module' === t.getAttribute('data-ftl-type')
+            ? this.delayedScripts.defer.push(t)
+            : this.delayedScripts.normal.push(t)
+        : this.delayedScripts.normal.push(t);
+    });
+  }
+
+  async _transformScript(t) {
+    return await new Promise(
+      (await this._littleBreath(),
+        navigator.userAgent.indexOf('Firefox/') > 0 || '' === navigator.vendor
+          ? (e) => {
+            let r = document.createElement('script');
+            [...t.attributes].forEach((t) => {
+              let e = t.nodeName;
+              'type' !== e &&
+              ('data-ftl-type' === e && (e = 'type'),
+              'data-ftl-src' === e && (e = 'src'),
+                r.setAttribute(e, t.nodeValue));
+            }),
+            t.text && (r.text = t.text),
+              r.hasAttribute('src')
+                ? (r.addEventListener('load', e), r.addEventListener('error', e))
+                : ((r.text = t.text), e());
+            try {
+              t.parentNode.replaceChild(r, t);
+            } catch (i) {
+              e();
+            }
+          }
+          : async (e) => {
+            console.log(1);
+
+            function r() {
+              t.setAttribute('data-ftl-status', 'failed'), e();
+            }
+
+            console.log(2);
+
+            try {
+              let i = t.getAttribute('data-ftl-type'),
+                n = t.getAttribute('data-ftl-src');
+              console.log({ t, e: e.toString(), i, n });
+              t.text,
+                i ? ((t.type = i), t.removeAttribute('data-ftl-type')) : t.removeAttribute('type'),
+                console.log(3);
+
+              t.addEventListener('load', function r() {
+                t.setAttribute('data-ftl-status', 'executed');
+                e();
+              }),
+                console.log(4);
+
+              t.addEventListener('error', r),
+                n
+                  ? (t.removeAttribute('data-ftl-src'), (t.src = n))
+                  : (t.src = 'data:text/javascript;base64,' + window.btoa(unescape(encodeURIComponent(t.text))));
+              console.log(5);
+            } catch (s) {
+              console.error(s);
+              r();
+            }
+            console.log(6);
+          }),
+      console.log(7),
+    );
+  }
+
+  async _loadScriptsFromList(t) {
+    let e = t.shift();
+    console.log({ t, e });
+    return e && e.isConnected
+      ? (await this._transformScript(e), console.log('end', e), await this._loadScriptsFromList(t))
+      : Promise.resolve();
+  }
+
+  _preloadAllScripts() {
+    this._batchInjectResourceHints(
+      [...this.delayedScripts.normal, ...this.delayedScripts.defer, ...this.delayedScripts.async],
+      'preload',
+    );
+  }
+
+  _batchInjectResourceHints(t, e) {
+    var r = document.createDocumentFragment();
+    t.forEach((t) => {
+      let i = (t.getAttribute && t.getAttribute('data-ftl-src')) || t.src;
+      if (i) {
+        let n = document.createElement('link');
+        (n.href = i),
+          (n.rel = e),
+        'preconnect' !== e && (n.as = 'script'),
+        t.getAttribute && 'module' === t.getAttribute('data-ftl-type') && (n.crossOrigin = !0),
+        t.crossOrigin && (n.crossOrigin = t.crossOrigin),
+        t.integrity && (n.integrity = t.integrity),
+          r.appendChild(n),
+          this.trash.push(n);
+      }
+    }),
+      document.head.appendChild(r);
+  }
+
+  _delayEventListeners(t) {
+    let e = {};
+
+    function r(t, r) {
+      !(function t(r) {
+        !e[r] &&
+        ((e[r] = {
+          originalFunctions: {
+            add: r.addEventListener,
+            remove: r.removeEventListener,
+          },
+          eventsToRewrite: [],
+        }),
+          (r.addEventListener = function() {
+            (arguments[0] = i(arguments[0])), e[r].originalFunctions.add.apply(r, arguments);
+          }),
+          (r.removeEventListener = function() {
+            (arguments[0] = i(arguments[0])), e[r].originalFunctions.remove.apply(r, arguments);
+          }));
+
+        function i(t) {
+          return e[r].eventsToRewrite.indexOf(t) >= 0 ? 'ftl-' + t : t;
+        }
+      })(t),
+        e[t].eventsToRewrite.push(r);
+    }
+
+    function i(t, e) {
+      let r = t[e];
+      Object.defineProperty(t, e, {
+        get: () => r || function() {
+        },
+        set(i) {
+          t['ftl' + e] = r = i;
+        },
+      });
+    }
+
+    r(document, 'DOMContentLoaded'),
+      r(window, 'DOMContentLoaded'),
+      r(window, 'load'),
+      r(window, 'pageshow'),
+      r(document, 'readystatechange'),
+      i(document, 'onreadystatechange'),
+      i(window, 'onload'),
+      i(window, 'onpageshow');
+  }
+
+  _delayJQueryReady(t) {
+    let e;
+
+    function r(r) {
+      if (r && r.fn && !t.allJQueries.includes(r)) {
+        r.fn.ready = r.fn.init.prototype.ready = function(e) {
+          return (
+            t.domReadyFired
+              ? e.bind(document)(r)
+              : document.addEventListener('ftl-DOMContentLoaded', () => e.bind(document)(r)),
+              r([])
+          );
+        };
+        let i = r.fn.on;
+        (r.fn.on = r.fn.init.prototype.on =
+          function() {
+            if (this[0] === window) {
+              function t(t) {
+                return t
+                  .split(' ')
+                  .map((t) => ('load' === t || 0 === t.indexOf('load.') ? 'ftl-jquery-load' : t))
+                  .join(' ');
+              }
+
+              'string' == typeof arguments[0] || arguments[0] instanceof String
+                ? (arguments[0] = t(arguments[0]))
+                : 'object' == typeof arguments[0] &&
+                Object.keys(arguments[0]).forEach((e) => {
+                  let r = arguments[0][e];
+                  delete arguments[0][e], (arguments[0][t(e)] = r);
+                });
+            }
+            return i.apply(this, arguments), this;
+          }),
+          t.allJQueries.push(r);
+      }
+      e = r;
+    }
+
+    r(window.jQuery),
+      Object.defineProperty(window, 'jQuery', {
+        get: () => e,
+        set(t) {
+          r(t);
+        },
+      });
+  }
+
+  async _triggerDOMContentLoaded() {
+    (this.domReadyFired = !0),
+      await this._littleBreath(),
+      document.dispatchEvent(new Event('ftl-DOMContentLoaded')),
+      await this._littleBreath(),
+      window.dispatchEvent(new Event('ftl-DOMContentLoaded')),
+      await this._littleBreath(),
+      document.dispatchEvent(new Event('ftl-readystatechange')),
+      await this._littleBreath(),
+    document.ftlonreadystatechange && document.ftlonreadystatechange();
+  }
+
+  async _triggerWindowLoad() {
+    await this._littleBreath(),
+      window.dispatchEvent(new Event('ftl-load')),
+      await this._littleBreath(),
+    window.ftlonload && window.ftlonload(),
+      await this._littleBreath(),
+      this.allJQueries.forEach((t) => t(window).trigger('ftl-jquery-load')),
+      await this._littleBreath();
+    let t = new Event('ftl-pageshow');
+    (t.persisted = this.persisted),
+      window.dispatchEvent(t),
+      await this._littleBreath(),
+    window.ftlonpageshow &&
+    window.ftlonpageshow({
+      persisted: this.persisted,
+    });
+  }
+
+  _handleDocumentWrite() {
+    let t = new Map();
+    document.write = document.writeln = function(e) {
+      let r = document.currentScript;
+      r || console.error('FTL unable to document.write this: ' + e);
+      let i = document.createRange(),
+        n = r.parentElement,
+        s = t.get(r);
+      void 0 === s && ((s = r.nextSibling), t.set(r, s));
+      let a = document.createDocumentFragment();
+      i.setStart(a, 0), a.appendChild(i.createContextualFragment(e)), n.insertBefore(a, s);
+    };
+  }
+
+  async _littleBreath() {
+    var s = Date.now() - this.lastBreath;
+    console.log(s);
+    s > 45 && (await this._requestAnimFrame(), (this.lastBreath = Date.now()));
+    console.log('breath end');
+  }
+
+  async _requestAnimFrame() {
+    return document.hidden ? new Promise((t) => setTimeout(t)) : new Promise((t) => requestAnimationFrame(t));
+  }
+
+  _emptyTrash() {
+    this.trash.forEach((t) => t.remove());
+  }
+
+  static run() {
+    let t = new FasterThanLightScripts();
+    t._addUserInteractionListener(t);
+  }
+}
+
+FasterThanLightScripts.run();
+</script>`;
+
+  $head.append(ftlScript);
 
   return $.html();
 };
