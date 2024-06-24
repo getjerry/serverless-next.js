@@ -1523,7 +1523,6 @@ class FasterThanLightScripts {
       this._handleDocumentWrite(),
       this._registerAllDelayedScripts(),
       this._preloadAllScripts(),
-      console.log(this.delayedScripts),
       await this._loadScriptsFromList(this.delayedScripts.normal),
       await this._loadScriptsFromList(this.delayedScripts.defer),
       await this._loadScriptsFromList(this.delayedScripts.async);
@@ -1575,46 +1574,35 @@ class FasterThanLightScripts {
             }
           }
           : async (e) => {
-            console.log(1);
-
             function r() {
               t.setAttribute('data-ftl-status', 'failed'), e();
             }
 
-            console.log(2);
 
             try {
               let i = t.getAttribute('data-ftl-type'),
                 n = t.getAttribute('data-ftl-src');
-              console.log({ t, e: e.toString(), i, n });
               t.text,
                 i ? ((t.type = i), t.removeAttribute('data-ftl-type')) : t.removeAttribute('type'),
-                console.log(3);
 
               t.addEventListener('load', function r() {
                 t.setAttribute('data-ftl-status', 'executed');
                 e();
               }),
-                console.log(4);
 
               t.addEventListener('error', r),
                 n
                   ? (t.removeAttribute('data-ftl-src'), (t.src = n))
                   : (t.src = 'data:text/javascript;base64,' + window.btoa(unescape(encodeURIComponent(t.text))));
-              console.log(5);
             } catch (s) {
-              console.error(s);
               r();
             }
-            console.log(6);
           }),
-      console.log(7),
     );
   }
 
   async _loadScriptsFromList(t) {
     let e = t.shift();
-    console.log({ t, e });
     return e && e.isConnected
       ? (await this._transformScript(e), console.log('end', e), await this._loadScriptsFromList(t))
       : Promise.resolve();
@@ -1788,9 +1776,7 @@ class FasterThanLightScripts {
 
   async _littleBreath() {
     var s = Date.now() - this.lastBreath;
-    console.log(s);
     s > 45 && (await this._requestAnimFrame(), (this.lastBreath = Date.now()));
-    console.log('breath end');
   }
 
   async _requestAnimFrame() {
