@@ -53,7 +53,6 @@ export type ServerlessComponentInputs = {
   uploadStaticAssetsFromBuild?: boolean;
   deploy?: boolean;
   enableHTTPCompression?: boolean;
-  enableFasterThanLight?: boolean;
   authentication?: { username: string; password: string };
   imageOptimizer?: boolean;
   certificateArn?: string;

@@ -249,7 +249,6 @@ class NextjsComponent extends Component {
           distributionId: inputs.cloudfront?.distributionId,
           minifyHandlers: inputs.minifyHandlers || false,
           enableHTTPCompression: inputs.enableHTTPCompression,
-          enableFasterThanLight: inputs.enableFasterThanLight,
           handler: inputs.handler
             ? `${inputs.handler.split(".")[0]}.js`
             : undefined,

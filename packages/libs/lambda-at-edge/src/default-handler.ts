@@ -40,7 +40,7 @@ import {
 import { performance } from "perf_hooks";
 import { ServerResponse } from "http";
 import type { Readable } from "stream";
-import { isEmpty, isNil, each, last } from "lodash";
+import { isEmpty, isNil, each, find } from "lodash";
 import { CloudFrontHeaders } from "aws-lambda/common/cloudfront";
 import zlib from "zlib";
 
@@ -1003,7 +1003,7 @@ const handleOriginResponse = async ({
                 }
               ]
             },
-            body: rocketHtml({ html: bodyString, manifest })
+            body: rocketHtml({ html: bodyString })
           };
           debug(`[rocket] responded with html: ${JSON.stringify(htmlOut)}`);
           return compressOutput({ manifest, request, output: htmlOut });
@@ -1167,7 +1167,7 @@ const handleOriginResponse = async ({
           }
         ]
       },
-      body: rocketHtml({ html, manifest })
+      body: rocketHtml({ html })
     };
     debug(
       `[blocking-fallback] responded with html: ${JSON.stringify(htmlOut)}`
@@ -1313,18 +1313,18 @@ const handleOriginResponse = async ({
   }
 };
 
-const rocketHtml = ({
-  html,
-  manifest
-}: {
-  html: string;
-  manifest: OriginRequestDefaultHandlerManifest;
-}): string => {
-  if (!manifest.enableFasterThanLight) return html;
-
+const rocketHtml = ({ html }: { html: string }): string => {
   const $ = cheerio.load(html);
 
   const $scripts = $("script");
+
+  const enabled = find($scripts, (script) => {
+    const $script = $(script);
+    return typeof $script.attr("faster-than-light") === "string";
+  });
+
+  // not modify anything if not enabled.
+  if (!enabled) return html;
 
   each($scripts, (script) => {
     const $script = $(script);
