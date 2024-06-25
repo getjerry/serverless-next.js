@@ -1335,7 +1335,7 @@ const fasterThanLightHtml = ({ html }: { html: string }): string => {
     }
 
     // bypass script with explicit disable flag
-    if (typeof $script.attr("disable-faster-than-light") === "string") {
+    if (typeof $script.attr("data-disable-faster-than-light") === "string") {
       $script.attr("jerry-ftl-checked", "disabled");
       return;
     }
