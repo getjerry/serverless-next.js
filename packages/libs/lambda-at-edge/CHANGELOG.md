@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0-alpha.163](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.162...@getjerry/lambda-at-edge@1.20.0-alpha.163) (2024-06-26)
+
+**Note:** Version bump only for package @getjerry/lambda-at-edge
+
 # [1.20.0-alpha.162](https://github.com/getjerry/serverless-next.js/compare/@getjerry/lambda-at-edge@1.20.0-alpha.161...@getjerry/lambda-at-edge@1.20.0-alpha.162) (2024-06-24)
 
 **Note:** Version bump only for package @getjerry/lambda-at-edge
